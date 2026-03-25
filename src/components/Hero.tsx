@@ -14,11 +14,11 @@ const badges = [
 
 export function Hero() {
   return (
-    <section className="flex min-h-[calc(100svh-6.5rem)] flex-col px-6 pb-6 pt-2 md:min-h-[calc(100svh-7rem)] md:px-10 md:pb-8 lg:px-14">
-      <div className="relative mx-auto flex h-full min-h-[calc(100svh-7.5rem)] w-full max-w-[1400px] flex-col overflow-hidden rounded-2xl shadow-lg shadow-black/10 md:min-h-[calc(100svh-8rem)]">
+    <section className="flex min-h-[calc(100svh-6.5rem-50px)] flex-col px-6 pb-6 pt-2 md:min-h-[calc(100svh-7rem-50px)] md:px-10 md:pb-8 lg:px-14">
+      <div className="relative mx-auto flex h-full min-h-[calc(100svh-7.5rem-50px)] w-full max-w-[1400px] flex-col overflow-hidden rounded-2xl shadow-lg shadow-black/10 md:min-h-[calc(100svh-8rem-50px)]">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('https://img.freepik.com/premium-photo/ophthalmology-concept-patient-examination-eye-vision-ophthalmological-clinic_926199-3833566.jpg?uid=R206252073&ga=GA1.1.471481738.1764221371&semt=ais_hybrid&w=740&q=80')" }}
+          style={{ backgroundImage: "url('/generated/hero-bg.png')" }}
           role="img"
           aria-hidden
         />
@@ -33,7 +33,7 @@ export function Hero() {
                 <span className="block">Shaping Future</span>
                 <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-2 sm:mt-2">
                   <span className="inline-block rounded-lg bg-hero-teal px-3 py-1.5 shadow-sm sm:px-4 sm:py-2">
-                    Healthcare
+                    Healthcare Education
                   </span>
                   <span className="text-white">Professionals</span>
                 </span>
@@ -43,8 +43,9 @@ export function Hero() {
                 className="animate-load mt-6 max-w-xl text-base leading-relaxed text-white/95 sm:text-lg"
                 style={{ '--delay': '260ms' } as CSSProperties}
               >
-                Industry-aligned programs with real clinical exposure designed for
-                the next generation of medical innovators.
+                V Trust Healthcare Education began in 2021 with a mission to
+                bridge academic theory and real-world clinical excellence through
+                rapid expansion and strong partnerships.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
@@ -53,7 +54,7 @@ export function Hero() {
                   className="animate-load inline-flex items-center justify-center gap-2 rounded-full bg-hero-teal px-6 py-3 text-sm font-semibold text-white shadow-md transition-opacity hover:opacity-95 sm:text-base"
                   style={{ '--delay': '320ms' } as CSSProperties}
                 >
-                  Explore Courses
+                  Explore Programs
                   <ArrowRight className="size-4 shrink-0" aria-hidden />
                 </a>
                 <a
@@ -61,7 +62,7 @@ export function Hero() {
                   className="animate-load inline-flex items-center justify-center rounded-full border-2 border-white/90 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-[2px] transition-colors hover:bg-white/10 sm:text-base"
                   style={{ '--delay': '380ms' } as CSSProperties}
                 >
-                  Talk to Advisor
+                  Book Your Consultation
                 </a>
               </div>
             </div>

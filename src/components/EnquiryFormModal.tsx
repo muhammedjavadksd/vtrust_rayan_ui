@@ -1,0 +1,213 @@
+import { X } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+
+type FormState = {
+  fullName: string
+  emailOrPhone: string
+  course: string
+  message: string
+}
+
+const courses = [
+  'BSc Optometry',
+  'MSc Optometry',
+  'Diploma in Optometry',
+  'ANM Nursing',
+  'B.Voc in Medical Lab Technology',
+  'Hospital Administration',
+] as const
+
+export function EnquiryFormModal() {
+  const [open, setOpen] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [form, setForm] = useState<FormState>({
+    fullName: '',
+    emailOrPhone: '',
+    course: courses[0] ?? '',
+    message: '',
+  })
+
+  const STORAGE_KEY = 'vtrust_enquiry_modal_shown_v1'
+
+  const canOpen = useMemo(() => {
+    try {
+      return !window.localStorage.getItem(STORAGE_KEY)
+    } catch {
+      return true
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!canOpen) return
+
+    const t = window.setTimeout(() => {
+      setOpen(true)
+      try {
+        window.localStorage.setItem(STORAGE_KEY, '1')
+      } catch {
+        // ignore
+      }
+    }, 5000)
+
+    return () => window.clearTimeout(t)
+  }, [canOpen])
+
+  useEffect(() => {
+    if (!open) return
+
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = prevOverflow
+    }
+  }, [open])
+
+  return (
+    <>
+      {open && (
+        <div
+          className="fixed inset-0 z-[100] flex items-end justify-center sm:items-center"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Enquirey form"
+        >
+          {/* Backdrop */}
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setOpen(false)}
+            aria-label="Close modal backdrop"
+          />
+
+          {/* Panel */}
+          <div className="relative z-10 w-full max-w-[720px] overflow-hidden rounded-2xl bg-white shadow-xl">
+            <div className="flex items-start justify-between gap-6 border-b border-slate-100 bg-[#0D2B6B] px-6 py-5">
+              <div className="text-white">
+                <p className="text-xs font-semibold tracking-[0.18em] opacity-80">
+                  Enquirey Form
+                </p>
+                <h2 className="mt-1 text-lg font-semibold">Request information</h2>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/15"
+                aria-label="Close enquiry modal"
+              >
+                <X className="size-5" aria-hidden />
+              </button>
+            </div>
+
+            <div className="px-6 py-5 sm:px-8 sm:py-6">
+              {submitted ? (
+                <div className="space-y-3">
+                  <p className="text-lg font-semibold text-slate-900">
+                    Thanks! Your enquiry has been submitted.
+                  </p>
+                  <p className="text-sm leading-relaxed text-slate-600">
+                    Our admissions team will contact you shortly.
+                  </p>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => setOpen(false)}
+                      className="rounded-lg bg-[#0D2B6B] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-95"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    setSubmitted(true)
+                  }}
+                  className="grid gap-4 sm:grid-cols-2"
+                >
+                  <label className="space-y-1">
+                    <span className="text-sm font-semibold text-slate-800">
+                      Full Name
+                    </span>
+                    <input
+                      value={form.fullName}
+                      onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
+                      placeholder="Enter your name"
+                      className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-[#4DB6AC]"
+                      required
+                    />
+                  </label>
+
+                  <label className="space-y-1">
+                    <span className="text-sm font-semibold text-slate-800">
+                      Email or Phone
+                    </span>
+                    <input
+                      value={form.emailOrPhone}
+                      onChange={(e) =>
+                        setForm((f) => ({ ...f, emailOrPhone: e.target.value }))
+                      }
+                      placeholder="+91 ... or email@..."
+                      className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-[#4DB6AC]"
+                      required
+                    />
+                  </label>
+
+                  <label className="space-y-1 sm:col-span-2">
+                    <span className="text-sm font-semibold text-slate-800">
+                      Course
+                    </span>
+                    <select
+                      value={form.course}
+                      onChange={(e) => setForm((f) => ({ ...f, course: e.target.value }))}
+                      className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-[#4DB6AC]"
+                    >
+                      {courses.map((c) => (
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className="space-y-1 sm:col-span-2">
+                    <span className="text-sm font-semibold text-slate-800">
+                      Message
+                    </span>
+                    <textarea
+                      value={form.message}
+                      onChange={(e) =>
+                        setForm((f) => ({ ...f, message: e.target.value }))
+                      }
+                      placeholder="Tell us what you're looking for"
+                      className="min-h-[110px] w-full resize-y rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#4DB6AC]"
+                    />
+                  </label>
+
+                  <div className="flex items-center justify-end gap-3 sm:col-span-2">
+                    <button
+                      type="button"
+                      onClick={() => setOpen(false)}
+                      className="rounded-lg border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="rounded-lg bg-[#0D2B6B] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-95"
+                    >
+                      Submit Enquiry
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+

@@ -14,21 +14,21 @@ const testimonials: Testimonial[] = [
     quote:
       'Choosing BSc Optometry at V Trust has been a turning point in my career. The combination of classroom learning and real clinical exposure helped me understand patient care and diagnostics. The faculty are supportive, and the hospital-based training gave me the confidence to handle real-world situations. I feel well-prepared to step into the healthcare field.',
     image:
-      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80',
+      '/generated/journey-img.png',
   },
   {
     name: 'Ayesha Kulkarni',
     quote:
       'V Trust gave me the confidence to work with patients from day one. The labs were advanced, the mentors were always available, and the clinical exposure was exactly what I needed to grow.',
     image:
-      'https://images.unsplash.com/photo-1524504388940-b1c1720e8a23?auto=format&fit=crop&w=800&q=80',
+      '/generated/journey-img.png',
   },
   {
     name: 'Rohit Sharma',
     quote:
       'From academic learning to hands-on training, the program was well structured. I gained practical knowledge and real-world experience that helped me transition smoothly into my career.',
     image:
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80',
+      '/generated/journey-img.png',
   },
 ] as const
 
@@ -144,7 +144,7 @@ export function TestimonialsSection() {
             style={{ '--delay': '120ms' } as CSSProperties}
           >
             <img
-              src={t.image}
+              src="/generated/journey-img.png"
               alt={t.name}
               className="h-52 w-full rounded-2xl object-cover"
               loading="lazy"

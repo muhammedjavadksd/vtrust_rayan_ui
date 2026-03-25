@@ -9,49 +9,117 @@ const tabs = [
   'Nutrition & Dietetics',
 ] as const
 
+type TabKey = (typeof tabs)[number]
+
 const programs = [
   {
     title: 'BSc Optometry',
-    description: 'Build expertise in vision care, diagnostics, and optometry practice.',
+    description: 'Build strong clinical and diagnostic skills for optometry.',
     image:
-      'https://images.unsplash.com/photo-1578496479531-32c9d9f84f8f?auto=format&fit=crop&w=900&q=80',
+      '/generated/hero-bg.png',
   },
   {
     title: 'MSc Optometry',
-    description: 'Advance clinical optometry, diagnostics, and specialized vision care.',
+    description:
+      'Advanced training in clinical optometry, diagnostics.',
     image:
-      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80',
+      '/generated/hero-bg.png',
   },
   {
     title: 'Diploma in Optometry',
-    description: 'Gain practical skills in eye care, vision testing, and optical support.',
+    description: 'Foundation for eye care, vision testing, and optical assistance.',
     image:
-      'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=900&q=80',
+      '/generated/hero-bg.png',
   },
   {
-    title: 'BSc Nursing',
-    description: 'Develop nursing competencies through rotations and patient training.',
+    title: 'Optical Technician',
+    description: 'Optical dispensing and lens technology with hands-on training.',
     image:
-      'https://images.unsplash.com/photo-1551190822-a9333d879b1f?auto=format&fit=crop&w=900&q=80',
+      '/generated/hero-bg.png',
   },
   {
-    title: 'BSc Medical Lab Technology',
-    description: 'Master lab techniques, quality testing, and biomedical analysis.',
+    title: 'Diploma in Medical Lab Technology',
+    description: 'Practical lab training in microbiology, biochemistry & diagnostics.',
     image:
-      'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=900&q=80',
+      '/generated/hero-bg.png',
   },
   {
-    title: 'Diploma in Dialysis Technology',
-    description: 'Learn dialysis procedures, equipment handling, and renal support.',
+    title: 'Diploma in Nursing (ANM)',
+    description: 'Nursing fundamentals with patient care and clinical exposure.',
     image:
-      'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=900&q=80',
+      '/generated/hero-bg.png',
+  },
+  {
+    title: 'B.Voc in Anesthesia Technology',
+    description: 'Assist during anesthesia with OT preparation and monitoring.',
+    image:
+      '/generated/hero-bg.png',
+  },
+  {
+    title: 'B.Voc in Operation Theatre Technology',
+    description: 'Hands-on OT training: sterilization, surgical support, teamwork.',
+    image:
+      '/generated/hero-bg.png',
+  },
+  {
+    title: 'B.Voc in Medical Lab Technology',
+    description: 'Practical diagnostics with quality testing and biomedical analysis.',
+    image:
+      '/generated/hero-bg.png',
+  },
+  {
+    title: 'B.Voc in Nutrition & Dietetics',
+    description: 'Clinical nutrition and diet planning for health & wellness.',
+    image:
+      '/generated/hero-bg.png',
+  },
+  {
+    title: 'B.Voc in Hospital Management',
+    description: 'Hospital operations and management leadership with case learning.',
+    image:
+      '/generated/hero-bg.png',
+  },
+  {
+    title: 'Diploma in Hospital Management',
+    description: 'Focused management training for healthcare operations.',
+    image:
+      '/generated/hero-bg.png',
+  },
+  {
+    title: 'Diploma in Human Resources Management',
+    description: 'HR fundamentals and talent management for healthcare.',
+    image:
+      '/generated/hero-bg.png',
   },
 ] as const
+
+const tabProgramTitles: Record<TabKey, string[]> = {
+  'Optometry & Vision Sciences': [
+    'BSc Optometry',
+    'MSc Optometry',
+    'Diploma in Optometry',
+  ],
+  'Allied Health Sciences': [
+    'Optical Technician',
+    'Diploma in Medical Lab Technology',
+    'Diploma in Nursing (ANM)',
+    'B.Voc in Anesthesia Technology',
+    'B.Voc in Operation Theatre Technology',
+    'B.Voc in Medical Lab Technology',
+  ],
+  'Healthcare Management': [
+    'B.Voc in Hospital Management',
+    'Diploma in Hospital Management',
+    'Diploma in Human Resources Management',
+  ],
+  'Nutrition & Dietetics': ['B.Voc in Nutrition & Dietetics'],
+}
 
 export function SpecializedProgramsSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const sliderRef = useRef<HTMLDivElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [activeTab, setActiveTab] = useState<TabKey>(tabs[0]!)
 
   useEffect(() => {
     const node = sectionRef.current
@@ -72,6 +140,15 @@ export function SpecializedProgramsSection() {
 
   const revealClass = (animationClass: string) =>
     isVisible ? animationClass : 'opacity-0'
+
+  const filteredPrograms = programs.filter((program) =>
+    tabProgramTitles[activeTab].includes(program.title),
+  )
+
+  useEffect(() => {
+    // Reset slider to the beginning when switching tabs.
+    sliderRef.current?.scrollTo({ left: 0, behavior: 'auto' })
+  }, [activeTab])
 
   const handleSlide = (direction: 'prev' | 'next') => {
     const slider = sliderRef.current
@@ -94,14 +171,14 @@ export function SpecializedProgramsSection() {
             className={`${revealClass('animate-load')} text-4xl leading-tight font-semibold text-vtrust-navy md:text-5xl`}
             style={{ '--delay': '80ms' } as CSSProperties}
           >
-            Our Specialized Programs
+            Courses Offered
           </h2>
           <p
             className={`${revealClass('animate-load')} mx-auto mt-3 max-w-xl text-lg leading-relaxed text-slate-600`}
             style={{ '--delay': '150ms' } as CSSProperties}
           >
-            Choose from a variety of healthcare disciplines tailored for career
-            growth.
+            Diploma, undergraduate and postgraduate programs supported by clinical
+            learning and partnerships.
           </p>
         </div>
 
@@ -109,13 +186,14 @@ export function SpecializedProgramsSection() {
           className={`${revealClass('animate-load')} mx-auto mt-7 flex w-fit max-w-full gap-2 overflow-x-auto rounded-2xl bg-white/75 p-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
           style={{ '--delay': '220ms' } as CSSProperties}
         >
-          {tabs.map((tab, index) => (
+          {tabs.map((tab) => (
             <button
               key={tab}
               type="button"
+              onClick={() => setActiveTab(tab)}
               className={[
                 'shrink-0 rounded-xl px-4 py-3 text-sm font-medium transition-colors',
-                index === 0
+                activeTab === tab
                   ? 'bg-[#2252b0] text-white'
                   : 'text-slate-600 hover:bg-white hover:text-vtrust-navy',
               ].join(' ')}
@@ -148,7 +226,7 @@ export function SpecializedProgramsSection() {
           ref={sliderRef}
           className="mt-4 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {programs.map((program, index) => (
+          {filteredPrograms.map((program, index) => (
             <article
               key={program.title}
               data-program-card="true"
@@ -157,22 +235,22 @@ export function SpecializedProgramsSection() {
             >
               <div className="overflow-hidden rounded-2xl bg-white shadow-sm shadow-black/5">
                 <img
-                  src={program.image}
+                  src="/generated/hero-bg.png"
                   alt={program.title}
                   className="h-52 w-full object-cover"
                   loading="lazy"
                 />
               </div>
-              <div className="mt-4 flex min-h-[220px] flex-1 flex-col rounded-2xl bg-white p-5 shadow-sm shadow-black/5">
-                <h3 className="min-h-14 text-2xl leading-tight font-semibold text-black">
+              <div className="mt-4 flex  flex-1 flex-col rounded-2xl bg-white p-5 shadow-sm shadow-black/5">
+                <h3 className="text-2xl leading-tight font-semibold text-black">
                   {program.title}
                 </h3>
-                <p className="mt-3 min-h-18 text-base leading-relaxed text-slate-600">
+                <p className="mt-2 text-base leading-relaxed text-slate-600">
                   {program.description}
                 </p>
                 <a
                   href="#curriculum"
-                  className="mt-auto inline-flex items-center gap-1.5 text-sm font-semibold text-vtrust-navy"
+                  className="pt-3 inline-flex items-center  text-sm font-semibold text-vtrust-navy"
                 >
                   View curriculum
                   <ArrowUpRight className="size-4" aria-hidden />

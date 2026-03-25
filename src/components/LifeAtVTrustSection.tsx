@@ -9,37 +9,37 @@ type GalleryItem = {
 
 const gallery: GalleryItem[] = [
   {
-    src: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=900&q=80',
+    src: '/generated/journey-img.png',
     alt: 'Healthcare professional with patient',
     className: 'col-span-1 row-span-1',
   },
   {
-    src: 'https://images.unsplash.com/photo-1581591528195-5fef2ed49d08?auto=format&fit=crop&w=1200&q=80',
+    src: '/generated/journey-img.png',
     alt: 'Medical team in hospital',
     className: 'col-span-2 row-span-1',
   },
   {
-    src: 'https://images.unsplash.com/photo-1580281658628-7ce6e0d2a2d3?auto=format&fit=crop&w=900&q=80',
+    src: '/generated/journey-img.png',
     alt: 'Hospital corridor',
     className: 'col-span-1 row-span-1',
   },
   {
-    src: 'https://images.unsplash.com/photo-1580281658622-0d3cf6b2c5e5?auto=format&fit=crop&w=900&q=80',
+    src: '/generated/journey-img.png',
     alt: 'Dental clinic consultation',
     className: 'col-span-1 row-span-1',
   },
   {
-    src: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80',
+    src: '/generated/journey-img.png',
     alt: 'Surgeon preparing',
     className: 'col-span-1 row-span-1',
   },
   {
-    src: 'https://images.unsplash.com/photo-1559757175-5700dde675c7?auto=format&fit=crop&w=900&q=80',
+    src: '/generated/journey-img.png',
     alt: 'Research and laboratory',
     className: 'col-span-1 row-span-1',
   },
   {
-    src: 'https://images.unsplash.com/photo-1581091215367-59ab6f1c1a6a?auto=format&fit=crop&w=900&q=80',
+    src: '/generated/journey-img.png',
     alt: 'Laboratory equipment',
     className: 'col-span-1 row-span-1',
   },
@@ -93,7 +93,7 @@ export function LifeAtVTrustSection() {
               style={{ '--delay': `${160 + index * 60}ms` } as CSSProperties}
             >
               <img
-                src={item.src}
+                src="/generated/journey-img.png"
                 alt={item.alt}
                 className="h-full w-full object-cover"
                 loading="lazy"

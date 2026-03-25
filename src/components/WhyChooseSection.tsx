@@ -5,21 +5,21 @@ import type { CSSProperties } from 'react'
 const reasons = [
   {
     icon: BriefcaseMedical,
-    title: 'Real Hospital Exposure',
+    title: 'Advanced Training Facilities',
     description:
-      'Direct clinical exposure with hands-on experience across healthcare environments.',
+      'Fully equipped laboratories with practical-oriented learning environments.',
   },
   {
     icon: Cog,
-    title: 'Industry-Ready Skills',
+    title: 'Experienced Faculty & Mentors',
     description:
-      'Practical proficiency with essential soft skills for healthcare workplaces.',
+      'Experienced professors and healthcare professionals guide every module.',
   },
   {
     icon: GraduationCap,
-    title: 'Placement Assistance',
+    title: 'Internships & Clinical Postings',
     description:
-      'Guided placement support with leading providers for smooth career transition.',
+      'Internships and clinical postings build real-world confidence for students.',
   },
 ] as const
 

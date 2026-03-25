@@ -10,6 +10,8 @@ import { LifeAtVTrustSection } from './components/LifeAtVTrustSection'
 import { NewsSection } from './components/NewsSection'
 import { FAQSection } from './components/FAQSection'
 import { Footer } from './components/Footer'
+import { EnquiryFormModal } from './components/EnquiryFormModal'
+import { WhatsAppFloatButton } from './components/WhatsAppFloatButton'
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
         <FAQSection />
         <Footer />
       </main>
+      <EnquiryFormModal />
+      <WhatsAppFloatButton />
     </div>
   )
 }

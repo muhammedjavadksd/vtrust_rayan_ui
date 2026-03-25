@@ -3,28 +3,28 @@ import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 
 const stats = [
-  { value: '2017 -> 21', label: 'From hospital to education' },
-  { value: '6+ Campuses', label: 'Across 6 localities' },
+  { value: 'Since 2021', label: 'Balussery to education' },
+  { value: '4 Centres', label: 'Across Kerala localities' },
 ] as const
 
 const highlights = [
   {
-    icon: Stethoscope,
-    title: 'Hands-on Clinical Exposure',
+    icon: Microscope,
+    title: 'Excellence in Optometry Education',
     description:
-      'Students train in real hospitals with direct exposure to patient care and diagnostics.',
+      'Advanced training facilities supported by experienced faculty and mentors.',
+  },
+  {
+    icon: Stethoscope,
+    title: 'Healthcare & Allied Health Programs',
+    description:
+      'ANM Nursing and B.Voc programs for patient-focused, practical learning.',
   },
   {
     icon: GraduationCap,
-    title: 'Industry-Aligned Programs',
+    title: 'Campus Strength & Training Facilities',
     description:
-      'Courses aligned with real healthcare roles like optometry, nursing, lab tech, and management.',
-  },
-  {
-    icon: Microscope,
-    title: 'Academic & Clinical Integration',
-    description:
-      'Learning combines classroom teaching, advanced labs, and clinical training.',
+      'Fully equipped laboratories, modern library resources, internships, and clinical postings.',
   },
 ] as const
 
@@ -53,38 +53,59 @@ export function WhyVtrustSection() {
     isVisible ? animationClass : 'opacity-0'
 
   return (
-    <section ref={sectionRef} className="px-6 py-10 md:px-10 md:py-14 lg:px-14 lg:py-16">
-      <div className="mx-auto grid w-full max-w-[1400px] gap-8 lg:grid-cols-[1.05fr_1fr] lg:items-stretch lg:gap-10">
+    <section ref={sectionRef} className="relative px-6 py-10 md:px-10 md:py-14 lg:px-14 lg:py-16 bg-white">
+      {/* subtle dot pattern */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            'radial-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px)',
+          backgroundSize: '18px 18px',
+          opacity: 0.35,
+        }}
+      />
+
+      <div className="relative mx-auto grid w-full max-w-[1400px] gap-8 lg:grid-cols-[1.05fr_1fr] lg:items-stretch lg:gap-10">
         <div className="space-y-8">
           <div className="space-y-4">
             <h2
               className={`${revealClass('animate-load-right')} max-w-[20ch] text-4xl leading-[1.06] font-semibold tracking-tight text-black lg:text-5xl`}
               style={{ '--delay': '80ms' } as CSSProperties}
             >
-              Here&apos;s what sets V Trust apart in healthcare <br /> education
+              Excellence in Healthcare & Optometry <br /> Education
             </h2>
             <p
               className={`${revealClass('animate-load')} max-w-xl text-lg leading-relaxed text-slate-600`}
               style={{ '--delay': '180ms' } as CSSProperties}
             >
-              Built on real clinical exposure, academic partnerships, and
-              career-focused training.
+              Vtrust began its journey in 2021 at Balussery, Kozhikode, with
+              the guidance and academic support of Vtrust Eye Hospital.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div
+            className="flex flex-col gap-6 md:flex-row md:items-center md:gap-10"
+            aria-label="Key statistics"
+          >
             {stats.map((item, index) => (
               <div
                 key={item.value}
                 className={`${revealClass('animate-load')} space-y-2`}
                 style={{ '--delay': `${240 + index * 100}ms` } as CSSProperties}
               >
-                <p className="text-[1.55rem] leading-none font-bold tracking-tight text-vtrust-navy md:text-[1.7rem]">
+                <p className="text-[2.5rem] leading-none font-bold tracking-tight text-vtrust-navy">
                   {item.value}
                 </p>
-                <p className="text-base text-slate-500">{item.label}</p>
+                <p className="text-base font-medium text-slate-500">{item.label}</p>
               </div>
             ))}
+
+            {/* vertical divider (between the two stats) */}
+            <div
+              aria-hidden
+              className="hidden h-[70px] w-px bg-slate-200 md:block"
+            />
           </div>
 
           <a
@@ -97,34 +118,24 @@ export function WhyVtrustSection() {
           </a>
         </div>
 
-        <div
-          className={`${revealClass('animate-load-from-right')} rounded-3xl bg-slate-50 p-6 sm:p-8 lg:p-9`}
-          style={
-            {
-              '--delay': '160ms',
-              boxShadow: 'inset 0 0 0 1px rgba(15, 23, 42, 0.03)',
-            } as CSSProperties
-          }
-        >
-          <div className="space-y-8">
-            {highlights.map(({ icon: Icon, title, description }, index) => (
-              <div
-                key={title}
-                className={`${revealClass('animate-load')} flex items-start gap-4 sm:gap-5`}
-                style={{ '--delay': `${320 + index * 95}ms` } as CSSProperties}
-              >
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-white text-vtrust-navy">
-                  <Icon className="size-6" strokeWidth={2} aria-hidden />
-                </div>
-                <div className="space-y-1">
-                  <h3 className="text-2xl leading-tight font-semibold text-vtrust-navy">
-                    {title}
-                  </h3>
-                  <p className="text-lg leading-relaxed text-slate-600">{description}</p>
-                </div>
+        <div className={`${revealClass('animate-load-from-right')} space-y-6 lg:space-y-5`}>
+          {highlights.map(({ icon: Icon, title, description }, index) => (
+            <div
+              key={title}
+              className={`${revealClass('animate-load')} flex items-start gap-5 rounded-3xl border border-slate-200/70 bg-transparent p-6`}
+              style={{ '--delay': `${320 + index * 95}ms` } as CSSProperties}
+            >
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-[#4DB6AC]/20 bg-transparent text-[#4DB6AC]">
+                <Icon className="size-6" strokeWidth={2} aria-hidden />
               </div>
-            ))}
-          </div>
+              <div className="space-y-1">
+                <h3 className="text-2xl leading-tight font-semibold text-vtrust-navy">
+                  {title}
+                </h3>
+                <p className="text-lg leading-relaxed text-slate-600">{description}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

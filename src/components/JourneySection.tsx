@@ -54,7 +54,7 @@ export function JourneySection() {
             style={{ '--delay': '170ms' } as CSSProperties}
           >
             <img
-              src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1200&q=80"
+              src="/generated/journey-img.png"
               alt="Medical team group"
               className="h-[280px] w-full object-cover md:h-[330px]"
               loading="lazy"
