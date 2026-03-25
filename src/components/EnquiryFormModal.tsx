@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type FormState = {
   fullName: string
@@ -27,30 +27,26 @@ export function EnquiryFormModal() {
     message: '',
   })
 
-  const STORAGE_KEY = 'vtrust_enquiry_modal_shown_v1'
-
-  const canOpen = useMemo(() => {
-    try {
-      return !window.localStorage.getItem(STORAGE_KEY)
-    } catch {
-      return true
-    }
-  }, [])
+  const openModalNow = () => {
+    setSubmitted(false)
+    setOpen(true)
+  }
 
   useEffect(() => {
-    if (!canOpen) return
-
     const t = window.setTimeout(() => {
-      setOpen(true)
-      try {
-        window.localStorage.setItem(STORAGE_KEY, '1')
-      } catch {
-        // ignore
-      }
+      openModalNow()
     }, 5000)
 
     return () => window.clearTimeout(t)
-  }, [canOpen])
+  }, [])
+
+  useEffect(() => {
+    // Allow other components (e.g., "Apply now" buttons) to open the modal.
+    const handler = () => openModalNow()
+    window.addEventListener('vtrust:open-enquiry-modal', handler)
+    return () => window.removeEventListener('vtrust:open-enquiry-modal', handler)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (!open) return
@@ -67,7 +63,7 @@ export function EnquiryFormModal() {
     <>
       {open && (
         <div
-          className="fixed inset-0 z-[100] flex items-end justify-center sm:items-center"
+          className="fixed inset-0 z-100 flex items-end justify-center sm:items-center"
           role="dialog"
           aria-modal="true"
           aria-label="Enquirey form"
@@ -81,7 +77,7 @@ export function EnquiryFormModal() {
           />
 
           {/* Panel */}
-          <div className="relative z-10 w-full max-w-[720px] overflow-hidden rounded-2xl bg-white shadow-xl">
+          <div className="relative z-10 max-h-[calc(100svh-4rem)] w-full max-w-none overflow-hidden rounded-t-2xl rounded-b-none bg-white shadow-xl sm:max-h-none sm:max-w-[720px] sm:rounded-2xl">
             <div className="flex items-start justify-between gap-6 border-b border-slate-100 bg-[#0D2B6B] px-6 py-5">
               <div className="text-white">
                 <p className="text-xs font-semibold tracking-[0.18em] opacity-80">
@@ -100,7 +96,7 @@ export function EnquiryFormModal() {
               </button>
             </div>
 
-            <div className="px-6 py-5 sm:px-8 sm:py-6">
+            <div className="overflow-y-auto px-6 py-5 sm:px-8 sm:py-6">
               {submitted ? (
                 <div className="space-y-3">
                   <p className="text-lg font-semibold text-slate-900">

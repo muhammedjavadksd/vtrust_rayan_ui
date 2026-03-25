@@ -13,22 +13,19 @@ const testimonials: Testimonial[] = [
     name: 'Christene Joyal',
     quote:
       'Choosing BSc Optometry at V Trust has been a turning point in my career. The combination of classroom learning and real clinical exposure helped me understand patient care and diagnostics. The faculty are supportive, and the hospital-based training gave me the confidence to handle real-world situations. I feel well-prepared to step into the healthcare field.',
-    image:
-      '/generated/journey-img.png',
+    image: '/icons/image.png',
   },
   {
     name: 'Ayesha Kulkarni',
     quote:
       'V Trust gave me the confidence to work with patients from day one. The labs were advanced, the mentors were always available, and the clinical exposure was exactly what I needed to grow.',
-    image:
-      '/generated/journey-img.png',
+    image: '/icons/image.png',
   },
   {
     name: 'Rohit Sharma',
     quote:
       'From academic learning to hands-on training, the program was well structured. I gained practical knowledge and real-world experience that helped me transition smoothly into my career.',
-    image:
-      '/generated/journey-img.png',
+    image: '/icons/image.png',
   },
 ] as const
 
@@ -132,7 +129,7 @@ export function TestimonialsSection() {
         <div className="relative z-10 mx-auto grid w-full max-w-[1400px] gap-10 p-8 md:grid-cols-[0.48fr_1fr] md:gap-12 md:p-12">
           <div className="col-span-full flex justify-center">
             <p
-              className={`${revealClass('animate-load')} w-full text-center text-3xl font-semibold tracking-[0.10em] text-white/80 md:text-4xl`}
+              className={`${revealClass('animate-load')} w-full text-center text-3xl font-semibold tracking-widest text-white/80 md:text-4xl`}
               style={{ '--delay': '60ms' } as CSSProperties}
             >
               VOICE OF SUCCESS
@@ -144,7 +141,7 @@ export function TestimonialsSection() {
             style={{ '--delay': '120ms' } as CSSProperties}
           >
             <img
-              src="/generated/journey-img.png"
+              src={t.image}
               alt={t.name}
               className="h-52 w-full rounded-2xl object-cover"
               loading="lazy"

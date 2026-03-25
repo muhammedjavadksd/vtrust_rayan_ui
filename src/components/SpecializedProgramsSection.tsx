@@ -120,6 +120,8 @@ export function SpecializedProgramsSection() {
   const sliderRef = useRef<HTMLDivElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [activeTab, setActiveTab] = useState<TabKey>(tabs[0]!)
+  const [canScrollPrev, setCanScrollPrev] = useState(false)
+  const [canScrollNext, setCanScrollNext] = useState(false)
 
   useEffect(() => {
     const node = sectionRef.current
@@ -145,10 +147,40 @@ export function SpecializedProgramsSection() {
     tabProgramTitles[activeTab].includes(program.title),
   )
 
+  const updateScrollButtons = () => {
+    const slider = sliderRef.current
+    if (!slider) return
+
+    const maxScrollLeft = slider.scrollWidth - slider.clientWidth
+    const epsilon = 2
+    setCanScrollPrev(slider.scrollLeft > epsilon)
+    setCanScrollNext(slider.scrollLeft < maxScrollLeft - epsilon)
+  }
+
   useEffect(() => {
     // Reset slider to the beginning when switching tabs.
     sliderRef.current?.scrollTo({ left: 0, behavior: 'auto' })
-  }, [activeTab])
+    // Wait one frame for layout updates, then refresh disabled states.
+    requestAnimationFrame(() => updateScrollButtons())
+  }, [activeTab, filteredPrograms.length])
+
+  useEffect(() => {
+    const slider = sliderRef.current
+    if (!slider) return
+
+    updateScrollButtons()
+
+    const handleScroll = () => updateScrollButtons()
+    const handleResize = () => updateScrollButtons()
+
+    slider.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      slider.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [activeTab, filteredPrograms.length])
 
   const handleSlide = (direction: 'prev' | 'next') => {
     const slider = sliderRef.current
@@ -207,7 +239,13 @@ export function SpecializedProgramsSection() {
           <button
             type="button"
             onClick={() => handleSlide('prev')}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-vtrust-navy/25 bg-white/90 text-vtrust-navy transition-colors hover:bg-vtrust-navy hover:text-white"
+            disabled={!canScrollPrev}
+            className={[
+              'inline-flex h-10 w-10 items-center justify-center rounded-full border border-vtrust-navy/25 transition-colors',
+              canScrollPrev
+                ? 'bg-white/90 text-vtrust-navy hover:bg-vtrust-navy hover:text-white'
+                : 'cursor-not-allowed bg-white/60 text-slate-400',
+            ].join(' ')}
             aria-label="Previous programs"
           >
             &#8592;
@@ -215,7 +253,13 @@ export function SpecializedProgramsSection() {
           <button
             type="button"
             onClick={() => handleSlide('next')}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-vtrust-navy/25 bg-white/90 text-vtrust-navy transition-colors hover:bg-vtrust-navy hover:text-white"
+            disabled={!canScrollNext}
+            className={[
+              'inline-flex h-10 w-10 items-center justify-center rounded-full border border-vtrust-navy/25 transition-colors',
+              canScrollNext
+                ? 'bg-white/90 text-vtrust-navy hover:bg-vtrust-navy hover:text-white'
+                : 'cursor-not-allowed bg-white/60 text-slate-400',
+            ].join(' ')}
             aria-label="Next programs"
           >
             &#8594;

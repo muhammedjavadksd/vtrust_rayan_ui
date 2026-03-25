@@ -79,12 +79,32 @@ export function LifeAtVTrustSection() {
           Life at V Trust
         </h2>
 
-        {/* Structured collage: 2 rows x 4 columns, with one tile spanning 2 columns on the top row */}
-        <div className="mt-10 grid h-[440px] grid-cols-4 grid-rows-2 gap-4 rounded-2xl bg-white p-0 shadow-sm shadow-black/5 md:mt-12 md:h-[480px] lg:h-[520px]">
-          {/* We rely on the natural order + spans to place each item into the collage cells */}
+        {/* Mobile: strict 2 x 3 grid with equal square tiles */}
+        <div className="mt-10 grid grid-cols-2 gap-3 md:hidden">
+          {gallery.slice(0, 6).map((item, index) => (
+            <div
+              key={`mobile-${item.alt}`}
+              className={[
+                'aspect-square overflow-hidden rounded-2xl bg-slate-100 shadow-sm shadow-black/5',
+                revealClass('animate-load-from-right'),
+              ].join(' ')}
+              style={{ '--delay': `${160 + index * 60}ms` } as CSSProperties}
+            >
+              <img
+                src={item.src}
+                alt={item.alt}
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Tablet/Desktop: structured collage */}
+        <div className="mt-12 hidden h-[480px] grid-cols-4 grid-rows-2 gap-4 rounded-2xl bg-white p-0 shadow-sm shadow-black/5 md:grid lg:h-[520px]">
           {gallery.map((item, index) => (
             <div
-              key={item.alt}
+              key={`desktop-${item.alt}`}
               className={[
                 item.className,
                 'h-full overflow-hidden rounded-2xl bg-slate-100 shadow-sm shadow-black/5',
@@ -93,7 +113,7 @@ export function LifeAtVTrustSection() {
               style={{ '--delay': `${160 + index * 60}ms` } as CSSProperties}
             >
               <img
-                src="/generated/journey-img.png"
+                src={item.src}
                 alt={item.alt}
                 className="h-full w-full object-cover"
                 loading="lazy"

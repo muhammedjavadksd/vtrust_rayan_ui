@@ -99,6 +99,9 @@ export function Header({ className }: HeaderProps) {
   }, [className, isScrolled])
 
   const CTA_GRADIENT = 'bg-[linear-gradient(90deg,#0D2B6B_0%,#2A69D6_100%)]'
+  const openEnquiryModal = () => {
+    window.dispatchEvent(new CustomEvent('vtrust:open-enquiry-modal'))
+  }
 
   return (
     <header className={headerClassName} aria-label="Site header">
@@ -185,12 +188,13 @@ export function Header({ className }: HeaderProps) {
         </nav>
 
         <div className="flex items-center gap-3">
-          <a
-            href="#apply"
+          <button
+            type="button"
+            onClick={openEnquiryModal}
             className={`hidden items-center justify-center rounded-lg px-5 py-2.5 text-[0.95rem] font-semibold text-white shadow-sm transition-opacity hover:opacity-95 lg:inline-flex ${CTA_GRADIENT}`}
           >
             Apply Now
-          </a>
+          </button>
 
           <button
             type="button"
@@ -238,13 +242,16 @@ export function Header({ className }: HeaderProps) {
             </nav>
 
             <div className="mt-4 border-t border-gray-100 pt-4">
-              <a
-                href="#apply"
-                onClick={() => setMobileOpen(false)}
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileOpen(false)
+                  openEnquiryModal()
+                }}
                 className={`inline-flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-[0.98rem] font-semibold text-white shadow-sm ${CTA_GRADIENT}`}
               >
                 Apply Now
-              </a>
+              </button>
             </div>
           </div>
         </div>

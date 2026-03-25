@@ -14,16 +14,16 @@ const badges = [
 
 export function Hero() {
   return (
-    <section className="flex min-h-[calc(100svh-6.5rem-50px)] flex-col px-6 pb-6 pt-2 md:min-h-[calc(100svh-7rem-50px)] md:px-10 md:pb-8 lg:px-14">
+    <section className="flex min-h-[calc(100svh-6.5rem-50px)] flex-col px-4 pb-4 pt-0 md:min-h-[calc(100svh-7rem-50px)] md:px-6 md:pb-6 lg:px-10">
       <div className="relative mx-auto flex h-full min-h-[calc(100svh-7.5rem-50px)] w-full max-w-[1400px] flex-col overflow-hidden rounded-2xl shadow-lg shadow-black/10 md:min-h-[calc(100svh-8rem-50px)]">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/generated/hero-bg.png')" }}
+          style={{ backgroundImage: "url('/generated/clinical-eye-banner.png')" }}
           role="img"
           aria-hidden
         />
         <div className="absolute inset-0 bg-slate-950/55" aria-hidden />
-        <div className="relative z-10 flex h-full min-h-0 flex-1 flex-col px-6 py-10 sm:px-10 sm:py-12 md:px-12 md:py-14 lg:px-16 lg:py-16">
+        <div className="relative z-10 flex h-full min-h-0 flex-1 flex-col px-4 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 lg:px-12 lg:py-14">
           <div className="flex min-h-0 flex-1 flex-col justify-center">
             <div className="max-w-2xl">
               <h1
@@ -68,7 +68,7 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col gap-4 border-t border-white/20 pt-6 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8 sm:gap-y-3 sm:border-white/15 sm:pt-8">
+          <div className="mt-6 flex flex-col gap-4 border-t border-white/20 pt-4 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8 sm:gap-y-3 sm:border-white/15 sm:pt-6">
             {badges.map(({ icon: Icon, label }, index) => (
               <div
                 key={label}

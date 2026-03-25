@@ -164,18 +164,18 @@ export function Footer() {
               onSubmit={(e) => {
                 e.preventDefault()
               }}
-              className="flex flex-col gap-3 sm:flex-row sm:items-center"
+              className="flex flex-col gap-4"
             >
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter Email"
                 type="email"
-                className="h-10 flex-1 rounded-lg border border-slate-200 bg-white px-4 text-sm outline-none ring-0 placeholder:text-slate-400 focus:border-[#2353b1]"
+                className="h-12 w-full rounded-xl border border-slate-300 bg-white px-6 text-base outline-none ring-0 placeholder:text-slate-400 focus:border-[#2353b1]"
               />
               <button
                 type="submit"
-                className="h-10 shrink-0 rounded-lg bg-[#2353b1] px-6 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-95"
+                className="h-14 w-full rounded-xl bg-[#2353b1] px-6 text-2xl font-semibold text-white shadow-sm transition-opacity hover:opacity-95"
               >
                 Submit
               </button>
