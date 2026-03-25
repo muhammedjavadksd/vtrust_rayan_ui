@@ -1,0 +1,109 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Rasane';
+  src: url('/fonts/fonnts.com-rasane-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rasane';
+  src: url('/fonts/fonnts.com-rasane-medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rasane';
+  src: url('/fonts/fonnts.com-rasane-medium.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rasane';
+  src: url('/fonts/fonnts.com-rasane-bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: 'Rasane', ui-sans-serif, system-ui, sans-serif;
+  --color-vtrust-navy: #1e3a8a;
+  --color-hero-teal: #14b8a6;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  font-family: var(--font-sans);
+}
+
+#root {
+  min-height: 100svh;
+}
+
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-slide-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-load {
+  opacity: 0;
+  animation: fade-slide-up 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+.animate-load-right {
+  opacity: 0;
+  animation: fade-slide-right 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+.animate-load-from-right {
+  opacity: 0;
+  animation: fade-slide-from-right 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-load,
+  .animate-load-right,
+  .animate-load-from-right {
+    opacity: 1;
+    animation: none;
+  }
+}
