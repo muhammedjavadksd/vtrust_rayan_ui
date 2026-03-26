@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
+import { ImageLightbox } from './ImageLightbox'
 
 type GalleryItem = {
   src: string
@@ -48,6 +49,7 @@ const gallery: GalleryItem[] = [
 export function LifeAtVTrustSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null)
 
   useEffect(() => {
     const node = sectionRef.current
@@ -90,12 +92,19 @@ export function LifeAtVTrustSection() {
               ].join(' ')}
               style={{ '--delay': `${160 + index * 60}ms` } as CSSProperties}
             >
-              <img
-                src={item.src}
-                alt={item.alt}
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
+              <button
+                type="button"
+                onClick={() => setSelectedImage(item)}
+                className="h-full w-full cursor-zoom-in overflow-hidden"
+                aria-label={`Open ${item.alt}`}
+              >
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              </button>
             </div>
           ))}
         </div>
@@ -112,12 +121,19 @@ export function LifeAtVTrustSection() {
               ].join(' ')}
               style={{ '--delay': `${160 + index * 60}ms` } as CSSProperties}
             >
-              <img
-                src={item.src}
-                alt={item.alt}
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
+              <button
+                type="button"
+                onClick={() => setSelectedImage(item)}
+                className="h-full w-full cursor-zoom-in overflow-hidden"
+                aria-label={`Open ${item.alt}`}
+              >
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              </button>
             </div>
           ))}
         </div>
@@ -134,6 +150,14 @@ export function LifeAtVTrustSection() {
           </a>
         </div>
       </div>
+
+      {selectedImage ? (
+        <ImageLightbox
+          src={selectedImage.src}
+          alt={selectedImage.alt}
+          onClose={() => setSelectedImage(null)}
+        />
+      ) : null}
     </section>
   )
 }

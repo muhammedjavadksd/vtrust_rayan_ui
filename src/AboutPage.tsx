@@ -9,28 +9,37 @@ type Leader = {
   name: string
   designation: string
   photo: string
+  description: string
 }
 
 const leadershipTeam: Leader[] = [
   {
-    name: 'Mohiyidheen Sha',
+    name: 'Mohiyudheen Sha',
     designation: 'Chairman',
-    photo: '/icons/image.png',
+    photo: '/leadership/Mr. Muhiyudheen Sha.png',
+    description:
+      "Our foremost commitment is to prioritize the holistic development of every student. We are dedicated to fostering a practical, industry-focused learning experience that prepares individuals not only to meet the demands of today's healthcare sector but also to excel within it. Our approach goes beyond conventional education, focusing on building enduring careers.",
   },
   {
     name: 'Mashoor Ali',
     designation: 'Vice Chairman',
-    photo: '/hero/doc.jpg',
+    photo: '/leadership/Mr. Mashoor Ali.png',
+    description:
+      'As a premier destination for healthcare education, the Vtrust Group of Institutions is dedicated to excellence, innovation, and student success. Recognized among the leaders in the healthcare sector, we focus on empowering students to reach their highest potential and ensuring they are career-ready from day one.',
   },
   {
-    name: 'Dr. Shahul Hameed',
+    name: 'Dr. Shahul Hameed CP',
     designation: 'Managing Director',
-    photo: '/generated/clinical-eye-banner.png',
+    photo: '/leadership/Mr. Dr SHAHUL HAMEED CP.png',
+    description:
+      'At Vtrust Group of Institutions, our journey is defined by a commitment to excellence, innovation, and unwavering dedication to our students. As Managing Director, I take great pride in leading an institution where expertise, compassion, and forward-thinking solutions come together to create exceptional outcomes.',
   },
   {
     name: 'Nufail Vakery',
     designation: 'Executive Director',
-    photo: '/generated/journey-img.png',
+    photo: '/leadership/Mr. Nufail Vakeri.png',
+    description:
+      'At Vtrust, we are deeply committed to the comprehensive growth of our students. Guided by highly qualified and experienced professionals, our students benefit from real-time learning within live hospital environments, gaining invaluable practical exposure that directly supports their journey toward success.',
   },
 ]
 
@@ -151,7 +160,7 @@ export default function AboutPage() {
             style={{ '--delay': '400ms' } as CSSProperties}
           >
             <img
-              src="/generated/journey-img.png"
+              src="/company/image.png"
               alt="VTRUST institution overview"
               className="h-[280px] w-full object-cover sm:h-[340px] md:h-[420px]"
               loading="lazy"
@@ -429,6 +438,9 @@ export default function AboutPage() {
                   </h3>
                   <p className="mt-1.5 text-xs font-medium leading-relaxed text-slate-600 sm:text-sm">
                     {leader.designation}
+                  </p>
+                  <p className="mt-3 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                    {leader.description}
                   </p>
                 </div>
               </article>

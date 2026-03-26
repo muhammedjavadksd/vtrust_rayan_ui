@@ -4,14 +4,18 @@ import { Header } from './components/Header'
 import { Footer } from './components/Footer'
 import { EnquiryFormModal } from './components/EnquiryFormModal'
 import { MobileAdmissionButton } from './components/MobileAdmissionButton'
+import { ImageLightbox } from './components/ImageLightbox'
 
 const galleryImages = [
-  { src: '/generated/journey-img.png', alt: 'Students on campus' },
-  { src: '/generated/clinical-eye-banner.png', alt: 'Clinical learning environment' },
-  { src: '/generated/hero-bg.png', alt: 'Healthcare team collaboration' },
-  { src: '/hero/doc.jpg', alt: 'Faculty and students' },
-  { src: '/generated/journey-img.png', alt: 'Campus life' },
-  { src: '/generated/clinical-eye-banner.png', alt: 'Student activities' },
+  { src: '/student_life/1.jpg', alt: 'Student life gallery image 1' },
+  { src: '/student_life/2.jpg', alt: 'Student life gallery image 2' },
+  { src: '/student_life/3.jpg', alt: 'Student life gallery image 3' },
+  { src: '/student_life/4.jpg', alt: 'Student life gallery image 4' },
+  { src: '/student_life/5.jpg', alt: 'Student life gallery image 5' },
+  { src: '/student_life/6.jpg', alt: 'Student life gallery image 6' },
+  { src: '/student_life/7.jpg', alt: 'Student life gallery image 7' },
+  { src: '/student_life/8.jpg', alt: 'Student life gallery image 8' },
+  { src: '/student_life/9.jpg', alt: 'Student life gallery image 9' },
 ] as const
 
 const activities = [
@@ -57,6 +61,7 @@ const stories = [
 export default function StudentLifePage() {
   const mainRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [selectedImage, setSelectedImage] = useState<(typeof galleryImages)[number] | null>(null)
 
   useEffect(() => {
     const node = mainRef.current
@@ -198,7 +203,7 @@ export default function StudentLifePage() {
             </h2>
           </div>
           <div
-            className={`${revealClass('animate-load-from-right')} mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4`}
+            className={`${revealClass('animate-load-from-right')} mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4`}
             style={{ '--delay': '580ms' } as CSSProperties}
           >
             {galleryImages.map((item) => (
@@ -206,12 +211,19 @@ export default function StudentLifePage() {
                 key={`${item.src}-${item.alt}`}
                 className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm"
               >
-                <img
-                  src={item.src}
-                  alt={item.alt}
-                  className="aspect-square w-full object-cover"
-                  loading="lazy"
-                />
+                <button
+                  type="button"
+                  onClick={() => setSelectedImage(item)}
+                  className="w-full cursor-zoom-in overflow-hidden"
+                  aria-label={`Open ${item.alt}`}
+                >
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    className="aspect-square w-full object-cover"
+                    loading="lazy"
+                  />
+                </button>
               </div>
             ))}
           </div>
@@ -286,6 +298,13 @@ export default function StudentLifePage() {
           </div>
         </section>
       </main>
+      {selectedImage ? (
+        <ImageLightbox
+          src={selectedImage.src}
+          alt={selectedImage.alt}
+          onClose={() => setSelectedImage(null)}
+        />
+      ) : null}
       <Footer />
       <EnquiryFormModal />
       <MobileAdmissionButton />

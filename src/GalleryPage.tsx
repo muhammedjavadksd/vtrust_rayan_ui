@@ -4,6 +4,7 @@ import { Header } from './components/Header'
 import { Footer } from './components/Footer'
 import { EnquiryFormModal } from './components/EnquiryFormModal'
 import { MobileAdmissionButton } from './components/MobileAdmissionButton'
+import { ImageLightbox } from './components/ImageLightbox'
 
 const galleryImages = [
   '/gallery/1.png',
@@ -19,6 +20,7 @@ const galleryImages = [
 export default function GalleryPage() {
   const mainRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
   useEffect(() => {
     const node = mainRef.current
@@ -102,18 +104,32 @@ export default function GalleryPage() {
                 className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm"
                 style={{ '--delay': `${360 + index * 40}ms` } as CSSProperties}
               >
-                <img
-                  src={src}
-                  alt={`VTRUST gallery image ${index + 1}`}
-                  className="aspect-square w-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <button
+                  type="button"
+                  onClick={() => setSelectedImage(src)}
+                  className="w-full cursor-zoom-in overflow-hidden"
+                  aria-label={`Open VTRUST gallery image ${index + 1}`}
+                >
+                  <img
+                    src={src}
+                    alt={`VTRUST gallery image ${index + 1}`}
+                    className="aspect-square w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </button>
               </div>
             ))}
           </div>
         </section>
       </main>
+      {selectedImage ? (
+        <ImageLightbox
+          src={selectedImage}
+          alt="VTRUST gallery preview image"
+          onClose={() => setSelectedImage(null)}
+        />
+      ) : null}
       <Footer />
       <EnquiryFormModal />
       <MobileAdmissionButton />
