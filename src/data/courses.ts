@@ -37,7 +37,7 @@ export const allCourses: CourseRecord[] = [
     title: 'MSc Optometry',
     description:
       'UGC APPROVED postgraduate program focused on advanced optometric practice and clinical decision-making.',
-    image: heroImg,
+    image: '/course/course_thumbnail/MSc Optometry.png',
     brochurePdf: '/course/MSc.pdf',
     category: 'Optometry & Vision Sciences',
     college: 'VTrust College of Optometry',
@@ -74,7 +74,7 @@ export const allCourses: CourseRecord[] = [
     title: 'B.Voc in Optometry',
     description:
       'UGC APPROVED vocational degree with practical optometry training and strong patient-facing skill development.',
-    image: heroImg,
+    image: '/course/course_thumbnail/B.Voc in Optometry.png',
     brochurePdf: '/course/B.Voc in Optometry.pdf',
     category: 'Optometry & Vision Sciences',
     college: 'VTrust College of Optometry',
@@ -112,7 +112,7 @@ export const allCourses: CourseRecord[] = [
     title: 'B.Voc in Operation Theatre Technology (OTT)',
     description:
       'UGC APPROVED specialized program for operation theatre technology, surgical assistance, and OT environment management.',
-    image: heroImg,
+    image: '/course/course_thumbnail/B.Voc in Operation Theatre Technology (OTT).png',
     brochurePdf: '/course/operation.pdf',
     category: 'Allied Health Sciences',
     college: 'VTrust College of Paramedical & Health Science',
@@ -150,7 +150,7 @@ export const allCourses: CourseRecord[] = [
     title: 'B.Voc in Medical Laboratory Technology (MLT)',
     description:
       'UGC APPROVED vocational program focused on diagnostics, lab workflows, and practical biomedical testing.',
-    image: heroImg,
+    image: '/course/course_thumbnail/B.Voc in Medical Laboratory Technology (MLT).png',
     brochurePdf: '/course/MLT.pdf',
     category: 'Allied Health Sciences',
     college: 'VTrust College of Paramedical & Health Science',
@@ -188,7 +188,7 @@ export const allCourses: CourseRecord[] = [
     title: 'Diploma in Hospital Administration',
     description:
       'UGC APPROVED diploma designed for hospital administration, communication, and job-ready healthcare operations support.',
-    image: heroImg,
+    image: '/course/course_thumbnail/Diploma in Hospital Administration.png',
     category: 'Healthcare Management',
     college: 'VTrust College of Paramedical & Health Science',
     university: 'Glocal University (UGC Approved)',
@@ -225,7 +225,7 @@ export const allCourses: CourseRecord[] = [
     title: 'Diploma in Business Administration',
     description:
       'UGC APPROVED diploma with business communication, decision-making, and career-focused management training.',
-    image: heroImg,
+    image: '/course/course_thumbnail/Diploma in Business Administration.png',
     brochurePdf: '/course/BA.pdf',
     category: 'Healthcare Management',
     college: 'VTrust College of Paramedical & Health Science',
