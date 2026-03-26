@@ -1,5 +1,92 @@
 @import 'tailwindcss';
 
+/*
+  Rasane’s OTF maps some ASCII punctuation (e.g. +, &, -) to incorrect glyphs.
+  We keep Rasane for letters, digits, and extended Latin, and use the system
+  UI font for Basic Latin punctuation blocks so + & - etc. render correctly.
+  Multiple @font-face with the same family: first matching unicode-range wins.
+*/
+
+@font-face {
+  font-family: 'Rasane';
+  src:
+    local('Segoe UI'),
+    local('Roboto'),
+    local('Helvetica Neue'),
+    local('Arial'),
+    local(sans-serif);
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0020-002F,
+    U+003A-003F,
+    U+005B-0060,
+    U+007B-007E;
+}
+
+@font-face {
+  font-family: 'Rasane';
+  src:
+    local('Segoe UI Semibold'),
+    local('Segoe UI'),
+    local('Roboto Medium'),
+    local('Roboto'),
+    local('Helvetica Neue'),
+    local('Arial'),
+    local(sans-serif);
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0020-002F,
+    U+003A-003F,
+    U+005B-0060,
+    U+007B-007E;
+}
+
+@font-face {
+  font-family: 'Rasane';
+  src:
+    local('Segoe UI Semibold'),
+    local('Segoe UI'),
+    local('Roboto Medium'),
+    local('Roboto'),
+    local('Helvetica Neue'),
+    local('Arial'),
+    local(sans-serif);
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0020-002F,
+    U+003A-003F,
+    U+005B-0060,
+    U+007B-007E;
+}
+
+@font-face {
+  font-family: 'Rasane';
+  src:
+    local('Segoe UI Bold'),
+    local('Segoe UI'),
+    local('Roboto Bold'),
+    local('Roboto'),
+    local('Helvetica Neue Bold'),
+    local('Helvetica Neue'),
+    local('Arial Bold'),
+    local('Arial'),
+    local(sans-serif);
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0020-002F,
+    U+003A-003F,
+    U+005B-0060,
+    U+007B-007E;
+}
+
 @font-face {
   font-family: 'Rasane';
   src: url('/fonts/fonnts.com-rasane-regular.otf') format('opentype');
@@ -7,12 +94,9 @@
   font-style: normal;
   font-display: swap;
   unicode-range:
-    U+0020-002F,
-    U+003A-003F,
+    U+0030-0039,
     U+0041-005A,
-    U+005B-0060,
     U+0061-007A,
-    U+007B-007E,
     U+00A0-00BF,
     U+2013-2014,
     U+2018-201D;
@@ -25,12 +109,9 @@
   font-style: normal;
   font-display: swap;
   unicode-range:
-    U+0020-002F,
-    U+003A-003F,
+    U+0030-0039,
     U+0041-005A,
-    U+005B-0060,
     U+0061-007A,
-    U+007B-007E,
     U+00A0-00BF,
     U+2013-2014,
     U+2018-201D;
@@ -43,12 +124,9 @@
   font-style: normal;
   font-display: swap;
   unicode-range:
-    U+0020-002F,
-    U+003A-003F,
+    U+0030-0039,
     U+0041-005A,
-    U+005B-0060,
     U+0061-007A,
-    U+007B-007E,
     U+00A0-00BF,
     U+2013-2014,
     U+2018-201D;
@@ -61,12 +139,9 @@
   font-style: normal;
   font-display: swap;
   unicode-range:
-    U+0020-002F,
-    U+003A-003F,
+    U+0030-0039,
     U+0041-005A,
-    U+005B-0060,
     U+0061-007A,
-    U+007B-007E,
     U+00A0-00BF,
     U+2013-2014,
     U+2018-201D;
@@ -82,6 +157,12 @@ body {
   margin: 0;
   min-height: 100svh;
   font-family: var(--font-sans);
+  /* Avoid OpenType swaps that can replace ASCII punctuation */
+  font-variant-ligatures: none;
+  font-feature-settings:
+    'liga' 0,
+    'clig' 0,
+    'calt' 0;
 }
 
 #root {

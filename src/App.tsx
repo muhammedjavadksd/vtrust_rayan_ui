@@ -12,6 +12,8 @@ import { FAQSection } from './components/FAQSection'
 import { Footer } from './components/Footer'
 import { EnquiryFormModal } from './components/EnquiryFormModal'
 import { WhatsAppFloatButton } from './components/WhatsAppFloatButton'
+import { MobileAdmissionButton } from './components/MobileAdmissionButton'
+
 
 function App() {
   return (
@@ -32,6 +34,7 @@ function App() {
         <Footer />
       </main>
       <EnquiryFormModal />
+      <MobileAdmissionButton />
       <WhatsAppFloatButton />
     </div>
   )

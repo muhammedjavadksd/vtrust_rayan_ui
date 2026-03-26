@@ -1,7 +1,22 @@
-import { Globe, Mail, Menu, Phone, X } from 'lucide-react'
+import { ChevronDown, Globe, Mail, Menu, Phone, X } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-const navLinks = ['Home', 'Courses', 'About', 'Specialities', 'Admissions'] as const
+const primaryNavLinks = [
+  'Home',
+  'Courses',
+  'About',
+  'Institution',
+  'News & Events',
+  'Contact',
+] as const
+
+const institutionLinks = [
+  { label: 'Student Life', href: '/student-life' },
+  { label: 'Campuses', href: '/campuses' },
+  { label: 'Alumni', href: '/alumni' },
+] as const
+
+type NavLabel = (typeof primaryNavLinks)[number] | (typeof institutionLinks)[number]['label']
 const LOGO_SRC = '/logo/logo.png'
 
 type HeaderProps = { className?: string }
@@ -42,7 +57,7 @@ function LinkedinIcon() {
 export function Header({ className }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [activeLink, setActiveLink] = useState<(typeof navLinks)[number]>('Home')
+  const [activeLink, setActiveLink] = useState<NavLabel>('Home')
   const panelRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -63,11 +78,37 @@ export function Header({ className }: HeaderProps) {
 
   useEffect(() => {
     const getActive = () => {
-      const hash = window.location.hash?.replace('#', '').trim().toLowerCase()
-      if (!hash) return 'Home' as (typeof navLinks)[number]
+      const path = window.location.pathname.replace(/\/+$/, '') || '/'
+      if (path === '/about') return 'About' as NavLabel
+      if (path === '/student-life') {
+        return 'Student Life' as NavLabel
+      }
+      if (path === '/courses' || path.startsWith('/courses/')) {
+        return 'Courses' as NavLabel
+      }
+      if (path === '/campuses') {
+        return 'Campuses' as NavLabel
+      }
+      if (path === '/alumni') {
+        return 'Alumni' as NavLabel
+      }
+      if (path === '/news-events' || path.startsWith('/news/')) {
+        return 'News & Events' as NavLabel
+      }
+      if (path === '/contact') {
+        return 'Contact' as NavLabel
+      }
 
-      const found = navLinks.find((l) => l !== 'Home' && l.toLowerCase() === hash)
-      return (found ?? 'Home') as (typeof navLinks)[number]
+      const hash = window.location.hash?.replace('#', '').trim().toLowerCase()
+      if (!hash) return 'Home' as NavLabel
+      if (hash === 'student-life') return 'Student Life' as NavLabel
+      if (hash === 'campuses') return 'Campuses' as NavLabel
+      if (hash === 'alumni') return 'Alumni' as NavLabel
+      if (hash === 'news-events') return 'News & Events' as NavLabel
+      if (hash === 'contact') return 'Contact' as NavLabel
+      if (hash === 'about') return 'About' as NavLabel
+      if (hash === 'courses') return 'Courses' as NavLabel
+      return 'Home' as NavLabel
     }
 
     const update = () => setActiveLink(getActive())
@@ -102,12 +143,24 @@ export function Header({ className }: HeaderProps) {
   const openEnquiryModal = () => {
     window.dispatchEvent(new CustomEvent('vtrust:open-enquiry-modal'))
   }
+  const getNavHref = (label: NavLabel) => {
+    if (label === 'Home') return '/'
+    if (label === 'About') return '/about'
+    if (label === 'Student Life') return '/student-life'
+    if (label === 'Campuses') return '/campuses'
+    if (label === 'Alumni') return '/alumni'
+    if (label === 'News & Events') return '/news-events'
+    if (label === 'Contact') return '/contact'
+    if (label === 'Courses') return '/courses'
+    return `#${label.toLowerCase()}`
+  }
+  const isInstitutionActive = institutionLinks.some((item) => item.label === activeLink)
 
   return (
     <header className={headerClassName} aria-label="Site header">
       {/* Utility bar (35%) */}
       <div className="hidden border-b border-gray-100 bg-white/90 backdrop-blur-md md:block">
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-2 md:px-10 lg:px-14">
+        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-2 md:px-6 lg:px-8">
             <div className="flex items-center gap-6 text-[0.85rem] text-slate-600">
               <a href="tel:+919072314474" className="flex items-center gap-2 font-medium hover:text-[#0D2B6B]">
                 <span className="inline-flex size-8 items-center justify-center rounded-md bg-slate-100 text-[#0D2B6B]">
@@ -146,7 +199,7 @@ export function Header({ className }: HeaderProps) {
       </div>
 
       {/* Main navigation (65%) */}
-      <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-3 md:px-10 lg:px-14">
+      <div className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-3 md:px-6 lg:px-8">
         <a href="/" className="flex items-center gap-3 no-underline">
           <img
             src={LOGO_SRC}
@@ -159,9 +212,49 @@ export function Header({ className }: HeaderProps) {
         </a>
 
         <nav className="hidden flex-1 items-center justify-center gap-10 lg:flex" aria-label="Main navigation">
-          {navLinks.map((label) => {
-            const href = label === 'Home' ? '/' : `#${label.toLowerCase()}`
-            const isActive = activeLink === label
+          {primaryNavLinks.map((label) => {
+            const isActive = label === 'Institution' ? isInstitutionActive : activeLink === label
+
+            if (label === 'Institution') {
+              return (
+                <div key={label} className="group relative">
+                  <button
+                    type="button"
+                    className={[
+                      'inline-flex items-center gap-1 py-2 text-[0.98rem] font-semibold transition-colors',
+                      isActive
+                        ? 'rounded-md bg-[#0D2B6B] px-3 text-white shadow-sm'
+                        : 'text-slate-700 hover:text-[#0D2B6B]',
+                    ].join(' ')}
+                    aria-haspopup="menu"
+                    aria-expanded={isActive}
+                  >
+                    Institution
+                    <ChevronDown className="size-4" aria-hidden />
+                  </button>
+
+                  <div className="invisible absolute left-0 top-full z-50 mt-2 w-52 rounded-xl border border-slate-200 bg-white p-2 opacity-0 shadow-lg transition-all duration-150 group-hover:visible group-hover:opacity-100">
+                    {institutionLinks.map((item) => (
+                      <a
+                        key={item.label}
+                        href={item.href}
+                        onClick={() => setActiveLink(item.label)}
+                        className={[
+                          'block rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                          activeLink === item.label
+                            ? 'bg-[#0D2B6B] text-white'
+                            : 'text-slate-700 hover:bg-slate-50 hover:text-[#0D2B6B]',
+                        ].join(' ')}
+                      >
+                        {item.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )
+            }
+
+            const href = getNavHref(label)
 
             return (
               <a
@@ -216,8 +309,41 @@ export function Header({ className }: HeaderProps) {
             className="mx-4 mb-4 rounded-xl border border-gray-100 bg-white/95 p-4 shadow-sm backdrop-blur-md"
           >
             <nav className="grid gap-2" aria-label="Mobile navigation links">
-              {navLinks.map((label) => {
-                const href = label === 'Home' ? '/' : `#${label.toLowerCase()}`
+              {primaryNavLinks.map((label) => {
+                if (label === 'Institution') {
+                  return (
+                    <div key={label} className="rounded-lg border border-slate-200 p-2">
+                      <p className="px-2 py-1 text-[0.92rem] font-semibold text-[#0D2B6B]">
+                        Institution
+                      </p>
+                      <div className="mt-1 grid gap-1">
+                        {institutionLinks.map((item) => {
+                          const isItemActive = activeLink === item.label
+                          return (
+                            <a
+                              key={item.label}
+                              href={item.href}
+                              onClick={() => {
+                                setActiveLink(item.label)
+                                setMobileOpen(false)
+                              }}
+                              className={[
+                                'rounded-lg px-3 py-2 text-[0.95rem] font-semibold transition-colors',
+                                isItemActive
+                                  ? 'bg-[#0D2B6B] text-white'
+                                  : 'text-slate-700 hover:bg-slate-50 hover:text-[#0D2B6B]',
+                              ].join(' ')}
+                            >
+                              {item.label}
+                            </a>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )
+                }
+
+                const href = getNavHref(label)
                 const isActive = activeLink === label
 
                 return (

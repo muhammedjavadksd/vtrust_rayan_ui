@@ -1,119 +1,19 @@
 import { ArrowUpRight } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
+import {
+  allCourses,
+  tabProgramTitles,
+  tabs,
+  type TabKey,
+} from '../data/courses'
 
-const tabs = [
-  'Optometry & Vision Sciences',
-  'Allied Health Sciences',
-  'Healthcare Management',
-  'Nutrition & Dietetics',
-] as const
-
-type TabKey = (typeof tabs)[number]
-
-const programs = [
-  {
-    title: 'BSc Optometry',
-    description: 'Build strong clinical and diagnostic skills for optometry.',
-    image:
-      '/generated/hero-bg.png',
-  },
-  {
-    title: 'MSc Optometry',
-    description:
-      'Advanced training in clinical optometry, diagnostics.',
-    image:
-      '/generated/hero-bg.png',
-  },
-  {
-    title: 'Diploma in Optometry',
-    description: 'Foundation for eye care, vision testing, and optical assistance.',
-    image:
-      '/generated/hero-bg.png',
-  },
-  {
-    title: 'Optical Technician',
-    description: 'Optical dispensing and lens technology with hands-on training.',
-    image:
-      '/generated/hero-bg.png',
-  },
-  {
-    title: 'Diploma in Medical Lab Technology',
-    description: 'Practical lab training in microbiology, biochemistry & diagnostics.',
-    image:
-      '/generated/hero-bg.png',
-  },
-  {
-    title: 'Diploma in Nursing (ANM)',
-    description: 'Nursing fundamentals with patient care and clinical exposure.',
-    image:
-      '/generated/hero-bg.png',
-  },
-  {
-    title: 'B.Voc in Anesthesia Technology',
-    description: 'Assist during anesthesia with OT preparation and monitoring.',
-    image:
-      '/generated/hero-bg.png',
-  },
-  {
-    title: 'B.Voc in Operation Theatre Technology',
-    description: 'Hands-on OT training: sterilization, surgical support, teamwork.',
-    image:
-      '/generated/hero-bg.png',
-  },
-  {
-    title: 'B.Voc in Medical Lab Technology',
-    description: 'Practical diagnostics with quality testing and biomedical analysis.',
-    image:
-      '/generated/hero-bg.png',
-  },
-  {
-    title: 'B.Voc in Nutrition & Dietetics',
-    description: 'Clinical nutrition and diet planning for health & wellness.',
-    image:
-      '/generated/hero-bg.png',
-  },
-  {
-    title: 'B.Voc in Hospital Management',
-    description: 'Hospital operations and management leadership with case learning.',
-    image:
-      '/generated/hero-bg.png',
-  },
-  {
-    title: 'Diploma in Hospital Management',
-    description: 'Focused management training for healthcare operations.',
-    image:
-      '/generated/hero-bg.png',
-  },
-  {
-    title: 'Diploma in Human Resources Management',
-    description: 'HR fundamentals and talent management for healthcare.',
-    image:
-      '/generated/hero-bg.png',
-  },
-] as const
-
-const tabProgramTitles: Record<TabKey, string[]> = {
-  'Optometry & Vision Sciences': [
-    'BSc Optometry',
-    'MSc Optometry',
-    'Diploma in Optometry',
-  ],
-  'Allied Health Sciences': [
-    'Optical Technician',
-    'Diploma in Medical Lab Technology',
-    'Diploma in Nursing (ANM)',
-    'B.Voc in Anesthesia Technology',
-    'B.Voc in Operation Theatre Technology',
-    'B.Voc in Medical Lab Technology',
-  ],
-  'Healthcare Management': [
-    'B.Voc in Hospital Management',
-    'Diploma in Hospital Management',
-    'Diploma in Human Resources Management',
-  ],
-  'Nutrition & Dietetics': ['B.Voc in Nutrition & Dietetics'],
-}
+const programs = allCourses.map(({ slug, title, description, image }) => ({
+  slug,
+  title,
+  description,
+  image,
+}))
 
 export function SpecializedProgramsSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
@@ -279,7 +179,7 @@ export function SpecializedProgramsSection() {
             >
               <div className="overflow-hidden rounded-2xl bg-white shadow-sm shadow-black/5">
                 <img
-                  src="/generated/hero-bg.png"
+                  src={program.image}
                   alt={program.title}
                   className="h-52 w-full object-cover"
                   loading="lazy"
@@ -293,7 +193,7 @@ export function SpecializedProgramsSection() {
                   {program.description}
                 </p>
                 <a
-                  href="#curriculum"
+                  href={`/courses/${program.slug}`}
                   className="pt-3 inline-flex items-center  text-sm font-semibold text-vtrust-navy"
                 >
                   View curriculum

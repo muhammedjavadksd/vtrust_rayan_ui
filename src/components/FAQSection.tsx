@@ -72,9 +72,9 @@ export function FAQSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="py-12 md:py-16 lg:py-16">
+    <section ref={sectionRef} className="pt-12 pb-0 md:pt-16 md:pb-0">
       <div
-        className="w-full rounded-none bg-[#d8f1ea] px-6 py-10 md:px-10 md:py-14"
+        className="w-full rounded-none bg-[#d8f1ea] px-6 pt-10 pb-0 md:px-10 md:pt-14 md:pb-0"
         style={bgStyle as CSSProperties}
       >
         <div className="text-center">

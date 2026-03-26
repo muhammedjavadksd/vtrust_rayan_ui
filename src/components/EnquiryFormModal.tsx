@@ -1,5 +1,6 @@
 import { X } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { allCourses } from '../data/courses'
 
 type FormState = {
   fullName: string
@@ -8,14 +9,7 @@ type FormState = {
   message: string
 }
 
-const courses = [
-  'BSc Optometry',
-  'MSc Optometry',
-  'Diploma in Optometry',
-  'ANM Nursing',
-  'B.Voc in Medical Lab Technology',
-  'Hospital Administration',
-] as const
+const courses = allCourses.map((c) => c.title)
 
 export function EnquiryFormModal() {
   const [open, setOpen] = useState(false)
@@ -23,7 +17,7 @@ export function EnquiryFormModal() {
   const [form, setForm] = useState<FormState>({
     fullName: '',
     emailOrPhone: '',
-    course: courses[0] ?? '',
+    course: courses[0] ?? 'BSc Optometry',
     message: '',
   })
 
@@ -33,6 +27,9 @@ export function EnquiryFormModal() {
   }
 
   useEffect(() => {
+    // Do not auto-open on mobile; mobile uses fixed "Get Admission" CTA.
+    if (window.matchMedia('(max-width: 767px)').matches) return
+
     const t = window.setTimeout(() => {
       openModalNow()
     }, 5000)

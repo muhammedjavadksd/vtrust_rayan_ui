@@ -1,0 +1,132 @@
+import { ArrowUpRight } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { Header } from './components/Header'
+import { Footer } from './components/Footer'
+import { EnquiryFormModal } from './components/EnquiryFormModal'
+import { MobileAdmissionButton } from './components/MobileAdmissionButton'
+import { allCourses, tabs, type TabKey } from './data/courses'
+
+export default function CoursesPage() {
+  const [activeFilter, setActiveFilter] = useState<'All Courses' | TabKey>(
+    'All Courses',
+  )
+
+  const filteredCourses = useMemo(() => {
+    if (activeFilter === 'All Courses') return allCourses
+    return allCourses.filter((course) => course.category === activeFilter)
+  }, [activeFilter])
+
+  return (
+    <div className="min-h-svh bg-white">
+      <Header />
+      <main className="px-4 pb-10 pt-2 md:px-6 md:pb-14 lg:px-10">
+        <section className="mx-auto w-full max-w-[1400px]">
+          <div className="relative overflow-hidden rounded-2xl">
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: "url('/generated/clinical-eye-banner.png')" }}
+              aria-hidden
+            />
+            <div
+              className="absolute inset-0 bg-[linear-gradient(90deg,rgba(13,43,107,0.82)_0%,rgba(13,43,107,0.55)_45%,rgba(13,43,107,0.35)_100%)]"
+              aria-hidden
+            />
+
+            <div className="relative z-10 px-6 py-12 sm:px-8 sm:py-14 md:px-12 md:py-16">
+              <p className="text-xs font-semibold tracking-[0.18em] text-white/80">
+                VTRUST GROUP OF INSTITUTIONS
+              </p>
+              <h1 className="mt-3 text-3xl font-semibold leading-tight text-white sm:text-4xl md:text-5xl">
+                Courses
+              </h1>
+
+              <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-[2px]">
+                <a href="/" className="font-semibold text-white/95 hover:text-white">
+                  Home
+                </a>
+                <span className="text-white/70">/</span>
+                <span className="font-medium text-white">Courses</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto mt-10 w-full max-w-[1400px] md:mt-12">
+          <div className="text-center">
+            <p className="text-xs font-semibold tracking-[0.16em] text-[#2353b1]">
+              PROGRAMMES
+            </p>
+            <h2 className="mt-1 text-2xl font-semibold text-[#0D2B6B] sm:text-3xl md:text-4xl">
+              All courses
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-slate-600">
+              Explore our diploma, undergraduate, and postgraduate offerings across
+              optometry, allied health, management, and nutrition.
+            </p>
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+            {(['All Courses', ...tabs] as const).map((filter) => (
+              <button
+                key={filter}
+                type="button"
+                onClick={() => setActiveFilter(filter)}
+                className={[
+                  'rounded-full px-4 py-2 text-sm font-semibold transition-colors',
+                  activeFilter === filter
+                    ? 'bg-[#0D2B6B] text-white'
+                    : 'border border-slate-200 bg-white text-slate-700 hover:border-[#0D2B6B]/40 hover:text-[#0D2B6B]',
+                ].join(' ')}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
+
+          <p className="mt-4 text-center text-sm text-slate-600">
+            Showing {filteredCourses.length} courses
+          </p>
+
+          <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {filteredCourses.map((course) => (
+              <article
+                key={course.title}
+                className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-black/5"
+              >
+                <div className="overflow-hidden rounded-t-2xl bg-slate-100">
+                  <img
+                    src={course.image}
+                    alt={course.title}
+                    className="h-44 w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col p-5">
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-wide text-[#2353b1]">
+                    {course.category}
+                  </p>
+                  <h3 className="mt-2 min-h-14 text-lg font-semibold leading-tight text-black">
+                    {course.title}
+                  </h3>
+                  <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-600">
+                    {course.description}
+                  </p>
+                  <a
+                    href={`/courses/${course.slug}`}
+                    className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-vtrust-navy"
+                  >
+                    View curriculum
+                    <ArrowUpRight className="size-4" aria-hidden />
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      </main>
+      <Footer />
+      <EnquiryFormModal />
+      <MobileAdmissionButton />
+    </div>
+  )
+}
