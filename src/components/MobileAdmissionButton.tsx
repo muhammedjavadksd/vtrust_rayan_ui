@@ -19,6 +19,11 @@ function scrollToEnquiryTarget() {
 }
 
 export function MobileAdmissionButton() {
+  const path = window.location.pathname.replace(/\/+$/, '') || '/'
+  const isCourseDetail = path.startsWith('/courses/') && path !== '/courses'
+
+  if (!isCourseDetail) return null
+
   return (
     <button
       type="button"

@@ -9,38 +9,38 @@ type GalleryItem = {
 
 const gallery: GalleryItem[] = [
   {
-    src: '/generated/journey-img.png',
-    alt: 'Healthcare professional with patient',
+    src: '/gallery/1.png',
+    alt: 'VTRUST gallery image 1',
     className: 'col-span-1 row-span-1',
   },
   {
-    src: '/generated/journey-img.png',
-    alt: 'Medical team in hospital',
+    src: '/gallery/2.png',
+    alt: 'VTRUST gallery image 2',
     className: 'col-span-2 row-span-1',
   },
   {
-    src: '/generated/journey-img.png',
-    alt: 'Hospital corridor',
+    src: '/gallery/3.png',
+    alt: 'VTRUST gallery image 3',
     className: 'col-span-1 row-span-1',
   },
   {
-    src: '/generated/journey-img.png',
-    alt: 'Dental clinic consultation',
+    src: '/gallery/4.png',
+    alt: 'VTRUST gallery image 4',
     className: 'col-span-1 row-span-1',
   },
   {
-    src: '/generated/journey-img.png',
-    alt: 'Surgeon preparing',
+    src: '/gallery/5.png',
+    alt: 'VTRUST gallery image 5',
     className: 'col-span-1 row-span-1',
   },
   {
-    src: '/generated/journey-img.png',
-    alt: 'Research and laboratory',
+    src: '/gallery/6.png',
+    alt: 'VTRUST gallery image 6',
     className: 'col-span-1 row-span-1',
   },
   {
-    src: '/generated/journey-img.png',
-    alt: 'Laboratory equipment',
+    src: '/gallery/7.png',
+    alt: 'VTRUST gallery image 7',
     className: 'col-span-1 row-span-1',
   },
 ]
@@ -120,6 +120,18 @@ export function LifeAtVTrustSection() {
               />
             </div>
           ))}
+        </div>
+
+        <div
+          className={`${revealClass('animate-load')} mt-8 flex justify-center`}
+          style={{ '--delay': '620ms' } as CSSProperties}
+        >
+          <a
+            href="/gallery"
+            className="inline-flex items-center justify-center rounded-full bg-[#0D2B6B] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-95"
+          >
+            Explore Gallery
+          </a>
         </div>
       </div>
     </section>

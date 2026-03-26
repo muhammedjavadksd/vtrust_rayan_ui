@@ -63,6 +63,19 @@ export default function CoursesPage() {
               Explore our diploma, undergraduate, and postgraduate offerings across
               optometry, allied health, management, and nutrition.
             </p>
+            <p className="mx-auto mt-2 max-w-2xl text-sm leading-relaxed text-slate-500">
+              Updated with brochure-backed course details from the latest uploaded
+              institute documents.
+            </p>
+            <a
+              href="/course/institute.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[#2353b1] hover:underline"
+            >
+              View institute details (PDF)
+              <ArrowUpRight className="size-4" aria-hidden />
+            </a>
           </div>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
@@ -118,6 +131,17 @@ export default function CoursesPage() {
                     View curriculum
                     <ArrowUpRight className="size-4" aria-hidden />
                   </a>
+                  {course.brochurePdf ? (
+                    <a
+                      href={course.brochurePdf}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 pt-2 text-sm font-semibold text-[#2353b1]"
+                    >
+                      Download brochure
+                      <ArrowUpRight className="size-4" aria-hidden />
+                    </a>
+                  ) : null}
                 </div>
               </article>
             ))}

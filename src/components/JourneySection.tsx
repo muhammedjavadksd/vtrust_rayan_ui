@@ -1,10 +1,11 @@
-import { Play } from 'lucide-react'
+import { Play, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 
 export function JourneySection() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [storyOpen, setStoryOpen] = useState(false)
 
   useEffect(() => {
     const node = sectionRef.current
@@ -22,6 +23,23 @@ export function JourneySection() {
     observer.observe(node)
     return () => observer.disconnect()
   }, [])
+
+  useEffect(() => {
+    if (!storyOpen) return
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setStoryOpen(false)
+    }
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [storyOpen])
 
   const revealClass = (animationClass: string) =>
     isVisible ? animationClass : 'opacity-0'
@@ -54,7 +72,7 @@ export function JourneySection() {
             style={{ '--delay': '170ms' } as CSSProperties}
           >
             <img
-              src="/generated/journey-img.png"
+              src="/company/group.jpeg"
               alt="Medical team group"
               className="h-[280px] w-full object-cover md:h-[330px]"
               loading="lazy"
@@ -101,18 +119,55 @@ export function JourneySection() {
             </div>
           </div>
 
-          <a
-            href="#story"
-            className={`${revealClass('animate-load')} inline-flex items-center gap-3 pt-2 text-xl font-semibold text-vtrust-navy`}
+          <button
+            type="button"
+            onClick={() => setStoryOpen(true)}
+            className={`${revealClass('animate-load')} inline-flex cursor-pointer items-center gap-3 pt-2 text-xl font-semibold text-vtrust-navy`}
             style={{ '--delay': '510ms' } as CSSProperties}
           >
-            <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#2353b1] text-white">
+            <span className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-[#2353b1] text-white">
               <Play className="size-5 fill-current" aria-hidden />
             </span>
             Watch Our Story
-          </a>
+          </button>
         </div>
       </div>
+
+      {storyOpen ? (
+        <div
+          className="fixed inset-0 z-9998 flex items-center justify-center bg-black/70 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Watch our story video"
+        >
+          <button
+            type="button"
+            className="absolute inset-0"
+            aria-label="Close video modal backdrop"
+            onClick={() => setStoryOpen(false)}
+          />
+          <div className="relative z-10 w-full max-w-4xl overflow-hidden rounded-2xl bg-black shadow-2xl">
+            <button
+              type="button"
+              onClick={() => setStoryOpen(false)}
+              className="absolute right-3 top-3 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/70 text-white transition-colors hover:bg-black/85"
+              aria-label="Close video modal"
+            >
+              <X className="size-5" aria-hidden />
+            </button>
+            <div className="aspect-video w-full">
+              <iframe
+                title="VTRUST story video"
+                src="https://www.youtube.com/embed/h4j9ac8Lo9c?autoplay=1&rel=0"
+                className="h-full w-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   )
 }

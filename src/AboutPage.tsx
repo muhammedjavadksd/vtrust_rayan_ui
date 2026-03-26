@@ -13,44 +13,24 @@ type Leader = {
 
 const leadershipTeam: Leader[] = [
   {
-    name: 'Dr. Managing Director',
-    designation: 'Managing Director (MD)',
+    name: 'Mohiyidheen Sha',
+    designation: 'Chairman',
     photo: '/icons/image.png',
   },
   {
-    name: 'Chief Executive Officer',
-    designation: 'Chief Executive Officer (CEO)',
+    name: 'Mashoor Ali',
+    designation: 'Vice Chairman',
     photo: '/hero/doc.jpg',
   },
   {
-    name: 'Dr. Academic Director',
-    designation: 'Director – Academics & Quality',
+    name: 'Dr. Shahul Hameed',
+    designation: 'Managing Director',
     photo: '/generated/clinical-eye-banner.png',
   },
   {
-    name: 'Principal',
-    designation: 'Principal',
+    name: 'Nufail Vakery',
+    designation: 'Executive Director',
     photo: '/generated/journey-img.png',
-  },
-  {
-    name: 'Chief Operating Officer',
-    designation: 'Chief Operating Officer (COO)',
-    photo: '/icons/image.png',
-  },
-  {
-    name: 'Director – Clinical Training',
-    designation: 'Director – Clinical Training & Partnerships',
-    photo: '/hero/doc.jpg',
-  },
-  {
-    name: 'Director – Admissions',
-    designation: 'Director – Admissions & Student Affairs',
-    photo: '/generated/journey-img.png',
-  },
-  {
-    name: 'Head – Corporate Relations',
-    designation: 'Head – Corporate & Industry Relations',
-    photo: '/generated/clinical-eye-banner.png',
   },
 ]
 
@@ -60,7 +40,10 @@ export default function AboutPage() {
 
   useEffect(() => {
     const node = mainRef.current
-    if (!node) return
+    if (!node) {
+      setIsVisible(true)
+      return
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -72,7 +55,17 @@ export default function AboutPage() {
     )
 
     observer.observe(node)
-    return () => observer.disconnect()
+
+    // Mobile/Safari fallback: ensure content is not stuck invisible
+    const fallback = window.setTimeout(() => {
+      setIsVisible(true)
+      observer.disconnect()
+    }, 450)
+
+    return () => {
+      window.clearTimeout(fallback)
+      observer.disconnect()
+    }
   }, [])
 
   const revealClass = (animationClass: string) =>
@@ -138,17 +131,15 @@ export default function AboutPage() {
               style={{ '--delay': '360ms' } as CSSProperties}
             >
               <p>
-                VTRUST Group of Institutions is a healthcare education network
-                dedicated to optometry, allied health, and management programmes.
-                We combine structured academics with real clinical exposure so
-                graduates are ready for patient care and professional practice
-                from day one.
+                VTRUST Group of Educational Institutions traces its foundation to
+                2017 with a focus on affordable, high-quality eye-care and
+                skill-based education pathways.
               </p>
               <p>
-                With multiple centres across Kerala, we focus on quality faculty,
-                modern labs, hospital partnerships, and student support—from
-                admission through placements—so every learner can build a
-                rewarding career in healthcare.
+                The education network formally expanded from Balussery in 2021
+                and later grew across Koyilandy, Thamarassery, and Vadakara with
+                recognized affiliations including University of Mysore, BESTIU,
+                Glocal University, and NCVRT.
               </p>
             </div>
           </div>
@@ -175,19 +166,19 @@ export default function AboutPage() {
               Building Healthcare Professionals Through Clinical Excellence
             </h2>
             <p className="text-base leading-relaxed text-slate-600 sm:text-lg">
-              VTRUST Group of Institutions focuses on career-ready healthcare and
-              optometry education by combining classroom theory with real
-              clinical exposure, advanced labs, and experienced mentors.
+              We deliver focused healthcare and optometry education through
+              structured academics, practical lab work, and hospital-linked
+              exposure so students graduate with strong clinical confidence.
             </p>
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div className="rounded-xl border border-slate-200 bg-white p-4">
-                <p className="text-2xl font-semibold text-[#0D2B6B]">Since 2021</p>
-                <p className="mt-1 text-sm text-slate-600">Strong foundation in education</p>
+                <p className="text-2xl font-semibold text-[#0D2B6B]">Since 2017</p>
+                <p className="mt-1 text-sm text-slate-600">Institution foundation with healthcare focus</p>
               </div>
               <div className="rounded-xl border border-slate-200 bg-white p-4">
-                <p className="text-2xl font-semibold text-[#0D2B6B]">4+ Centres</p>
-                <p className="mt-1 text-sm text-slate-600">Growing presence across Kerala</p>
+                <p className="text-2xl font-semibold text-[#0D2B6B]">4 Centres</p>
+                <p className="mt-1 text-sm text-slate-600">Thamarassery, Balussery, Koyilandy, Vadakara</p>
               </div>
             </div>
           </div>
@@ -216,9 +207,9 @@ export default function AboutPage() {
             >
               <h3 className="text-xl font-semibold text-[#0D2B6B]">Mission</h3>
               <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
-                To deliver industry-ready healthcare education through clinical
-                exposure, skilled mentorship, and an academic environment that
-                builds both competence and confidence.
+                To empower students with practical and life skills needed to
+                succeed in healthcare through professional education and
+                management-focused academic support.
               </p>
             </article>
 
@@ -228,9 +219,9 @@ export default function AboutPage() {
             >
               <h3 className="text-xl font-semibold text-[#0D2B6B]">Vision</h3>
               <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
-                To become a leading institution in healthcare and optometry
-                education by shaping responsible professionals who improve
-                patient care and community well-being.
+                To be a leading institution in healthcare and management
+                education, producing quality education and training that serves
+                evolving student and industry needs.
               </p>
             </article>
 
@@ -240,9 +231,9 @@ export default function AboutPage() {
             >
               <h3 className="text-xl font-semibold text-[#0D2B6B]">Goals</h3>
               <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
-                Expand quality training across campuses, strengthen hospital
-                partnerships, and create clear career pathways through practical
-                learning, internships, and placement support.
+                Continue focused expansion, strengthen affiliations, and sustain
+                internship and placement pathways so learners move from
+                classroom to career with confidence.
               </p>
             </article>
           </div>
@@ -364,12 +355,12 @@ export default function AboutPage() {
                 <span className="absolute left-[15px] top-1.5 z-1 h-3.5 w-3.5 -translate-x-1/2 rounded-full border-2 border-[#0D2B6B] bg-white" />
                 <p className="text-sm font-semibold text-[#2353b1]">2022–2023</p>
                 <h3 className="mt-1 text-lg font-semibold text-[#0D2B6B]">
-                  Programmes &amp; partnerships
+                  Expansion phase
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  Diploma and degree pathways expanded across allied health,
-                  optometry, and management, with stronger ties to clinical
-                  sites for hands-on training.
+                  Expanded operations to Koyilandy, Thamarassery, and Vadakara while
+                  broadening programme options in optometry, nursing, and
+                  allied healthcare domains.
                 </p>
               </li>
 
@@ -380,12 +371,12 @@ export default function AboutPage() {
                 <span className="absolute left-[15px] top-1.5 z-1 h-3.5 w-3.5 -translate-x-1/2 rounded-full border-2 border-[#0D2B6B] bg-white" />
                 <p className="text-sm font-semibold text-[#2353b1]">Today</p>
                 <h3 className="mt-1 text-lg font-semibold text-[#0D2B6B]">
-                  Four centres
+                  Affiliated and outcome-focused
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  Students learn across multiple locations with continued
-                  focus on quality faculty, modern labs, and pathways from
-                  education to employment.
+                  Programmes are delivered under recognised affiliation pathways
+                  with sustained emphasis on practical skills, internships,
+                  placement support, and career readiness.
                 </p>
               </li>
             </ul>

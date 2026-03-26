@@ -67,7 +67,7 @@ export default function CampusesPage() {
                 className={`${revealClass('animate-load')} mt-4 max-w-2xl text-base leading-relaxed text-white/90 sm:text-lg`}
                 style={{ '--delay': '220ms' } as CSSProperties}
               >
-                Geographic reach across Kozhikode district and northern Malabar — learn
+                Geographic reach across Thamarassery, Koyilandy, Balussery, and Vadakara — learn
                 closer to home, with the same clinical standards and student support.
               </p>
 
@@ -154,7 +154,7 @@ export default function CampusesPage() {
             <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm">
               <iframe
                 title={`Map of ${activeCampus.name}`}
-                src={getGoogleMapsEmbedSrc(activeCampus.mapQuery)}
+                src={activeCampus.mapEmbedSrc}
                 className="aspect-4/3 min-h-[280px] w-full border-0 lg:aspect-auto lg:min-h-[400px]"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -221,7 +221,7 @@ export default function CampusesPage() {
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activeCampus.mapQuery)}`}
+                  href={activeCampus.mapUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50"

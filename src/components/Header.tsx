@@ -14,6 +14,7 @@ const institutionLinks = [
   { label: 'Student Life', href: '/student-life' },
   { label: 'Campuses', href: '/campuses' },
   { label: 'Alumni', href: '/alumni' },
+  { label: 'Gallery', href: '/gallery' },
 ] as const
 
 type NavLabel = (typeof primaryNavLinks)[number] | (typeof institutionLinks)[number]['label']
@@ -49,6 +50,17 @@ function LinkedinIcon() {
       <path
         fill="currentColor"
         d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5ZM.5 23.5h4V7.5h-4v16ZM8 7.5h3.83v2.18h.05c.53-1 1.83-2.18 3.77-2.18 4.03 0 4.77 2.65 4.77 6.09v9.91h-4v-8.79c0-2.09-.04-4.79-2.91-4.79-2.91 0-3.36 2.27-3.36 4.63v8.95H8v-16Z"
+      />
+    </svg>
+  )
+}
+
+function YoutubeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="size-4" aria-hidden>
+      <path
+        fill="currentColor"
+        d="M23 12.02c0-2.23-.26-3.72-.56-4.47-.24-.62-.72-1.1-1.34-1.34C20.35 5.91 18.86 5.65 12 5.65c-6.86 0-8.35.26-9.1.56c-.62.24-1.1.72-1.34 1.34C1.26 8.3 1 9.79 1 12.02c0 2.23.26 3.72.56 4.47c.24.62.72 1.1 1.34 1.34c.75.3 2.24.56 9.1.56c6.86 0 8.35-.26 9.1-.56c.62-.24 1.1-.72 1.34-1.34c.3-.75.56-2.24.56-4.47ZM10 15.5v-7l6 3.5l-6 3.5Z"
       />
     </svg>
   )
@@ -92,6 +104,9 @@ export function Header({ className }: HeaderProps) {
       if (path === '/alumni') {
         return 'Alumni' as NavLabel
       }
+      if (path === '/gallery') {
+        return 'Gallery' as NavLabel
+      }
       if (path === '/news-events' || path.startsWith('/news/')) {
         return 'News & Events' as NavLabel
       }
@@ -104,6 +119,7 @@ export function Header({ className }: HeaderProps) {
       if (hash === 'student-life') return 'Student Life' as NavLabel
       if (hash === 'campuses') return 'Campuses' as NavLabel
       if (hash === 'alumni') return 'Alumni' as NavLabel
+      if (hash === 'gallery') return 'Gallery' as NavLabel
       if (hash === 'news-events') return 'News & Events' as NavLabel
       if (hash === 'contact') return 'Contact' as NavLabel
       if (hash === 'about') return 'About' as NavLabel
@@ -149,6 +165,7 @@ export function Header({ className }: HeaderProps) {
     if (label === 'Student Life') return '/student-life'
     if (label === 'Campuses') return '/campuses'
     if (label === 'Alumni') return '/alumni'
+    if (label === 'Gallery') return '/gallery'
     if (label === 'News & Events') return '/news-events'
     if (label === 'Contact') return '/contact'
     if (label === 'Courses') return '/courses'
@@ -159,40 +176,55 @@ export function Header({ className }: HeaderProps) {
   return (
     <header className={headerClassName} aria-label="Site header">
       {/* Utility bar (35%) */}
-      <div className="hidden border-b border-gray-100 bg-white/90 backdrop-blur-md md:block">
+      <div
+        className={[
+          'hidden border-b backdrop-blur-md transition-colors duration-500 md:block',
+          isScrolled
+            ? 'border-[#0D2B6B] bg-[#0D2B6B]/95'
+            : 'border-gray-100 bg-white/90',
+        ].join(' ')}
+      >
         <div className="mx-auto flex max-w-[1400px] items-center justify-between px-4 py-2 md:px-6 lg:px-8">
-            <div className="flex items-center gap-6 text-[0.85rem] text-slate-600">
-              <a href="tel:+919072314474" className="flex items-center gap-2 font-medium hover:text-[#0D2B6B]">
-                <span className="inline-flex size-8 items-center justify-center rounded-md bg-slate-100 text-[#0D2B6B]">
+            <div className={['flex items-center gap-6 text-[0.85rem]', isScrolled ? 'text-white/85' : 'text-slate-600'].join(' ')}>
+              <a href="tel:+919400920044" className={['flex items-center gap-2 font-medium transition-colors', isScrolled ? 'hover:text-white' : 'hover:text-[#0D2B6B]'].join(' ')}>
+                <span className={['inline-flex size-8 items-center justify-center rounded-md transition-colors', isScrolled ? 'bg-white/15 text-white' : 'bg-slate-100 text-[#0D2B6B]'].join(' ')}>
                   <Phone className="size-4" aria-hidden />
                 </span>
-                +91 9072314474
+                +91 9400920044
               </a>
               <a
-                href="mailto:info@vtrusteyehospital.com"
-                className="flex items-center gap-2 font-medium hover:text-[#0D2B6B]"
+                href="mailto:vtrustcollege@gmail.com"
+                className={['flex items-center gap-2 font-medium transition-colors', isScrolled ? 'hover:text-white' : 'hover:text-[#0D2B6B]'].join(' ')}
               >
-                <span className="inline-flex size-8 items-center justify-center rounded-md bg-slate-100 text-[#0D2B6B]">
+                <span className={['inline-flex size-8 items-center justify-center rounded-md transition-colors', isScrolled ? 'bg-white/15 text-white' : 'bg-slate-100 text-[#0D2B6B]'].join(' ')}>
                   <Mail className="size-4" aria-hidden />
                 </span>
-                info@vtrusteyehospital.com
+                vtrustcollege@gmail.com
               </a>
 
             <div className="flex items-center gap-3">
-              <a href="#" className="text-[#0D2B6B] transition-colors hover:text-[#4DB6AC]" aria-label="Facebook">
+              <a href="https://www.facebook.com/Vtrustinstitutions/" target="_blank" rel="noreferrer" className={['transition-colors', isScrolled ? 'text-white/90 hover:text-[#4DB6AC]' : 'text-[#0D2B6B] hover:text-[#4DB6AC]'].join(' ')} aria-label="Facebook">
                 <FacebookIcon />
               </a>
-              <a href="#" className="text-[#0D2B6B] transition-colors hover:text-[#4DB6AC]" aria-label="Instagram">
+              <a href="https://instagram.com/vtrustinstitutions" target="_blank" rel="noreferrer" className={['transition-colors', isScrolled ? 'text-white/90 hover:text-[#4DB6AC]' : 'text-[#0D2B6B] hover:text-[#4DB6AC]'].join(' ')} aria-label="Instagram">
                 <InstagramIcon />
               </a>
-              <a href="#" className="text-[#0D2B6B] transition-colors hover:text-[#4DB6AC]" aria-label="LinkedIn">
+              <a href="https://www.youtube.com/@Vtrustinstitutions" target="_blank" rel="noreferrer" className={['transition-colors', isScrolled ? 'text-white/90 hover:text-[#4DB6AC]' : 'text-[#0D2B6B] hover:text-[#4DB6AC]'].join(' ')} aria-label="YouTube">
+                <YoutubeIcon />
+              </a>
+              <a href="https://www.linkedin.com/company/vtrust-institutions/" target="_blank" rel="noreferrer" className={['transition-colors', isScrolled ? 'text-white/90 hover:text-[#4DB6AC]' : 'text-[#0D2B6B] hover:text-[#4DB6AC]'].join(' ')} aria-label="LinkedIn">
                 <LinkedinIcon />
               </a>
             </div>
           </div>
 
-          <a href="#tour" className="flex items-center gap-2 text-[0.88rem] font-semibold text-slate-600 hover:text-[#0D2B6B]">
-            <Globe className="size-4 text-[#0D2B6B]" aria-hidden />
+          <a
+            href="https://maps.app.goo.gl/JFVivGked4WZDm8r9"
+            target="_blank"
+            rel="noreferrer"
+            className={['flex items-center gap-2 text-[0.88rem] font-semibold transition-colors', isScrolled ? 'text-white/90 hover:text-white' : 'text-slate-600 hover:text-[#0D2B6B]'].join(' ')}
+          >
+            <Globe className={['size-4 transition-colors', isScrolled ? 'text-white' : 'text-[#0D2B6B]'].join(' ')} aria-hidden />
             360° Virtual Tour
           </a>
         </div>

@@ -24,7 +24,10 @@ export default function NewsSinglePage({ slug }: NewsSinglePageProps) {
 
   useEffect(() => {
     const node = mainRef.current
-    if (!node) return
+    if (!node) {
+      setIsVisible(true)
+      return
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -36,7 +39,17 @@ export default function NewsSinglePage({ slug }: NewsSinglePageProps) {
     )
 
     observer.observe(node)
-    return () => observer.disconnect()
+
+    // Mobile/Safari fallback to avoid stuck opacity-0
+    const fallback = window.setTimeout(() => {
+      setIsVisible(true)
+      observer.disconnect()
+    }, 450)
+
+    return () => {
+      window.clearTimeout(fallback)
+      observer.disconnect()
+    }
   }, [])
 
   const revealClass = (animationClass: string) =>

@@ -6,6 +6,18 @@ export function ClinicalLearningCard() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
 
+  const handleApplyNow = () => {
+    window.dispatchEvent(new CustomEvent('vtrust:open-enquiry-modal'))
+
+    // Fallback action: if modal is not visible, route to Contact page.
+    window.setTimeout(() => {
+      const hasDialog = Boolean(
+        document.querySelector('[role="dialog"][aria-modal="true"]'),
+      )
+      if (!hasDialog) window.location.assign('/contact')
+    }, 250)
+  }
+
   useEffect(() => {
     const node = sectionRef.current
     if (!node) return
@@ -64,11 +76,7 @@ export function ClinicalLearningCard() {
                   type="button"
                   className={`${revealClass('animate-load')} inline-flex items-center justify-center gap-2 rounded-full bg-[#0D2B6B] px-8 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-95`}
                   style={{ '--delay': '360ms' } as CSSProperties}
-                  onClick={() => {
-                    window.dispatchEvent(
-                      new CustomEvent('vtrust:open-enquiry-modal'),
-                    )
-                  }}
+                  onClick={handleApplyNow}
                 >
                   Apply now
                   <ArrowRight className="size-4" aria-hidden />

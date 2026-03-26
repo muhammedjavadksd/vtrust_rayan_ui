@@ -11,6 +11,7 @@ import NewsEventsPage from './NewsEventsPage.tsx'
 import NewsSinglePage from './NewsSinglePage.tsx'
 import AlumniPage from './AlumniPage.tsx'
 import ContactPage from './ContactPage.tsx'
+import GalleryPage from './GalleryPage.tsx'
 import PrivacyPolicyPage from './PrivacyPolicyPage.tsx'
 import TermsConditionsPage from './TermsConditionsPage.tsx'
 import RefundPolicyPage from './RefundPolicyPage.tsx'
@@ -25,6 +26,7 @@ const isNewsEventsPage = currentPath === '/news-events'
 const isNewsSinglePage = currentPath.startsWith('/news/')
 const isAlumniPage = currentPath === '/alumni'
 const isContactPage = currentPath === '/contact'
+const isGalleryPage = currentPath === '/gallery'
 const isPrivacyPolicyPage = currentPath === '/privacy-policy'
 const isTermsConditionsPage = currentPath === '/terms-and-conditions'
 const isRefundPolicyPage = currentPath === '/refund-policy'
@@ -51,6 +53,8 @@ createRoot(document.getElementById('root')!).render(
         <AlumniPage />
       ) : isContactPage ? (
         <ContactPage />
+      ) : isGalleryPage ? (
+        <GalleryPage />
       ) : isPrivacyPolicyPage ? (
         <PrivacyPolicyPage />
       ) : isTermsConditionsPage ? (

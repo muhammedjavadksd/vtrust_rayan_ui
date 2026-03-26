@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, Star, Users } from 'lucide-react'
+import { BriefcaseBusiness, Users } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { Header } from './components/Header'
@@ -14,76 +14,64 @@ const placements = [
 
 const directory = [
   {
-    name: 'Nimisha R',
-    image: '/generated/clinical-eye-banner.png',
-    programme: 'BSc Optometry',
-    role: 'Clinical Optometrist',
-    organisation: 'Malabar Vision Centre',
-    city: 'Kozhikode',
+    id: 1,
+    name: 'ARATHI',
+    image: '/alumini/arathi.png',
+    courseId: 1,
+    companyDetails: {
+      companyName: 'VTRUST EYE HOSPITAL',
+      branch: 'KOYILANDY',
+    },
   },
   {
-    name: 'Rahul Menon',
-    image: '/generated/hero-bg.png',
-    programme: 'MHM',
-    role: 'Operations Executive',
-    organisation: 'CityCare Hospitals',
-    city: 'Kannur',
+    id: 2,
+    name: 'FATHIMA FINSANA',
+    image: '/alumini/fathimath_finsana.png',
+    courseId: 1,
+    companyDetails: {
+      companyName: 'E TRUST EYE CARE',
+      branch: 'NADUVANNUR',
+    },
   },
   {
-    name: 'Aparna K',
-    image: '/generated/journey-img.png',
-    programme: 'GNM Nursing',
-    role: 'Staff Nurse',
-    organisation: 'Aster Health Network',
-    city: 'Kochi',
+    id: 3,
+    name: 'MUHAMMED SHAMIL',
+    image: '/alumini/muhammed_shammil.png',
+    courseId: 1,
+    companyDetails: {
+      companyName: 'VTRUST EYE HOSPITAL',
+      branch: 'KOYILANDY',
+    },
   },
   {
-    name: 'Akhil Prasad',
-    image: '/generated/clinical-eye-banner.png',
-    programme: 'BSc MLT',
-    role: 'Lab Technologist',
-    organisation: 'Prime Diagnostics',
-    city: 'Calicut',
+    id: 4,
+    name: 'SURAJ',
+    image: '/alumini/suraj.png',
+    courseId: 1,
+    companyDetails: {
+      companyName: 'CLEAR VISION',
+      branch: 'BALUSSERY',
+    },
   },
   {
-    name: 'Shahana F',
-    image: '/generated/hero-bg.png',
-    programme: 'BSc Nursing',
-    role: 'Critical Care Nurse',
-    organisation: 'Lakeside Multi Speciality',
-    city: 'Bengaluru',
+    id: 5,
+    name: 'ABHINAND MURALI',
+    image: '/alumini/abhinand_murali.png',
+    courseId: 1,
+    companyDetails: {
+      companyName: 'ATLAS EYE HOSPITAL',
+      branch: 'PALAKKAD',
+    },
   },
   {
-    name: 'Naveen M',
-    image: '/generated/journey-img.png',
-    programme: 'Diploma in Optometry',
-    role: 'Vision Therapist',
-    organisation: 'SightFirst Clinic',
-    city: 'Thrissur',
-  },
-] as const
-
-const spotlights = [
-  {
-    name: 'Reshma Thomas',
-    image: '/generated/clinical-eye-banner.png',
-    role: 'Senior Optometrist, Regional Eye Institute',
-    highlight:
-      'Leads a 12-member outpatient team and mentors interns from multiple allied-health campuses.',
-  },
-  {
-    name: 'Sreehari V',
-    image: '/generated/hero-bg.png',
-    role: 'Hospital Operations Manager, CareArc Group',
-    highlight:
-      'Scaled patient-flow turnaround by introducing queue analytics and weekly service dashboards.',
-  },
-  {
-    name: 'Fathima N',
-    image: '/generated/journey-img.png',
-    role: 'ICU Nursing Lead, MetroCare',
-    highlight:
-      'Recognized for protocol-led emergency training and onboarding of 40+ junior nurses.',
+    id: 6,
+    name: 'MUHAMMED ASHMIL',
+    image: '/alumini/muhammed_ashmil.png',
+    courseId: 1,
+    companyDetails: {
+      companyName: 'CRYSTAL OPTICALS',
+      branch: 'THAMARASSERY',
+    },
   },
 ] as const
 
@@ -227,7 +215,7 @@ export default function AlumniPage() {
           <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {directory.map((alumni, index) => (
               <article
-                key={`${alumni.name}-${alumni.organisation}`}
+                key={alumni.id}
                 className={`${revealClass('animate-load')} rounded-2xl border border-slate-200 bg-slate-50 p-5`}
                 style={{ '--delay': `${320 + index * 45}ms` } as CSSProperties}
               >
@@ -239,55 +227,16 @@ export default function AlumniPage() {
                   decoding="async"
                 />
                 <h3 className="mt-4 text-lg font-semibold text-[#0D2B6B]">{alumni.name}</h3>
-                <p className="mt-1 text-sm font-medium text-slate-700">{alumni.programme}</p>
-                <p className="mt-3 text-sm text-slate-700">{alumni.role}</p>
-                <p className="mt-1 text-sm text-slate-500">{alumni.organisation}</p>
+                <p className="mt-1 text-sm font-medium text-slate-700">Course ID: {alumni.courseId}</p>
+                <p className="mt-3 text-sm text-slate-700">{alumni.companyDetails.companyName}</p>
                 <p className="mt-1 text-xs font-semibold tracking-wide text-hero-teal">
-                  {alumni.city}
+                  {alumni.companyDetails.branch}
                 </p>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="mx-auto mt-14 w-full max-w-[1400px] pb-4">
-          <p
-            className={`${revealClass('animate-load')} flex items-center gap-2 text-xs font-semibold tracking-[0.16em] text-[#2353b1]`}
-            style={{ '--delay': '240ms' } as CSSProperties}
-          >
-            <Star className="size-4 text-hero-teal" aria-hidden />
-            SUCCESS SPOTLIGHTS
-          </p>
-          <h2
-            className={`${revealClass('animate-load')} mt-2 text-2xl font-semibold text-[#0D2B6B] sm:text-3xl`}
-            style={{ '--delay': '280ms' } as CSSProperties}
-          >
-            Alumni making measurable impact
-          </h2>
-
-          <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {spotlights.map((person, index) => (
-              <article
-                key={person.name}
-                className={`${revealClass('animate-load-from-right')} rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-black/5`}
-                style={{ '--delay': `${320 + index * 70}ms` } as CSSProperties}
-              >
-                <img
-                  src={person.image}
-                  alt={person.name}
-                  className="h-32 w-full rounded-xl object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <h3 className="mt-4 text-lg font-semibold text-[#0D2B6B]">{person.name}</h3>
-                <p className="mt-1 text-sm font-medium text-slate-700">{person.role}</p>
-                <p className="mt-4 text-sm leading-relaxed text-slate-600">
-                  {person.highlight}
-                </p>
-              </article>
-            ))}
-          </div>
-        </section>
       </main>
       <Footer />
       <EnquiryFormModal />

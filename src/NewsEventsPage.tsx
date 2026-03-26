@@ -71,7 +71,10 @@ export default function NewsEventsPage() {
 
   useEffect(() => {
     const node = mainRef.current
-    if (!node) return
+    if (!node) {
+      setIsVisible(true)
+      return
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -83,7 +86,17 @@ export default function NewsEventsPage() {
     )
 
     observer.observe(node)
-    return () => observer.disconnect()
+
+    // Mobile/Safari fallback to prevent content staying hidden
+    const fallback = window.setTimeout(() => {
+      setIsVisible(true)
+      observer.disconnect()
+    }, 450)
+
+    return () => {
+      window.clearTimeout(fallback)
+      observer.disconnect()
+    }
   }, [])
 
   const revealClass = (animationClass: string) =>

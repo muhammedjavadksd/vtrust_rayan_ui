@@ -1,4 +1,4 @@
-import { BriefcaseMedical, Cog, GraduationCap, Play } from 'lucide-react'
+import { BriefcaseMedical, Cog, GraduationCap, Play, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 
@@ -26,6 +26,8 @@ const reasons = [
 export function WhyChooseSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [videoOpen, setVideoOpen] = useState(false)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
 
   useEffect(() => {
     const node = sectionRef.current
@@ -43,6 +45,29 @@ export function WhyChooseSection() {
     observer.observe(node)
     return () => observer.disconnect()
   }, [])
+
+  useEffect(() => {
+    if (!videoOpen) return
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setVideoOpen(false)
+    }
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [videoOpen])
+
+  useEffect(() => {
+    if (videoOpen) return
+    // Stop playback when closing modal.
+    videoRef.current?.pause()
+  }, [videoOpen])
 
   const revealClass = (animationClass: string) =>
     isVisible ? animationClass : 'opacity-0'
@@ -75,8 +100,9 @@ export function WhyChooseSection() {
             <div className="absolute inset-0 bg-black/35" aria-hidden />
             <button
               type="button"
-              className="absolute left-1/2 top-1/2 inline-flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#2353b1] text-white shadow-lg"
+              className="absolute left-1/2 top-1/2 cursor-pointer inline-flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#2353b1] text-white shadow-lg"
               aria-label="Play video"
+              onClick={() => setVideoOpen(true)}
             >
               <Play className="size-7 fill-current" aria-hidden />
             </button>
@@ -101,6 +127,44 @@ export function WhyChooseSection() {
           </div>
         </div>
       </div>
+
+      {videoOpen ? (
+        <div
+          className="fixed inset-0 z-9998 flex items-center justify-center bg-black/70 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="VTRUST company video"
+        >
+          <button
+            type="button"
+            className="absolute inset-0"
+            aria-label="Close video modal backdrop"
+            onClick={() => setVideoOpen(false)}
+          />
+
+          <div className="relative z-10 w-full max-w-4xl overflow-hidden rounded-2xl bg-black shadow-2xl">
+            <button
+              type="button"
+              onClick={() => setVideoOpen(false)}
+              className="absolute right-3 top-3 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/70 text-white transition-colors hover:bg-black/85"
+              aria-label="Close video modal"
+            >
+              <X className="size-5" aria-hidden />
+            </button>
+
+            <div className="aspect-video w-full">
+              <video
+                ref={videoRef}
+                src="/company/company.mp4"
+                className="h-full w-full"
+                autoPlay
+                controls
+                playsInline
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   )
 }

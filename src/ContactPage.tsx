@@ -156,7 +156,7 @@ export default function ContactPage() {
             >
               <iframe
                 title={`Map of ${activeCampus.name}`}
-                src={getGoogleMapsEmbedSrc(activeCampus.mapQuery)}
+                src={activeCampus.mapEmbedSrc}
                 className="aspect-4/3 min-h-[280px] w-full border-0 lg:aspect-auto lg:min-h-[400px]"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

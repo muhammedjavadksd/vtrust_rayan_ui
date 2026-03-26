@@ -20,6 +20,7 @@
   font-display: swap;
   unicode-range:
     U+0020-002F,
+    U+0030-0039,
     U+003A-003F,
     U+005B-0060,
     U+007B-007E;
@@ -40,6 +41,7 @@
   font-display: swap;
   unicode-range:
     U+0020-002F,
+    U+0030-0039,
     U+003A-003F,
     U+005B-0060,
     U+007B-007E;
@@ -60,6 +62,7 @@
   font-display: swap;
   unicode-range:
     U+0020-002F,
+    U+0030-0039,
     U+003A-003F,
     U+005B-0060,
     U+007B-007E;
@@ -82,6 +85,7 @@
   font-display: swap;
   unicode-range:
     U+0020-002F,
+    U+0030-0039,
     U+003A-003F,
     U+005B-0060,
     U+007B-007E;
@@ -94,7 +98,6 @@
   font-style: normal;
   font-display: swap;
   unicode-range:
-    U+0030-0039,
     U+0041-005A,
     U+0061-007A,
     U+00A0-00BF,
@@ -109,7 +112,6 @@
   font-style: normal;
   font-display: swap;
   unicode-range:
-    U+0030-0039,
     U+0041-005A,
     U+0061-007A,
     U+00A0-00BF,
@@ -124,7 +126,6 @@
   font-style: normal;
   font-display: swap;
   unicode-range:
-    U+0030-0039,
     U+0041-005A,
     U+0061-007A,
     U+00A0-00BF,
@@ -139,7 +140,6 @@
   font-style: normal;
   font-display: swap;
   unicode-range:
-    U+0030-0039,
     U+0041-005A,
     U+0061-007A,
     U+00A0-00BF,
@@ -226,5 +226,56 @@ body {
   .animate-load-from-right {
     opacity: 1;
     animation: none;
+  }
+}
+
+/* Global image hover effect for page content */
+@media (hover: hover) {
+  main img {
+    transition:
+      transform 320ms ease,
+      filter 320ms ease;
+    transform-origin: center;
+  }
+
+  main img:hover {
+    transform: scale(1.03);
+    filter: saturate(1.06) contrast(1.02);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main img,
+  main img:hover {
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
+
+/* Global button hover effect */
+@media (hover: hover) {
+  button {
+    transition:
+      transform 220ms ease,
+      box-shadow 220ms ease,
+      filter 220ms ease;
+    transform-origin: center;
+  }
+
+  button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
+    box-shadow: 0 10px 24px rgb(15 23 42 / 15%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button,
+  button:hover {
+    transform: none;
+    filter: none;
+    transition: none;
+    box-shadow: none;
   }
 }

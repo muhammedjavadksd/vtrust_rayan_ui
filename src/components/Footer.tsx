@@ -10,23 +10,23 @@ type Address = {
 const addresses: Address[] = [
   {
     title: 'Thamarassery',
-    lines: ['Near Old Bus Stand, Vezhu pur', 'Road, Thamarassery, Kerala'],
-    phone: '+91 9072314474',
+    lines: ['Thamarassery, Kerala', 'VTRUST Eye Hospital Thamarassery'],
+    phone: '+91 9400920044',
   },
   {
     title: 'Koyilandy',
-    lines: ['Main Road, Koyilandy, Kerala', '673305'],
-    phone: '+91 7902666631',
+    lines: ['Koyilandy, Kozhikode district, Kerala', 'VTRUST Eye Hospital Koyilandy'],
+    phone: '+91 9400920044',
   },
   {
     title: 'Balussery',
-    lines: ['Near Bus Stand, Main Road,', 'Balussery, Kerala 673612'],
-    phone: '+91 9072201050',
+    lines: ['Balussery, Kozhikode district, Kerala', 'VTRUST Eye Hospital Balussery'],
+    phone: '+91 9400920044',
   },
   {
     title: 'Vadakara',
-    lines: ['Opp. New Bus stand,', 'Vadakara 673101'],
-    phone: '+91 9497469902',
+    lines: ['Vadakara, Kerala', 'VTRUST Eye Hospital Vadakara'],
+    phone: '+91 9400920044',
   },
 ]
 
@@ -58,6 +58,17 @@ function LinkedinIcon() {
       <path
         fill="currentColor"
         d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5ZM.5 23.5h4V7.5h-4v16ZM8 7.5h3.83v2.18h.05c.53-1 1.83-2.18 3.77-2.18 4.03 0 4.77 2.65 4.77 6.09v9.91h-4v-8.79c0-2.09-.04-4.79-2.91-4.79-2.91 0-3.36 2.27-3.36 4.63v8.95H8v-16Z"
+      />
+    </svg>
+  )
+}
+
+function YoutubeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="size-4" aria-hidden>
+      <path
+        fill="currentColor"
+        d="M23 12.02c0-2.23-.26-3.72-.56-4.47-.24-.62-.72-1.1-1.34-1.34C20.35 5.91 18.86 5.65 12 5.65c-6.86 0-8.35.26-9.1.56c-.62.24-1.1.72-1.34 1.34C1.26 8.3 1 9.79 1 12.02c0 2.23.26 3.72.56 4.47c.24.62.72 1.1 1.34 1.34c.75.3 2.24.56 9.1.56c6.86 0 8.35-.26 9.1-.56c.62-.24 1.1-.72 1.34-1.34c.3-.75.56-2.24.56-4.47ZM10 15.5v-7l6 3.5l-6 3.5Z"
       />
     </svg>
   )
@@ -120,21 +131,36 @@ export function Footer() {
               <p className="text-sm font-semibold text-white">Follow Us:</p>
               <div className="flex gap-4">
                 <a
-                  href="#"
+                  href="https://www.facebook.com/Vtrustinstitutions/"
+                  target="_blank"
+                  rel="noreferrer"
                   className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/25 text-white transition-colors hover:bg-white/10"
                   aria-label="Facebook"
                 >
                   <FacebookIcon />
                 </a>
                 <a
-                  href="#"
+                  href="https://instagram.com/vtrustinstitutions"
+                  target="_blank"
+                  rel="noreferrer"
                   className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/25 text-white transition-colors hover:bg-white/10"
                   aria-label="Instagram"
                 >
                   <InstagramIcon />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.youtube.com/@Vtrustinstitutions"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/25 text-white transition-colors hover:bg-white/10"
+                  aria-label="YouTube"
+                >
+                  <YoutubeIcon />
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/vtrust-institutions/"
+                  target="_blank"
+                  rel="noreferrer"
                   className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/25 text-white transition-colors hover:bg-white/10"
                   aria-label="LinkedIn"
                 >

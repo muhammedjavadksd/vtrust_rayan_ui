@@ -70,6 +70,22 @@ export default function CourseDetailPage({ course }: Props) {
                 {course.overview}
               </p>
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:col-span-2">
+                  <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
+                    College
+                  </p>
+                  <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
+                    {course.college}
+                  </p>
+                </div>
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:col-span-2">
+                  <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
+                    University / Affiliation
+                  </p>
+                  <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
+                    {course.university}
+                  </p>
+                </div>
                 <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                   <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
                     Duration
@@ -116,6 +132,22 @@ export default function CourseDetailPage({ course }: Props) {
 
             <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-black/5 md:p-7">
               <h2 className="text-2xl font-semibold text-[#0D2B6B]">
+                Course Highlights
+              </h2>
+              <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {course.highlights.map((item) => (
+                  <li
+                    key={item}
+                    className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </article>
+
+            <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-black/5 md:p-7">
+              <h2 className="text-2xl font-semibold text-[#0D2B6B]">
                 Career Outcomes
               </h2>
               <ul className="mt-4 space-y-2">
@@ -140,6 +172,11 @@ export default function CourseDetailPage({ course }: Props) {
                 <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
                   {course.category}
                 </p>
+                {course.ugcApproved ? (
+                  <p className="mt-1 text-xs font-bold tracking-[0.12em] text-emerald-700">
+                    UGC APPROVED
+                  </p>
+                ) : null}
                 <h3 className="mt-2 text-xl font-semibold text-[#0D2B6B]">
                   {course.title}
                 </h3>
@@ -153,6 +190,17 @@ export default function CourseDetailPage({ course }: Props) {
                   Apply Now
                   <ArrowRight className="size-4" aria-hidden />
                 </a>
+                {course.brochurePdf ? (
+                  <a
+                    href={course.brochurePdf}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-3 inline-flex items-center gap-2 rounded-full border border-slate-200 px-6 py-2.5 text-sm font-semibold text-[#0D2B6B] transition-colors hover:bg-slate-50"
+                  >
+                    Download brochure
+                    <ArrowRight className="size-4" aria-hidden />
+                  </a>
+                ) : null}
               </div>
             </div>
 

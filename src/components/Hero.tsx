@@ -13,11 +13,15 @@ const badges = [
 ] as const
 
 export function Hero() {
+  const openEnquiryModal = () => {
+    window.dispatchEvent(new CustomEvent('vtrust:open-enquiry-modal'))
+  }
+
   return (
-    <section className="flex min-h-[calc(100svh-6.5rem-50px)] flex-col pt-0 pb-4 md:min-h-[calc(100svh-7rem-50px)] md:pb-6">
+    <section className="flex min-h-[calc(100svh-6.5rem-50px)] flex-col pt-0 pb-4 md:min-h-[calc(100svh-7rem-50px)] md:pb-6 lg:pt-4 lg:min-h-[calc(100svh-5.5rem-50px)]">
       {/* Same horizontal frame as Header: max-w + px — avoids double padding vs section */}
       <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 lg:px-8">
-        <div className="relative flex h-full min-h-[calc(100svh-7.5rem-50px)] w-full flex-col overflow-hidden rounded-2xl shadow-lg shadow-black/10 md:min-h-[calc(100svh-8rem-50px)]">
+        <div className="relative flex h-full min-h-[calc(100svh-7.5rem-50px)] w-full flex-col overflow-hidden rounded-2xl shadow-lg shadow-black/10 md:min-h-[calc(100svh-8rem-50px)] lg:min-h-[calc(100svh-6.5rem-50px)]">
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: "url('/generated/clinical-eye-banner.png')" }}
@@ -45,27 +49,28 @@ export function Hero() {
                   className="animate-load mt-6 max-w-xl text-base leading-relaxed text-white/95 sm:text-lg"
                   style={{ '--delay': '260ms' } as CSSProperties}
                 >
-                  V Trust Healthcare Education began in 2021 with a mission to
-                  bridge academic theory and real-world clinical excellence through
-                  rapid expansion and strong partnerships.
+                  VTRUST was founded in 2017 and expanded from Balussery in 2021
+                  across Koyilandy, Thamarassery, and Vadakara with practical healthcare
+                  education, strong affiliations, and internship-first learning.
                 </p>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
                   <a
-                    href="#courses"
+                    href="/courses"
                     className="animate-load inline-flex items-center justify-center gap-2 rounded-full bg-hero-teal px-6 py-3 text-sm font-semibold text-white shadow-md transition-opacity hover:opacity-95 sm:text-base"
                     style={{ '--delay': '320ms' } as CSSProperties}
                   >
                     Explore Programs
                     <ArrowRight className="size-4 shrink-0" aria-hidden />
                   </a>
-                  <a
-                    href="#advisor"
+                  <button
+                    type="button"
+                    onClick={openEnquiryModal}
                     className="animate-load inline-flex items-center justify-center gap-2 rounded-full border-2 border-white/90 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-[2px] transition-colors hover:bg-white/10 sm:text-base"
                     style={{ '--delay': '380ms' } as CSSProperties}
                   >
                     Book Your Consultation
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

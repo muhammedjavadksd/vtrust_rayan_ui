@@ -3,28 +3,28 @@ import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 
 const stats = [
-  { value: 'Since 2021', label: 'Balussery to education' },
-  { value: '4 Centres', label: 'Across Kerala localities' },
+  { value: 'Since 2017', label: 'Foundation in eye-care and education' },
+  { value: '4 Centres', label: 'Thamarassery, Balussery, Koyilandy, Vadakara' },
 ] as const
 
 const highlights = [
   {
     icon: Microscope,
-    title: 'Excellence in Optometry Education',
+    title: 'Optometry-led academic strength',
     description:
-      'Advanced training facilities supported by experienced faculty and mentors.',
+      'UGC-aligned, university-affiliated optometry pathways with clinical emphasis.',
   },
   {
     icon: Stethoscope,
-    title: 'Healthcare & Allied Health Programs',
+    title: 'Healthcare & allied programmes',
     description:
-      'ANM Nursing and B.Voc programs for patient-focused, practical learning.',
+      'Includes ANM Nursing, diploma tracks, and vocational healthcare courses.',
   },
   {
     icon: GraduationCap,
-    title: 'Campus Strength & Training Facilities',
+    title: 'Internship and placement support',
     description:
-      'Fully equipped laboratories, modern library resources, internships, and clinical postings.',
+      '100% internship assistance with interview training and placement-focused support.',
   },
 ] as const
 
@@ -79,8 +79,9 @@ export function WhyVtrustSection() {
               className={`${revealClass('animate-load')} max-w-xl text-lg leading-relaxed text-slate-600`}
               style={{ '--delay': '180ms' } as CSSProperties}
             >
-              Vtrust began its journey in 2021 at Balussery, Kozhikode, with
-              the guidance and academic support of Vtrust Eye Hospital.
+              VTRUST began in 2021 at Balussery and has expanded to Koyilandy,
+              Thamarassery, and Vadakara with a practical, career-focused
+              healthcare education model.
             </p>
           </div>
 
