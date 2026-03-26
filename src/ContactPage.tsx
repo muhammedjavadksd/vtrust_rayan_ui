@@ -5,7 +5,7 @@ import { Header } from './components/Header'
 import { Footer } from './components/Footer'
 import { EnquiryFormModal } from './components/EnquiryFormModal'
 import { MobileAdmissionButton } from './components/MobileAdmissionButton'
-import { campuses, getGoogleMapsEmbedSrc } from './data/campuses'
+import { campuses } from './data/campuses'
 
 export default function ContactPage() {
   const mainRef = useRef<HTMLElement | null>(null)
