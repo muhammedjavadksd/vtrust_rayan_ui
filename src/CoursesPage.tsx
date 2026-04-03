@@ -1,20 +1,54 @@
 import { ArrowUpRight } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Header } from './components/Header'
 import { Footer } from './components/Footer'
 import { EnquiryFormModal } from './components/EnquiryFormModal'
 import { MobileAdmissionButton } from './components/MobileAdmissionButton'
-import { allCourses, tabs, type TabKey } from './data/courses'
+import { getCategories, getCourses } from './api/course.api'
+import type { CourseRecord } from './data/courses'
+import { tabs } from './data/courses'
 
 export default function CoursesPage() {
-  const [activeFilter, setActiveFilter] = useState<'All Courses' | TabKey>(
+  const [activeFilter, setActiveFilter] = useState<'All Courses' | string>(
     'All Courses',
   )
+  const [courses, setCourses] = useState<CourseRecord[]>([])
+  const [categories, setCategories] = useState<string[]>(tabs)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    async function loadData() {
+      try {
+        const [apiData, categoryData] = await Promise.all([
+          getCourses(controller.signal),
+          getCategories(controller.signal),
+        ])
+
+        console.log('branches/all API response:', apiData)
+        console.log('categories/all API response:', categoryData)
+
+        setCourses(apiData)
+        setCategories(categoryData.length > 0 ? categoryData : tabs)
+      } catch (error) {
+        console.error('Error fetching course or category data:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadData()
+
+    return () => {
+      controller.abort()
+    }
+  }, [])
 
   const filteredCourses = useMemo(() => {
-    if (activeFilter === 'All Courses') return allCourses
-    return allCourses.filter((course) => course.category === activeFilter)
-  }, [activeFilter])
+    if (activeFilter === 'All Courses') return courses
+    return courses.filter((course) => course.category === activeFilter)
+  }, [activeFilter, courses])
 
   return (
     <div className="min-h-svh bg-white">
@@ -79,7 +113,7 @@ export default function CoursesPage() {
           </div>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
-            {(['All Courses', ...tabs] as const).map((filter) => (
+            {['All Courses', ...categories].map((filter) => (
               <button
                 key={filter}
                 type="button"
@@ -98,12 +132,13 @@ export default function CoursesPage() {
 
           <p className="mt-4 text-center text-sm text-slate-600">
             Showing {filteredCourses.length} courses
+            {isLoading ? ' (loading from API...)' : ''}
           </p>
 
           <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredCourses.map((course) => (
               <article
-                key={course.title}
+                key={course.slug}
                 className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-black/5"
               >
                 <div className="overflow-hidden rounded-t-2xl bg-slate-100">

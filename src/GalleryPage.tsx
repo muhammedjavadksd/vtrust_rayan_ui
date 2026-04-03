@@ -5,8 +5,9 @@ import { Footer } from './components/Footer'
 import { EnquiryFormModal } from './components/EnquiryFormModal'
 import { MobileAdmissionButton } from './components/MobileAdmissionButton'
 import { ImageLightbox } from './components/ImageLightbox'
+import { getGalleryImages } from './api/gallery.api'
 
-const galleryImages = [
+const staticGalleryImages = [
   '/gallery/1.png',
   '/gallery/2.png',
   '/gallery/3.png',
@@ -21,6 +22,7 @@ export default function GalleryPage() {
   const mainRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [galleryImages, setGalleryImages] = useState<string[]>(Array.from(staticGalleryImages))
 
   useEffect(() => {
     const node = mainRef.current
@@ -37,6 +39,27 @@ export default function GalleryPage() {
 
     observer.observe(node)
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    const fetchGallery = async () => {
+      try {
+        const urls = await getGalleryImages(controller.signal)
+        setGalleryImages(urls.length > 0 ? urls : Array.from(staticGalleryImages))
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return
+        }
+        console.error(err)
+        setGalleryImages(Array.from(staticGalleryImages))
+      }
+    }
+
+    fetchGallery()
+
+    return () => controller.abort()
   }, [])
 
   const revealClass = (animationClass: string) =>

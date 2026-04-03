@@ -67,7 +67,7 @@ export default function CourseDetailPage({ course }: Props) {
                 Course Overview
               </h2>
               <p className="mt-4 text-base leading-relaxed text-slate-600">
-                {course.overview}
+                {course.CourseOverview}
               </p>
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:col-span-2">
@@ -84,6 +84,14 @@ export default function CourseDetailPage({ course }: Props) {
                   </p>
                   <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
                     {course.university}
+                  </p>
+                </div>
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
+                    Category
+                  </p>
+                  <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
+                    {course.category}
                   </p>
                 </div>
                 <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
@@ -110,7 +118,7 @@ export default function CourseDetailPage({ course }: Props) {
                 Role of the Course
               </h2>
               <p className="mt-4 text-base leading-relaxed text-slate-600">
-                {course.roleOfCourse}
+                {course.courseRoll}
               </p>
             </article>
 
@@ -135,7 +143,7 @@ export default function CourseDetailPage({ course }: Props) {
                 Course Highlights
               </h2>
               <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {course.highlights.map((item) => (
+                {course.courseHighlights.map((item) => (
                   <li
                     key={item}
                     className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700"
@@ -163,14 +171,14 @@ export default function CourseDetailPage({ course }: Props) {
           <aside className="space-y-6">
             <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-black/5">
               <img
-                src={course.image}
-                alt={course.title}
+                src={course.imageUrl}
+                alt={course.name}
                 className="h-[260px] w-full object-cover"
                 loading="lazy"
               />
               <div className="p-5">
                 <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
-                  {course.category}
+                  {course.type}
                 </p>
                 {course.ugcApproved ? (
                   <p className="mt-1 text-xs font-bold tracking-[0.12em] text-emerald-700">
@@ -178,10 +186,10 @@ export default function CourseDetailPage({ course }: Props) {
                   </p>
                 ) : null}
                 <h3 className="mt-2 text-xl font-semibold text-[#0D2B6B]">
-                  {course.title}
+                  {course.name}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  {course.description}
+                  {course.CourseOverview}
                 </p>
                 <a
                   href="#course-inquiry"
@@ -212,7 +220,7 @@ export default function CourseDetailPage({ course }: Props) {
                 Specific Inquiry Form
               </h3>
               <p className="mt-2 text-sm text-slate-600">
-                Ask for detailed information about {course.title}.
+                Ask for detailed information about {course.name}.
               </p>
 
               {submitted ? (

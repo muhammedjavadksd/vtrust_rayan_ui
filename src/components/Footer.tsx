@@ -1,34 +1,15 @@
 import { MapPin, Phone } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { getBranches, type BranchAddress } from '../api/branch.api'
 
 type Address = {
-  title: string
-  lines: string[]
-  phone: string
+  name: string
+  location: string[]
+  phoneNumbers: string
 }
 
-const addresses: Address[] = [
-  {
-    title: 'Thamarassery',
-    lines: ['Thamarassery, Kerala', 'VTRUST Eye Hospital Thamarassery'],
-    phone: '+91 9400920044',
-  },
-  {
-    title: 'Koyilandy',
-    lines: ['Koyilandy, Kozhikode district, Kerala', 'VTRUST Eye Hospital Koyilandy'],
-    phone: '+91 9400920044',
-  },
-  {
-    title: 'Balussery',
-    lines: ['Balussery, Kozhikode district, Kerala', 'VTRUST Eye Hospital Balussery'],
-    phone: '+91 9400920044',
-  },
-  {
-    title: 'Vadakara',
-    lines: ['Vadakara, Kerala', 'VTRUST Eye Hospital Vadakara'],
-    phone: '+91 9400920044',
-  },
-]
+// Initial UI state before API data arrives, can be empty or a simple placeholder
+const addresses: Address[] = []
 
 function FacebookIcon() {
   return (
@@ -76,6 +57,27 @@ function YoutubeIcon() {
 
 export function Footer() {
   const [email, setEmail] = useState('')
+  const [branches, setBranches] = useState<BranchAddress[]>([])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    const loadBranches = async () => {
+      try {
+        const data = await getBranches(controller.signal)
+        setBranches(data)
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return
+        }
+        console.error(err)
+        setBranches([])
+      }
+    }
+
+    loadBranches()
+    return () => controller.abort()
+  }, [])
 
   const quickLinks = useMemo(
     () => [
@@ -97,18 +99,18 @@ export function Footer() {
       <div className="mx-auto w-full max-w-[1200px] px-6">
         {/* Top address row */}
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {addresses.map((a) => (
-            <div key={a.title} className="space-y-1 text-white/85">
+          {(branches.length > 0 ? branches : addresses).map((a) => (
+            <div key={a.name} className="space-y-1 text-white/85">
               <div className="flex items-start gap-2">
                 <MapPin className="mt-0.5 size-5 shrink-0 text-hero-teal" aria-hidden />
                 <div>
-                  <p className="text-sm font-semibold text-white">{a.title}</p>
+                  <p className="text-sm font-semibold text-white">{a.name}</p>
                   <p className="text-[0.78rem] leading-snug text-white/80">
-                    {a.lines.join(', ')}
+                    {a.location.join(', ')}
                   </p>
                   <p className="mt-1 flex items-center gap-1 text-[0.78rem] text-white/85">
                     <Phone className="size-4 shrink-0 text-hero-teal" aria-hidden />
-                    <span className="font-medium">{a.phone}</span>
+                    <span className="font-medium">{a.phoneNumbers}</span>
                   </p>
                 </div>
               </div>
