@@ -1,6 +1,7 @@
 import { X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { allCourses } from '../data/courses'
+import { submitEnquiry } from '../api/enquiry.api'
 
 type FormState = {
   fullName: string
@@ -20,6 +21,8 @@ export function EnquiryFormModal() {
     course: courses[0] ?? 'BSc Optometry',
     message: '',
   })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const openModalNow = () => {
     setSubmitted(false)
@@ -38,11 +41,11 @@ export function EnquiryFormModal() {
   }, [])
 
   useEffect(() => {
-    // Allow other components (e.g., "Apply now" buttons) to open the modal.
+  
     const handler = () => openModalNow()
     window.addEventListener('vtrust:open-enquiry-modal', handler)
     return () => window.removeEventListener('vtrust:open-enquiry-modal', handler)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [])
 
   useEffect(() => {
@@ -55,6 +58,20 @@ export function EnquiryFormModal() {
       document.body.style.overflow = prevOverflow
     }
   }, [open])
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
+    try {
+      await submitEnquiry(form)
+      setSubmitted(true)
+    } catch (err: any) {
+      setError(err?.message || 'Submission failed')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
@@ -114,12 +131,14 @@ export function EnquiryFormModal() {
                 </div>
               ) : (
                 <form
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    setSubmitted(true)
-                  }}
+                  onSubmit={handleSubmit}
                   className="grid gap-4 sm:grid-cols-2"
                 >
+                                    {error && (
+                                      <div className="sm:col-span-2 text-red-600 text-sm font-semibold">
+                                        {error}
+                                      </div>
+                                    )}
                   <label className="space-y-1">
                     <span className="text-sm font-semibold text-slate-800">
                       Full Name
@@ -189,9 +208,10 @@ export function EnquiryFormModal() {
                     </button>
                     <button
                       type="submit"
-                      className="rounded-lg bg-[#0D2B6B] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-95"
+                      className="rounded-lg bg-[#0D2B6B] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-95 disabled:opacity-60"
+                      disabled={loading}
                     >
-                      Submit Enquiry
+                      {loading ? 'Submitting...' : 'Submit Enquiry'}
                     </button>
                   </div>
                 </form>
