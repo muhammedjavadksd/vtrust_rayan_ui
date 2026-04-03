@@ -8,9 +8,9 @@ import { MobileAdmissionButton } from './components/MobileAdmissionButton'
 import {
   eventAnnouncements,
   formatPostDate,
-  getBlogFeed,
   mediaCoverage,
 } from './data/news-events'
+import { getNews, type NewsArticle } from './api/news.api'
 
 function CardCta({
   href,
@@ -48,8 +48,7 @@ function CardCta({
 export default function NewsEventsPage() {
   const mainRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
-
-  const blogFeed = useMemo(() => getBlogFeed(9), [])
+  const [blogFeed, setBlogFeed] = useState<NewsArticle[]>([])
 
   const sortedEvents = useMemo(
     () =>
@@ -97,6 +96,27 @@ export default function NewsEventsPage() {
       window.clearTimeout(fallback)
       observer.disconnect()
     }
+  }, [])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    const fetchLatestNews = async () => {
+      try {
+        const news = await getNews(controller.signal)
+        setBlogFeed(news.slice(0, 9))
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return
+        }
+        console.error(err)
+        setBlogFeed([])
+      }
+    }
+
+    fetchLatestNews()
+
+    return () => controller.abort()
   }, [])
 
   const revealClass = (animationClass: string) =>
@@ -232,10 +252,10 @@ export default function NewsEventsPage() {
                     {post.title}
                   </h3>
                   <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
-                    {post.excerpt}
+                    {post.description}
                   </p>
                   <time
-                    dateTime={post.publishedAt}
+                    dateTime={post.articleDate}
                     className="mt-3 text-xs font-semibold tracking-wide text-slate-500"
                   >
                     {formatPostDate(post.publishedAt)}

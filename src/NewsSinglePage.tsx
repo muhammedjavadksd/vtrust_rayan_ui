@@ -1,15 +1,12 @@
 import { ArrowRight, CalendarDays } from 'lucide-react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { Header } from './components/Header'
 import { Footer } from './components/Footer'
 import { EnquiryFormModal } from './components/EnquiryFormModal'
 import { MobileAdmissionButton } from './components/MobileAdmissionButton'
-import {
-  formatPostDate,
-  getNewsArticleBySlug,
-  getRelatedNews,
-} from './data/news-events'
+import { formatPostDate } from './data/news-events'
+import { getNews, type NewsArticle } from './api/news.api'
 
 type NewsSinglePageProps = {
   slug: string
@@ -18,9 +15,53 @@ type NewsSinglePageProps = {
 export default function NewsSinglePage({ slug }: NewsSinglePageProps) {
   const mainRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [article, setArticle] = useState<NewsArticle | null>(null)
+  const [relatedNews, setRelatedNews] = useState<NewsArticle[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  const article = getNewsArticleBySlug(slug)
-  const relatedNews = useMemo(() => getRelatedNews(slug, 3), [slug])
+  useEffect(() => {
+    const controller = new AbortController()
+
+    const loadArticle = async () => {
+      try {
+        setIsLoading(true)
+        const allNews = await getNews(controller.signal)
+        const selected =
+          allNews.find((item) => item.id === slug) ||
+          allNews.find((item) => item.slug === slug)
+
+        if (selected) {
+          setArticle(selected)
+          setRelatedNews(
+            allNews
+              .filter((item) => item.id !== selected.id)
+              .sort(
+                (a, b) =>
+                  new Date(b.publishedAt).getTime() -
+                  new Date(a.publishedAt).getTime(),
+              )
+              .slice(0, 3),
+          )
+        } else {
+          setArticle(null)
+          setRelatedNews([])
+        }
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return
+        }
+        console.error(err)
+        setArticle(null)
+        setRelatedNews([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadArticle()
+
+    return () => controller.abort()
+  }, [slug])
 
   useEffect(() => {
     const node = mainRef.current
@@ -55,6 +96,21 @@ export default function NewsSinglePage({ slug }: NewsSinglePageProps) {
   const revealClass = (animationClass: string) =>
     isVisible ? animationClass : 'opacity-0'
 
+  if (isLoading) {
+    return (
+      <div className="min-h-svh bg-white">
+        <Header />
+        <main className="mx-auto w-full max-w-[900px] px-4 py-16 text-center md:px-6">
+          <p className="text-xs font-semibold tracking-[0.16em] text-[#2353b1]">NEWS &amp; EVENTS</p>
+          <h1 className="mt-3 text-3xl font-semibold text-[#0D2B6B]">Loading article...</h1>
+        </main>
+        <Footer />
+        <EnquiryFormModal />
+        <MobileAdmissionButton />
+      </div>
+    )
+  }
+
   if (!article) {
     return (
       <div className="min-h-svh bg-white">
@@ -63,12 +119,8 @@ export default function NewsSinglePage({ slug }: NewsSinglePageProps) {
           <p className="text-xs font-semibold tracking-[0.16em] text-[#2353b1]">
             NEWS &amp; EVENTS
           </p>
-          <h1 className="mt-3 text-3xl font-semibold text-[#0D2B6B]">
-            Article not found
-          </h1>
-          <p className="mt-4 text-slate-600">
-            The article may have moved. Explore our latest updates below.
-          </p>
+          <h1 className="mt-3 text-3xl font-semibold text-[#0D2B6B]">Article not found</h1>
+          <p className="mt-4 text-slate-600">The article may have moved. Explore our latest updates below.</p>
           <a
             href="/news-events"
             className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#0D2B6B] px-5 py-2.5 text-sm font-semibold text-white"
@@ -91,7 +143,7 @@ export default function NewsSinglePage({ slug }: NewsSinglePageProps) {
         <section className="mx-auto w-full max-w-[1400px]">
           <div className={`${revealClass('animate-load')} relative overflow-hidden rounded-2xl`}>
             <img
-              src={article.image}
+              src={article.imageUrl}
               alt={article.title}
               className="h-[360px] w-full object-cover sm:h-[420px]"
               loading="eager"
@@ -140,43 +192,11 @@ export default function NewsSinglePage({ slug }: NewsSinglePageProps) {
               ENGAGEMENT &amp; RECENCY
             </p>
 
-            {article.content.map((block, index) => {
-              if (block.type === 'subheading') {
-                return (
-                  <h2
-                    key={`${block.type}-${index}`}
-                    className={`${revealClass('animate-load')} mt-7 text-xl font-semibold text-[#0D2B6B]`}
-                    style={{ '--delay': `${300 + index * 30}ms` } as CSSProperties}
-                  >
-                    {block.text}
-                  </h2>
-                )
-              }
-
-              if (block.type === 'list') {
-                return (
-                  <ul
-                    key={`${block.type}-${index}`}
-                    className={`${revealClass('animate-load')} mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-slate-700`}
-                    style={{ '--delay': `${300 + index * 30}ms` } as CSSProperties}
-                  >
-                    {block.items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                )
-              }
-
-              return (
-                <p
-                  key={`${block.type}-${index}`}
-                  className={`${revealClass('animate-load')} mt-4 text-base leading-relaxed text-slate-700`}
-                  style={{ '--delay': `${300 + index * 30}ms` } as CSSProperties}
-                >
-                  {block.text}
-                </p>
-              )
-            })}
+            <div
+              className={`${revealClass('animate-load')} mt-4 text-base leading-relaxed text-slate-700`}
+              style={{ '--delay': '300ms' } as CSSProperties}
+              dangerouslySetInnerHTML={{ __html: article.details }}
+            />
           </article>
         </section>
 

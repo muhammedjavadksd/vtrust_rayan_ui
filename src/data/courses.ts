@@ -12,7 +12,7 @@ export type CourseRecord = {
   description: string
   image: string
   brochurePdf?: string
-  category: TabKey
+  category: string
   college: string
   university: string
   fees: string

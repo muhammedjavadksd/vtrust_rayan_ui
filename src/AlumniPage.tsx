@@ -5,6 +5,7 @@ import { Header } from './components/Header'
 import { Footer } from './components/Footer'
 import { EnquiryFormModal } from './components/EnquiryFormModal'
 import { MobileAdmissionButton } from './components/MobileAdmissionButton'
+import { getAlumni, type AlumniListItem } from './api/alumni.api'
 
 const placements = [
   { metric: '92%', label: 'Placement support conversion in the last cycle' },
@@ -12,72 +13,10 @@ const placements = [
   { metric: '4', label: 'Career cells serving all major campus clusters' },
 ] as const
 
-const directory = [
-  {
-    id: 1,
-    name: 'ARATHI',
-    image: '/alumini/arathi.png',
-    courseId: 1,
-    companyDetails: {
-      companyName: 'VTRUST EYE HOSPITAL',
-      branch: 'KOYILANDY',
-    },
-  },
-  {
-    id: 2,
-    name: 'FATHIMA FINSANA',
-    image: '/alumini/fathimath_finsana.png',
-    courseId: 1,
-    companyDetails: {
-      companyName: 'E TRUST EYE CARE',
-      branch: 'NADUVANNUR',
-    },
-  },
-  {
-    id: 3,
-    name: 'MUHAMMED SHAMIL',
-    image: '/alumini/muhammed_shammil.png',
-    courseId: 1,
-    companyDetails: {
-      companyName: 'VTRUST EYE HOSPITAL',
-      branch: 'KOYILANDY',
-    },
-  },
-  {
-    id: 4,
-    name: 'SURAJ',
-    image: '/alumini/suraj.png',
-    courseId: 1,
-    companyDetails: {
-      companyName: 'CLEAR VISION',
-      branch: 'BALUSSERY',
-    },
-  },
-  {
-    id: 5,
-    name: 'ABHINAND MURALI',
-    image: '/alumini/abhinand_murali.png',
-    courseId: 1,
-    companyDetails: {
-      companyName: 'ATLAS EYE HOSPITAL',
-      branch: 'PALAKKAD',
-    },
-  },
-  {
-    id: 6,
-    name: 'MUHAMMED ASHMIL',
-    image: '/alumini/muhammed_ashmil.png',
-    courseId: 1,
-    companyDetails: {
-      companyName: 'CRYSTAL OPTICALS',
-      branch: 'THAMARASSERY',
-    },
-  },
-] as const
-
 export default function AlumniPage() {
   const mainRef = useRef<HTMLElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [alumniList, setAlumniList] = useState<AlumniListItem[]>([])
 
   useEffect(() => {
     const node = mainRef.current
@@ -94,6 +33,26 @@ export default function AlumniPage() {
 
     observer.observe(node)
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    const fetchAlumni = async () => {
+      try {
+        const data = await getAlumni(controller.signal)
+        setAlumniList(data)
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return
+        }
+        console.error(err)
+        setAlumniList([])
+      }
+    }
+
+    fetchAlumni()
+    return () => controller.abort()
   }, [])
 
   const revealClass = (animationClass: string) =>
@@ -213,24 +172,24 @@ export default function AlumniPage() {
           </h2>
 
           <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {directory.map((alumni, index) => (
+            {alumniList.map((alumni, index) => (
               <article
                 key={alumni.id}
                 className={`${revealClass('animate-load')} rounded-2xl border border-slate-200 bg-slate-50 p-5`}
                 style={{ '--delay': `${320 + index * 45}ms` } as CSSProperties}
               >
                 <img
-                  src={alumni.image}
+                  src={alumni.profileImageUrl}
                   alt={alumni.name}
                   className="h-28 w-28 rounded-xl object-cover"
                   loading="lazy"
                   decoding="async"
                 />
                 <h3 className="mt-4 text-lg font-semibold text-[#0D2B6B]">{alumni.name}</h3>
-                <p className="mt-1 text-sm font-medium text-slate-700">Course ID: {alumni.courseId}</p>
-                <p className="mt-3 text-sm text-slate-700">{alumni.companyDetails.companyName}</p>
+                <p className="mt-1 text-sm font-medium text-slate-700">Course ID: {alumni.role}</p>
+                <p className="mt-3 text-sm text-slate-700">{alumni.company}</p>
                 <p className="mt-1 text-xs font-semibold tracking-wide text-hero-teal">
-                  {alumni.companyDetails.branch}
+                  {alumni.place}
                 </p>
               </article>
             ))}
