@@ -1,76 +1,46 @@
 import { X } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { allCourses } from '../data/courses'
+import { useEffect } from 'react'
 import { submitEnquiry } from '../api/enquiry.api'
-
-type FormState = {
-  fullName: string
-  emailOrPhone: string
-  course: string
-  message: string
-}
-
-const courses = allCourses.map((c) => c.title)
+import { useCourses } from '../hooks/useCourses'
+import { useEnquiryForm } from '../hooks/useEnquiryForm'
+import { useEnquiryModalLogic } from '../hooks/useEnquiryModalLogic'
+import type { EnquiryForm } from '../api/enquiry.api'
+import { DEFAULT_COURSE } from '../constants/enquiry'
 
 export function EnquiryFormModal() {
-  const [open, setOpen] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [form, setForm] = useState<FormState>({
+  const { courses: apiCourses } = useCourses()
+  const courseTitles = apiCourses.map((c) => c.title)
+
+  const {
+    form,
+    submitted,
+    loading,
+    error,
+    handleChange,
+    handleSubmit,
+    resetForm,
+  } = useEnquiryForm({
     fullName: '',
     emailOrPhone: '',
-    course: courses[0] ?? 'BSc Optometry',
+    course: courseTitles[0] ?? DEFAULT_COURSE,
     message: '',
   })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
-  const openModalNow = () => {
-    setSubmitted(false)
-    setOpen(true)
-  }
+  // Hook handles auto-open, manual trigger, and body scroll lock
+  const { open, setOpen } = useEnquiryModalLogic(resetForm)
 
+  // Update default course when courses are loaded
   useEffect(() => {
-    // Do not auto-open on mobile; mobile uses fixed "Get Admission" CTA.
-    if (window.matchMedia('(max-width: 767px)').matches) return
-
-    const t = window.setTimeout(() => {
-      openModalNow()
-    }, 5000)
-
-    return () => window.clearTimeout(t)
-  }, [])
-
-  useEffect(() => {
-  
-    const handler = () => openModalNow()
-    window.addEventListener('vtrust:open-enquiry-modal', handler)
-    return () => window.removeEventListener('vtrust:open-enquiry-modal', handler)
-    
-  }, [])
-
-  useEffect(() => {
-    if (!open) return
-
-    const prevOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-
-    return () => {
-      document.body.style.overflow = prevOverflow
+    if (courseTitles.length > 0 && !form.course) {
+      handleChange('course', courseTitles[0]!)
     }
-  }, [open])
+  }, [courseTitles, form.course, handleChange])
 
-  async function handleSubmit(e: React.FormEvent) {
+  const onFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
-    setError(null)
-    try {
-      await submitEnquiry(form)
-      setSubmitted(true)
-    } catch (err: any) {
-      setError(err?.message || 'Submission failed')
-    } finally {
-      setLoading(false)
-    }
+    handleSubmit(async (data) => {
+      await submitEnquiry(data as EnquiryForm)
+    })
   }
 
   return (
@@ -131,21 +101,21 @@ export function EnquiryFormModal() {
                 </div>
               ) : (
                 <form
-                  onSubmit={handleSubmit}
+                  onSubmit={onFormSubmit}
                   className="grid gap-4 sm:grid-cols-2"
                 >
-                                    {error && (
-                                      <div className="sm:col-span-2 text-red-600 text-sm font-semibold">
-                                        {error}
-                                      </div>
-                                    )}
+                  {error && (
+                    <div className="sm:col-span-2 text-red-600 text-sm font-semibold">
+                      {error}
+                    </div>
+                  )}
                   <label className="space-y-1">
                     <span className="text-sm font-semibold text-slate-800">
                       Full Name
                     </span>
                     <input
                       value={form.fullName}
-                      onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
+                      onChange={(e) => handleChange('fullName', e.target.value)}
                       placeholder="Enter your name"
                       className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-[#4DB6AC]"
                       required
@@ -158,9 +128,7 @@ export function EnquiryFormModal() {
                     </span>
                     <input
                       value={form.emailOrPhone}
-                      onChange={(e) =>
-                        setForm((f) => ({ ...f, emailOrPhone: e.target.value }))
-                      }
+                      onChange={(e) => handleChange('emailOrPhone', e.target.value)}
                       placeholder="+91 ... or email@..."
                       className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-[#4DB6AC]"
                       required
@@ -173,10 +141,10 @@ export function EnquiryFormModal() {
                     </span>
                     <select
                       value={form.course}
-                      onChange={(e) => setForm((f) => ({ ...f, course: e.target.value }))}
+                      onChange={(e) => handleChange('course', e.target.value)}
                       className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-[#4DB6AC]"
                     >
-                      {courses.map((c) => (
+                      {courseTitles.map((c) => (
                         <option key={c} value={c}>
                           {c}
                         </option>
@@ -190,9 +158,7 @@ export function EnquiryFormModal() {
                     </span>
                     <textarea
                       value={form.message}
-                      onChange={(e) =>
-                        setForm((f) => ({ ...f, message: e.target.value }))
-                      }
+                      onChange={(e) => handleChange('message', e.target.value)}
                       placeholder="Tell us what you're looking for"
                       className="min-h-[110px] w-full resize-y rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#4DB6AC]"
                     />

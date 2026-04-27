@@ -1,27 +1,7 @@
-import { BriefcaseMedical, Cog, GraduationCap, Play, X } from 'lucide-react'
+import { Play, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
-
-const reasons = [
-  {
-    icon: BriefcaseMedical,
-    title: 'Advanced Training Facilities',
-    description:
-      'Fully equipped laboratories with practical-oriented learning environments.',
-  },
-  {
-    icon: Cog,
-    title: 'Experienced Faculty & Mentors',
-    description:
-      'Experienced professors and healthcare professionals guide every module.',
-  },
-  {
-    icon: GraduationCap,
-    title: 'Internships & Clinical Postings',
-    description:
-      'Internships and clinical postings build real-world confidence for students.',
-  },
-] as const
+import { reasons } from '../constants/why-choose'
 
 export function WhyChooseSection() {
   const sectionRef = useRef<HTMLElement | null>(null)

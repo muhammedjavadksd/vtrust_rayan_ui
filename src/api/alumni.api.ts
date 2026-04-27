@@ -1,4 +1,5 @@
-import { API_BASE_URL, resolveImageUrl } from './config'
+import { api } from '../lib/api'
+import { resolveImageUrl } from './config'
 
 type AlumniApiEntry = {
   _id: string
@@ -21,26 +22,15 @@ type AlumniListItem = {
 }
 
 export async function getAlumni(signal?: AbortSignal): Promise<AlumniListItem[]> {
-  const url = `${API_BASE_URL.replace(/\/$/, '')}/alumni/all`
-
-  const response = await fetch(url, {
-    method: 'GET',
+  const response = await api.get('/alumni/all', {
     signal,
-    headers: {
-      'Content-Type': 'application/json',
-    },
   })
 
-  if (!response.ok) {
-    throw new Error(`Alumni fetch failed: ${response.status} ${response.statusText}`)
-  }
-
-  const body = await response.json()
-  if (!body?.success || !Array.isArray(body?.data)) {
+  if (!response.data?.success || !Array.isArray(response.data?.data)) {
     throw new Error('Invalid alumni API response')
   }
 
-  return body.data
+  return response.data.data
     .filter((item: AlumniApiEntry) => !!item.name && !!item.profileImageUrl)
     .map((item: AlumniApiEntry) => ({
       id: item._id,

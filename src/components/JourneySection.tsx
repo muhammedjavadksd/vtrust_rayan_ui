@@ -91,14 +91,14 @@ export function JourneySection() {
             className={`${revealClass('animate-load')}  text-2xl leading-[1.08] font-semibold text-black md:text-[2.8rem]`}
             style={{ '--delay': '220ms' } as CSSProperties}
           >
-            Since 2021, we&apos;ve redefined medical training.
+            Since 2021, we&apos;ve redefined professional training.
           </h2>
           <p
             className={`${revealClass('animate-load')} max-w-xl text-lg leading-relaxed text-slate-600`}
             style={{ '--delay': '300ms' } as CSSProperties}
           >
-            V Trust Healthcare Education was founded with a mission: bridge
-            academic theory and real-world clinical excellence through rapid
+            V Trust Professional Education was founded with a mission: bridge
+            academic theory and real-world professional excellence through rapid
             expansion and strong partnerships.
           </p>
 

@@ -1,83 +1,15 @@
 import { MapPin, Phone } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
-import { getBranches, type BranchAddress } from '../api/branch.api'
-
-type Address = {
-  name: string
-  location: string[]
-  phoneNumbers: string
-}
-
-// Initial UI state before API data arrives, can be empty or a simple placeholder
-const addresses: Address[] = []
-
-function FacebookIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="size-4" aria-hidden>
-      <path
-        fill="currentColor"
-        d="M22 12.07C22 6.47 17.52 2 11.93 2S2 6.47 2 12.07c0 5.05 3.66 9.25 8.44 10.03v-7.08H7.9v-2.95h2.54V9.74c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.77l-.44 2.95h-2.33v7.08C18.34 21.32 22 17.12 22 12.07Z"
-      />
-    </svg>
-  )
-}
-
-function InstagramIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="size-4" aria-hidden>
-      <path
-        fill="currentColor"
-        d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7Zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10ZM12 7a5 5 0 1 0 0 10a5 5 0 0 0 0-10Zm0 2a3 3 0 1 1 0 6a3 3 0 0 1 0-6Zm5.5-2.25a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0Z"
-      />
-    </svg>
-  )
-}
-
-function LinkedinIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="size-4" aria-hidden>
-      <path
-        fill="currentColor"
-        d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5ZM.5 23.5h4V7.5h-4v16ZM8 7.5h3.83v2.18h.05c.53-1 1.83-2.18 3.77-2.18 4.03 0 4.77 2.65 4.77 6.09v9.91h-4v-8.79c0-2.09-.04-4.79-2.91-4.79-2.91 0-3.36 2.27-3.36 4.63v8.95H8v-16Z"
-      />
-    </svg>
-  )
-}
-
-function YoutubeIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="size-4" aria-hidden>
-      <path
-        fill="currentColor"
-        d="M23 12.02c0-2.23-.26-3.72-.56-4.47-.24-.62-.72-1.1-1.34-1.34C20.35 5.91 18.86 5.65 12 5.65c-6.86 0-8.35.26-9.1.56c-.62.24-1.1.72-1.34 1.34C1.26 8.3 1 9.79 1 12.02c0 2.23.26 3.72.56 4.47c.24.62.72 1.1 1.34 1.34c.75.3 2.24.56 9.1.56c6.86 0 8.35-.26 9.1-.56c.62-.24 1.1-.72 1.34-1.34c.3-.75.56-2.24.56-4.47ZM10 15.5v-7l6 3.5l-6 3.5Z"
-      />
-    </svg>
-  )
-}
+import { useMemo, useState } from 'react'
+import { useBranches } from '../hooks/useBranches'
+import { addresses } from '../constants/footer'
+import { FacebookIcon } from './icons/FacebookIcon'
+import { InstagramIcon } from './icons/InstagramIcon'
+import { LinkedinIcon } from './icons/LinkedinIcon'
+import { YoutubeIcon } from './icons/YoutubeIcon'
 
 export function Footer() {
   const [email, setEmail] = useState('')
-  const [branches, setBranches] = useState<BranchAddress[]>([])
-
-  useEffect(() => {
-    const controller = new AbortController()
-
-    const loadBranches = async () => {
-      try {
-        const data = await getBranches(controller.signal)
-        setBranches(data)
-      } catch (err) {
-        if (err instanceof DOMException && err.name === 'AbortError') {
-          return
-        }
-        console.error(err)
-        setBranches([])
-      }
-    }
-
-    loadBranches()
-    return () => controller.abort()
-  }, [])
+  const { branches } = useBranches()
 
   const quickLinks = useMemo(
     () => [
@@ -99,7 +31,7 @@ export function Footer() {
       <div className="mx-auto w-full max-w-[1200px] px-6">
         {/* Top address row */}
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {(branches.length > 0 ? branches : addresses).map((a) => (
+          {(branches.length > 0 ? branches : addresses).map((a: any) => (
             <div key={a.name} className="space-y-1 text-white/85">
               <div className="flex items-start gap-2">
                 <MapPin className="mt-0.5 size-5 shrink-0 text-hero-teal" aria-hidden />
@@ -236,6 +168,13 @@ export function Footer() {
             className="text-white/85 transition-colors hover:text-white"
           >
             Terms &amp; Conditions
+          </a>
+          <span className="mx-3 text-white/40">•</span>
+          <a
+            href="/refund-policy"
+            className="text-white/85 transition-colors hover:text-white"
+          >
+            Refund Policy
           </a>
           <span className="mx-3 text-white/40">•</span>
           <a

@@ -1,30 +1,14 @@
-import { API_BASE_URL, resolveImageUrl } from './config'
-
-type GalleryItem = {
-  _id: string
-  title: string
-  category: string
-  imageUrl: string
-  createdAt: string
-  updatedAt: string
-}
+import apiClient from './axios'
+import { resolveImageUrl } from './config'
+import type { ApiResponse } from '../types/course'
+import type { GalleryItem } from '../types/gallery'
 
 export async function getGalleryImages(signal?: AbortSignal): Promise<string[]> {
-  const url = `${API_BASE_URL.replace(/\/$/, '')}/gallery/all`
-
-  const response = await fetch(url, {
-    method: 'GET',
+  const response = await apiClient.get<ApiResponse<GalleryItem[]>>('/gallery/all', {
     signal,
-    headers: {
-      'Content-Type': 'application/json',
-    },
   })
 
-  if (!response.ok) {
-    throw new Error(`Gallery fetch failed: ${response.status} ${response.statusText}`)
-  }
-
-  const body = await response.json()
+  const body = response.data
   if (!body?.success || !Array.isArray(body?.data)) {
     throw new Error('Invalid gallery API response')
   }

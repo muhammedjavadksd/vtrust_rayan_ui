@@ -1,6 +1,8 @@
-import { API_BASE_URL, resolveImageUrl } from './config'
+import apiClient from './axios'
+import { resolveImageUrl } from './config'
+import type { NewsArticle } from '../types/news'
 
-type NewsApiEntry = {
+interface NewsApiEntry {
   _id: string
   title: string
   description: string
@@ -13,19 +15,6 @@ type NewsApiEntry = {
   updatedAt: string
 }
 
-export type NewsArticle = {
-  id: string
-  slug: string
-  title: string
-  category: string
-  description: string
-  image: string
-  publishedAt: string
-  details: string
-  ctaLabel: string
-  ctaHref: string
-}
-
 const slugify = (value: string) =>
   value
     .toLowerCase()
@@ -33,26 +22,14 @@ const slugify = (value: string) =>
     .replace(/(^-|-$)/g, '')
 
 export async function getNews(signal?: AbortSignal): Promise<NewsArticle[]> {
-  const url = `${API_BASE_URL.replace(/\/$/, '')}/articles/all`
+  const response = await apiClient.get('/articles/all', { signal })
 
-  const response = await fetch(url, {
-    method: 'GET',
-    signal,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-
-  if (!response.ok) {
-    throw new Error(`News fetch failed: ${response.status} ${response.statusText}`)
-  }
-
-  const body = await response.json()
-  if (!body?.success || !Array.isArray(body?.data)) {
+  const data = response.data
+  if (!data?.success || !Array.isArray(data?.data)) {
     throw new Error('Invalid news API response')
   }
 
-  return body.data
+  return data.data
     .filter((item: NewsApiEntry) => !!item.title && !!item.imageUrl)
     .map((item: NewsApiEntry) => ({
       id: item._id,
@@ -60,13 +37,14 @@ export async function getNews(signal?: AbortSignal): Promise<NewsArticle[]> {
       title: item.title,
       category: item.category,
       description: item.description,
+      excerpt: item.description, // Use description as fallback for excerpt
       image: item.imageUrl.startsWith('data:')
         ? item.imageUrl
         : resolveImageUrl(item.imageUrl),
       publishedAt: item.articleDate,
       details: item.details,
+      type: item.category.toLowerCase().includes('event') ? 'event' : (item.category.toLowerCase().includes('media') || item.category.toLowerCase().includes('press') ? 'media' : 'news'),
       ctaLabel: 'Read story',
       ctaHref: `/news/${slugify(item.title)}`,
     }))
 }
-

@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './config'
+import apiClient from './axios'
 
 export type EnquiryForm = {
   fullName: string
@@ -8,17 +8,6 @@ export type EnquiryForm = {
 }
 
 export async function submitEnquiry(form: EnquiryForm) {
-  const url = `${API_BASE_URL.replace(/\/$/, '')}/enquiry`  
-
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(form),
-  })
-  if (!res.ok) {
-    throw new Error('Failed to submit enquiry')
-  }
-  return res.json()
+  const res = await apiClient.post('/enquiry', form)
+  return res.data
 }

@@ -1,32 +1,7 @@
-import { ArrowRight, GraduationCap, Microscope, Stethoscope } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
-
-const stats = [
-  { value: 'Since 2017', label: 'Foundation in eye-care and education' },
-  { value: '4 Centres', label: 'Thamarassery, Balussery, Koyilandy, Vadakara' },
-] as const
-
-const highlights = [
-  {
-    icon: Microscope,
-    title: 'Optometry-led academic strength',
-    description:
-      'UGC-aligned, university-affiliated optometry pathways with clinical emphasis.',
-  },
-  {
-    icon: Stethoscope,
-    title: 'Healthcare & allied programmes',
-    description:
-      'Includes ANM Nursing, diploma tracks, and vocational healthcare courses.',
-  },
-  {
-    icon: GraduationCap,
-    title: 'Internship and placement support',
-    description:
-      '100% internship assistance with interview training and placement-focused support.',
-  },
-] as const
+import { stats, highlights } from '../constants/whyVtrust.constants'
 
 export function WhyVtrustSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
@@ -73,7 +48,7 @@ export function WhyVtrustSection() {
               className={`${revealClass('animate-load-right')} max-w-[20ch] text-4xl leading-[1.06] font-semibold tracking-tight text-black lg:text-5xl`}
               style={{ '--delay': '80ms' } as CSSProperties}
             >
-              Excellence in Healthcare & Optometry <br /> Education
+              Excellence in Management  <br /> Education
             </h2>
             <p
               className={`${revealClass('animate-load')} max-w-xl text-lg leading-relaxed text-slate-600`}
@@ -81,7 +56,7 @@ export function WhyVtrustSection() {
             >
               VTRUST began in 2021 at Balussery and has expanded to Koyilandy,
               Thamarassery, and Vadakara with a practical, career-focused
-              healthcare education model.
+              professional education model.
             </p>
           </div>
 

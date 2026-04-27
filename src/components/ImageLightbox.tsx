@@ -1,11 +1,6 @@
 import { X } from 'lucide-react'
 import { useEffect } from 'react'
-
-type ImageLightboxProps = {
-  src: string
-  alt: string
-  onClose: () => void
-}
+import type { ImageLightboxProps } from '../types/lightbox.types'
 
 export function ImageLightbox({ src, alt, onClose }: ImageLightboxProps) {
   useEffect(() => {

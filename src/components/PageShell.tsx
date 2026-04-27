@@ -1,14 +1,6 @@
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-
-/** Minimum time the loader stays visible (ms) */
-const MIN_MS = 450
-/** Fade-out duration before unmount (ms) */
-const FADE_MS = 280
-
-type PageShellProps = {
-  children: React.ReactNode
-}
+import { MIN_MS, FADE_MS, type PageShellProps } from '../constants/page-shell'
 
 export function PageShell({ children }: PageShellProps) {
   const [phase, setPhase] = useState<'loading' | 'fade' | 'off'>('loading')

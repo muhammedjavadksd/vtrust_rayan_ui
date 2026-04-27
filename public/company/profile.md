@@ -5,7 +5,7 @@ This is a comprehensive, "no-stone-left-unturned" breakdown of **VTrust Group of
 ## **1. Institutional Overview & History**
 
 - **Official Name:** VTrust Group of Institutions (formerly known as **VTrust Academy**).
-- **Foundation Year:** Founded in **2017** with a focus on affordable, high-quality eye care services.
+- **Foundation Year:** Founded in **2021** with a focus on affordable, high-quality eye care services.
 - **Expansion:** Established in **Balussery in 2021**, later expanding to **Koyilandy, Calicut (Kozhikode), and Mysore**.
 - **Mission:** To empower students with skills and knowledge to succeed in their chosen careers and contribute to a skilled healthcare and management workforce.
 - **Vision:** To be a leading institution in healthcare and management education, providing high-quality training that meets industry and society needs.

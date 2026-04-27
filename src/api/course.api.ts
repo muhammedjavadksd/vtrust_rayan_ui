@@ -1,26 +1,10 @@
-import { API_BASE_URL, resolveImageUrl } from './config'
-import type { CourseRecord } from '../data/courses'
-import { tabs } from '../data/courses'
-
-type CourseApiItem = {
-  _id?: string
-  name?: string
-  type?: string
-  duration?: string
-  CourseOverview?: string
-  eligibility?: string
-  status?: string
-  imageUrl?: string
-  university?: string
-  college?: string
-  courseRoll?: string
-  syllabus?: string
-  courseHighlights?: string
-  careerOutcomes?: string
-}
+import apiClient from './axios'
+import { resolveImageUrl } from './config'
+import type { CourseRecord, CourseApiItem, ApiResponse } from '../types/course'
+import { tabs } from '../types/course'
 
 function normalizeCategory(type?: string): CourseRecord['category'] {
-  if (type && tabs.includes(type as CourseRecord['category'])) {
+  if (type && (tabs as readonly string[]).includes(type)) {
     return type as CourseRecord['category']
   }
 
@@ -38,21 +22,11 @@ function toSlug(id?: string, name?: string) {
 }
 
 export async function getCourses(signal?: AbortSignal): Promise<CourseRecord[]> {
-  const url = `${API_BASE_URL.replace(/\/$/, '')}/courses/all`
-
-  const response = await fetch(url, {
-    method: 'GET',
+  const response = await apiClient.get<ApiResponse<CourseApiItem[]>>('/courses/all', {
     signal,
-    headers: {
-      'Content-Type': 'application/json',
-    },
   })
 
-  if (!response.ok) {
-    throw new Error(`Course fetch failed: ${response.status} ${response.statusText}`)
-  }
-
-  const body = await response.json()
+  const body = response.data
 
   if (!body || typeof body !== 'object') {
     throw new Error('Invalid Course API response format')
@@ -99,21 +73,11 @@ export async function getCourses(signal?: AbortSignal): Promise<CourseRecord[]> 
 }
 
 export async function getCategories(signal?: AbortSignal): Promise<string[]> {
-  const url = `${API_BASE_URL.replace(/\/$/, '')}/categories/all`
-
-  const response = await fetch(url, {
-    method: 'GET',
+  const response = await apiClient.get<ApiResponse<{ name?: string }[]>>('/categories/all', {
     signal,
-    headers: {
-      'Content-Type': 'application/json',
-    },
   })
 
-  if (!response.ok) {
-    throw new Error(`Category fetch failed: ${response.status} ${response.statusText}`)
-  }
-
-  const body = await response.json()
+  const body = response.data
 
   if (!body || typeof body !== 'object') {
     throw new Error('Invalid Category API response format')

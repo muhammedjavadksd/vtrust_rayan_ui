@@ -1,79 +1,45 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import './index.css'
-import App from './App.tsx'
-import AboutPage from './AboutPage.tsx'
-import CoursesPage from './CoursesPage.tsx'
-import CourseDetailPage from './CourseDetailPage.tsx'
-import StudentLifePage from './StudentLifePage.tsx'
-import CampusesPage from './CampusesPage.tsx'
-import NewsEventsPage from './NewsEventsPage.tsx'
-import NewsSinglePage from './NewsSinglePage.tsx'
-import AlumniPage from './AlumniPage.tsx'
-import ContactPage from './ContactPage.tsx'
-import GalleryPage from './GalleryPage.tsx'
-import PrivacyPolicyPage from './PrivacyPolicyPage.tsx'
-import TermsConditionsPage from './TermsConditionsPage.tsx'
-import RefundPolicyPage from './RefundPolicyPage.tsx'
-import { getCourseBySlug } from './data/courses.ts'
+import App from './pages/App.tsx'
+import AboutPage from './pages/AboutPage.tsx'
+import CoursesPage from './pages/CoursesPage.tsx'
+import CourseDetailPage from './pages/CourseDetailPage.tsx'
+import StudentLifePage from './pages/StudentLifePage.tsx'
+import CampusesPage from './pages/CampusesPage.tsx'
+import NewsEventsPage from './pages/NewsEventsPage.tsx'
+import NewsSinglePage from './pages/NewsSinglePage.tsx'
+import AlumniPage from './pages/AlumniPage.tsx'
+import ContactPage from './pages/ContactPage.tsx'
+import GalleryPage from './pages/GalleryPage.tsx'
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage.tsx'
+import TermsConditionsPage from './pages/TermsConditionsPage.tsx'
+import RefundPolicyPage from './pages/RefundPolicyPage.tsx'
 import { PageShell } from './components/PageShell.tsx'
-
-const currentPath = window.location.pathname.replace(/\/+$/, '') || '/'
-const isAboutPage = currentPath === '/about'
-const isStudentLifePage = currentPath === '/student-life'
-const isCampusesPage = currentPath === '/campuses'
-const isNewsEventsPage = currentPath === '/news-events'
-const isNewsSinglePage = currentPath.startsWith('/news/')
-const isAlumniPage = currentPath === '/alumni'
-const isContactPage = currentPath === '/contact'
-const isGalleryPage = currentPath === '/gallery'
-const isPrivacyPolicyPage = currentPath === '/privacy-policy'
-const isTermsConditionsPage = currentPath === '/terms-and-conditions'
-const isRefundPolicyPage = currentPath === '/refund-policy'
-const newsSlug = isNewsSinglePage
-  ? currentPath.replace('/news/', '').trim()
-  : ''
-const isCoursesPage = currentPath === '/courses'
-const isCourseDetailPage = currentPath.startsWith('/courses/')
-const courseSlug = isCourseDetailPage
-  ? currentPath.replace('/courses/', '').trim()
-  : ''
-const course = courseSlug ? getCourseBySlug(courseSlug) : undefined
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <PageShell>
-      {isAboutPage ? (
-        <AboutPage />
-      ) : isStudentLifePage ? (
-        <StudentLifePage />
-      ) : isCampusesPage ? (
-        <CampusesPage />
-      ) : isAlumniPage ? (
-        <AlumniPage />
-      ) : isContactPage ? (
-        <ContactPage />
-      ) : isGalleryPage ? (
-        <GalleryPage />
-      ) : isPrivacyPolicyPage ? (
-        <PrivacyPolicyPage />
-      ) : isTermsConditionsPage ? (
-        <TermsConditionsPage />
-      ) : isRefundPolicyPage ? (
-        <RefundPolicyPage />
-      ) : isNewsSinglePage && newsSlug ? (
-        <NewsSinglePage slug={newsSlug} />
-      ) : isNewsEventsPage ? (
-        <NewsEventsPage />
-      ) : isCoursesPage ? (
-        <CoursesPage />
-      ) : isCourseDetailPage && course ? (
-        <CourseDetailPage course={course} />
-      ) : isCourseDetailPage ? (
-        <CoursesPage />
-      ) : (
-        <App />
-      )}
-    </PageShell>
+    <BrowserRouter>
+      <PageShell>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/student-life" element={<StudentLifePage />} />
+          <Route path="/campuses" element={<CampusesPage />} />
+          <Route path="/alumni" element={<AlumniPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms-and-conditions" element={<TermsConditionsPage />} />
+          <Route path="/refund-policy" element={<RefundPolicyPage />} />
+          <Route path="/news-events" element={<NewsEventsPage />} />
+          <Route path="/news/:slug" element={<NewsSinglePage />} />
+          <Route path="/courses" element={<CoursesPage />} />
+          <Route path="/courses/:slug" element={<CourseDetailPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </PageShell>
+    </BrowserRouter>
   </StrictMode>,
 )

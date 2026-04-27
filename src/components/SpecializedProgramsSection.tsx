@@ -1,51 +1,23 @@
 import { ArrowUpRight } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
-import {
-  allCourses,
-  tabProgramTitles,
-  tabs,
-  type TabKey,
-} from '../data/courses'
-
-const programs = allCourses.map(({ slug, title, description, image }) => ({
-  slug,
-  title,
-  description,
-  image,
-}))
+import { tabs } from '../types/course'
+import type { TabKey } from '../types/course'
+import { useCourses } from '../hooks/useCourses'
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
 
 export function SpecializedProgramsSection() {
   const sectionRef = useRef<HTMLElement | null>(null)
   const sliderRef = useRef<HTMLDivElement | null>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' })
   const [activeTab, setActiveTab] = useState<TabKey>(tabs[0]!)
   const [canScrollPrev, setCanScrollPrev] = useState(false)
   const [canScrollNext, setCanScrollNext] = useState(false)
 
-  useEffect(() => {
-    const node = sectionRef.current
-    if (!node) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return
-        setIsVisible(true)
-        observer.disconnect()
-      },
-      { threshold: 0.18, rootMargin: '0px 0px -8% 0px' },
-    )
-
-    observer.observe(node)
-    return () => observer.disconnect()
-  }, [])
+  const { courses: filteredPrograms, loading } = useCourses(activeTab)
 
   const revealClass = (animationClass: string) =>
     isVisible ? animationClass : 'opacity-0'
-
-  const filteredPrograms = programs.filter((program) =>
-    tabProgramTitles[activeTab].includes(program.title),
-  )
 
   const updateScrollButtons = () => {
     const slider = sliderRef.current
@@ -170,38 +142,44 @@ export function SpecializedProgramsSection() {
           ref={sliderRef}
           className="mt-4 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {filteredPrograms.map((program, index) => (
-            <article
-              key={program.title}
-              data-program-card="true"
-              className={`${revealClass('animate-load-from-right')} flex min-w-[300px] max-w-[360px] flex-1 flex-col snap-start`}
-              style={{ '--delay': `${300 + index * 90}ms` } as CSSProperties}
-            >
-              <div className="overflow-hidden rounded-2xl bg-white shadow-sm shadow-black/5">
-                <img
-                  src={program.image}
-                  alt={program.title}
-                  className="h-52 w-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <div className="mt-4 flex  flex-1 flex-col rounded-2xl bg-white p-5 shadow-sm shadow-black/5">
-                <h3 className="text-2xl leading-tight font-semibold text-black">
-                  {program.title}
-                </h3>
-                <p className="mt-2 text-base leading-relaxed text-slate-600">
-                  {program.description}
-                </p>
-                <a
-                  href={`/courses/${program.slug}`}
-                  className="pt-3 inline-flex items-center  text-sm font-semibold text-vtrust-navy"
-                >
-                  View curriculum
-                  <ArrowUpRight className="size-4" aria-hidden />
-                </a>
-              </div>
-            </article>
-          ))}
+          {loading ? (
+             <div className="flex w-full h-52 items-center justify-center">
+              <div className="size-8 animate-spin rounded-full border-4 border-[#0D2B6B] border-t-transparent" />
+            </div>
+          ) : (
+            filteredPrograms.map((program, index) => (
+              <article
+                key={program.title}
+                data-program-card="true"
+                className={`${revealClass('animate-load-from-right')} flex min-w-[300px] max-w-[360px] flex-1 flex-col snap-start`}
+                style={{ '--delay': `${300 + index * 90}ms` } as CSSProperties}
+              >
+                <div className="overflow-hidden rounded-2xl bg-white shadow-sm shadow-black/5">
+                  <img
+                    src={program.image}
+                    alt={program.title}
+                    className="h-52 w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="mt-4 flex  flex-1 flex-col rounded-2xl bg-white p-5 shadow-sm shadow-black/5">
+                  <h3 className="text-2xl leading-tight font-semibold text-black">
+                    {program.title}
+                  </h3>
+                  <p className="mt-2 text-base leading-relaxed text-slate-600">
+                    {program.description}
+                  </p>
+                  <a
+                    href={`/courses/${program.slug}`}
+                    className="pt-3 inline-flex items-center  text-sm font-semibold text-vtrust-navy"
+                  >
+                    View curriculum
+                    <ArrowUpRight className="size-4" aria-hidden />
+                  </a>
+                </div>
+              </article>
+            ))
+          )}
         </div>
       </div>
     </section>
