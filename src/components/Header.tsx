@@ -124,8 +124,8 @@ export function Header({ className }: HeaderProps) {
                       <a
                         key={item.label}
                         href={item.href}
-                        target={item.external ? '_blank' : undefined}
-                        rel={item.external ? 'noopener noreferrer' : undefined}
+                        target={'external' in item && item.external ? '_blank' : undefined}
+                        rel={'external' in item && item.external ? 'noopener noreferrer' : undefined}
                         onClick={() => setActiveLink(item.label)}
                         className={[
                           'block rounded-lg px-3 py-2 text-sm font-medium transition-colors',
@@ -211,8 +211,8 @@ export function Header({ className }: HeaderProps) {
                             <a
                               key={item.label}
                               href={item.href}
-                              target={item.external ? '_blank' : undefined}
-                              rel={item.external ? 'noopener noreferrer' : undefined}
+                              target={'external' in item && item.external ? '_blank' : undefined}
+                              rel={'external' in item && item.external ? 'noopener noreferrer' : undefined}
                               onClick={() => {
                                 setActiveLink(item.label)
                                 setMobileOpen(false)

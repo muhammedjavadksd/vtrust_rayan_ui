@@ -11,6 +11,20 @@ export default function ContactPage() {
   const { submitted, handleSubmit } = useContactForm()
   const { activeId, activeCampus, campuses, selectCampus } = useCampusSelector()
 
+  if (!activeCampus) {
+    return (
+      <div className="min-h-svh bg-white">
+        <Header />
+        <main className="flex items-center justify-center px-4 pb-10 pt-2 md:px-6 md:pb-14 lg:px-10">
+          <p className="text-slate-600">Loading campus information...</p>
+        </main>
+        <Footer />
+        <EnquiryFormModal />
+        <MobileAdmissionButton />
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-svh bg-white">
       <Header />

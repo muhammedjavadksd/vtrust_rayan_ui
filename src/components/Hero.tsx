@@ -15,6 +15,8 @@ export function Hero() {
     window.dispatchEvent(new CustomEvent('vtrust:open-enquiry-modal'))
   }
 
+console.log("new build");
+
   const goToSlide = useCallback((index: number) => {
     if (isTransitioning) return
     setIsTransitioning(true)

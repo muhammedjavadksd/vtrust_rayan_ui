@@ -72,7 +72,7 @@ export function JourneySection() {
             style={{ '--delay': '170ms' } as CSSProperties}
           >
             <img
-              src="/company/group.jpeg"
+              src="/company/LUC00343.JPG"
               alt="Medical team group"
               className="h-[280px] w-full object-cover md:h-[330px]"
               loading="lazy"

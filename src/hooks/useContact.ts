@@ -25,7 +25,7 @@ export function useCampusSelector(initialCampusId?: string) {
   const { branches, loading, error } = useBranches()
   const [activeId, setActiveId] = useState(initialCampusId || branches[0]?.id || '')
 
-  const activeCampus = branches.find((c: BranchAddress) => c.id === activeId) ?? branches[0]
+  const activeCampus: BranchAddress | null = branches.find((c: BranchAddress) => c.id === activeId) ?? branches[0] ?? null
 
   const selectCampus = (campusId: string) => {
     setActiveId(campusId)
