@@ -77,8 +77,8 @@ export function CompanySection() {
             </p>
 
             <p>
-              The education network formally expanded from Balussery in 2021 and
-              later grew across Koyilandy, Thamarassery, and Vadakara with
+The education network formally expanded in 2021 and
+later grew across Calicut and Mysore with
               recognized affiliations including University of Mysore, BESTIU,
               Glocal University, and NCVRT.
             </p>

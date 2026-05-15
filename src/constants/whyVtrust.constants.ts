@@ -2,7 +2,7 @@ import { GraduationCap, Microscope, Stethoscope } from 'lucide-react'
 
 export const stats = [
   { value: 'Since 2021', label: 'Foundation management education' },
-  { value: '5 Centres', label: 'Calicut, Koyilandy, Vadakara, Nadapuram,Mysoru' },
+  { value: '2 Centres', label: 'Calicut, Mysore' },
 ] as const
 
 export const highlights = [

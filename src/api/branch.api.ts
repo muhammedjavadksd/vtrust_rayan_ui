@@ -24,6 +24,22 @@ export type BranchAddress = {
   email: string
 }
 
+function toEmbedUrl(url: string): string {
+  if (!url) return ''
+  if (url.includes('/maps/embed')) return url
+  try {
+    const u = new URL(url)
+    if (u.hostname.includes('google') && u.pathname.includes('/maps/place/')) {
+      const place = decodeURIComponent(u.pathname.replace('/maps/place/', ''))
+      return `https://www.google.com/maps?q=${encodeURIComponent(place)}&output=embed`
+    }
+    if (u.searchParams.has('q')) {
+      return `https://www.google.com/maps?q=${u.searchParams.get('q')}&output=embed`
+    }
+  } catch { /* ignore */ }
+  return url
+}
+
 export async function getBranches(signal?: AbortSignal): Promise<BranchAddress[]> {
   const response = await api.get('/branches/all', {
     signal,
@@ -43,7 +59,7 @@ export async function getBranches(signal?: AbortSignal): Promise<BranchAddress[]
       phone: item.phoneNumbers[0] || '',
       phoneNumbers: item.phoneNumbers.join(', '),
       mapUrl: item.mapUrl,
-      mapEmbedSrc: item.mapUrl, // Mapping mapUrl to mapEmbedSrc for now as a fallback
+      mapEmbedSrc: toEmbedUrl(item.mapUrl),
       email: item.email,
     }))
 }

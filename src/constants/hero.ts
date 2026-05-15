@@ -36,7 +36,7 @@ export const bannerContents: BannerContent[] = [
     title: 'Shaping Future',
     titleAccent: 'Career',
     titleSuffix: 'Professionals',
-    description: 'VTRUST was founded in 2021 and expanded from Balussery in 2021 across Koyilandy, Thamarassery, and Vadakara with practical professional education, strong affiliations, and internship-first learning.',
+    description: 'VTRUST was founded in 2021 and expanded across Calicut and Mysore with practical professional education, strong affiliations, and internship-first learning.',
     primaryCta: {
       text: 'Explore Programs',
       href: '/courses',

@@ -79,8 +79,8 @@ export default function AboutPage() {
                 skill-based education pathways.
               </p>
               <p>
-                The education network formally expanded from Balussery in 2021
-                and later grew across Koyilandy, Thamarassery, and Vadakara with
+The education network formally expanded in 2021
+and later grew across Calicut and Mysore with
                 recognized affiliations including University of Mysore, BESTIU,
                 Glocal University, and NCVRT.
               </p>
@@ -120,8 +120,8 @@ export default function AboutPage() {
                 <p className="mt-1 text-sm text-slate-600">Institution foundation with healthcare focus</p>
               </div>
               <div className="rounded-xl border border-slate-200 bg-white p-4">
-                <p className="text-2xl font-semibold text-[#0D2B6B]">4 Centres</p>
-                <p className="mt-1 text-sm text-slate-600">Thamarassery, Balussery, Koyilandy, Vadakara</p>
+                <p className="text-2xl font-semibold text-[#0D2B6B]">2 Centres</p>
+                <p className="mt-1 text-sm text-slate-600">Calicut and Mysore</p>
               </div>
             </div>
           </div>
@@ -301,7 +301,7 @@ export default function AboutPage() {
                   Expansion phase
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  Expanded operations to Koyilandy, Thamarassery, and Vadakara while
+                  Expanded operations to Calicut and Mysore while
                   broadening programme options in optometry, nursing, and
                   allied healthcare domains.
                 </p>

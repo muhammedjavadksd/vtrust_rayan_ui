@@ -48,7 +48,7 @@ export default function CampusesPage() {
                 className={`${revealClass('animate-load')} mt-4 max-w-2xl text-base leading-relaxed text-white/90 sm:text-lg`}
                 style={{ '--delay': '220ms' } as CSSProperties}
               >
-                Geographic reach across Thamarassery, Koyilandy, Balussery, and Vadakara — learn
+                Geographic reach across Calicut and Mysore — learn
                 closer to home, with the same clinical standards and student support.
               </p>
 
@@ -121,7 +121,7 @@ export default function CampusesPage() {
                     : 'bg-white text-slate-700 shadow-sm ring-1 ring-slate-200/80 hover:text-[#0D2B6B]',
                 ].join(' ')}
               >
-                {c.location?.[0] || c.name}
+                {c.name}
               </button>
             ))}
           </div>
@@ -135,7 +135,7 @@ export default function CampusesPage() {
             <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm">
               <iframe
                 title={`Map of ${activeCampus.name}`}
-                src={activeCampus.mapUrl}
+                src={activeCampus.mapEmbedSrc}
                 className="aspect-4/3 min-h-[280px] w-full border-0 lg:aspect-auto lg:min-h-[400px]"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

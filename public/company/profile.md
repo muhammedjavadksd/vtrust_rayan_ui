@@ -95,7 +95,7 @@ This is a comprehensive, "no-stone-left-unturned" breakdown of **VTrust Group of
 
 - **Phone:** 9400920 044
 - **Instagram/Socials:** @vtrustinstitutions
-- **Physical Presence:** Kozhikode, Balussery, Koyilandy, Mysuru.
+- **Physical Presence:** Calicut and Mysore.
 
 ---
 

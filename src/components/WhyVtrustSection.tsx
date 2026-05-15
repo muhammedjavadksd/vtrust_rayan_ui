@@ -54,8 +54,7 @@ export function WhyVtrustSection() {
               className={`${revealClass('animate-load')} max-w-xl text-lg leading-relaxed text-slate-600`}
               style={{ '--delay': '180ms' } as CSSProperties}
             >
-              VTRUST began in 2021 at Balussery and has expanded to Koyilandy,
-              Thamarassery, and Vadakara with a practical, career-focused
+VTRUST began in 2021 and has expanded to Calicut and Mysore with a practical, career-focused
               professional education model.
             </p>
           </div>

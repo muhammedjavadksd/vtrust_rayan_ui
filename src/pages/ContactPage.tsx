@@ -8,28 +8,27 @@ import { useContactPageAnimations } from '../hooks/useContactPageAnimations'
 
 export default function ContactPage() {
   const { mainRef, revealClass } = useContactPageAnimations()
-  const { submitted, handleSubmit } = useContactForm()
-  const { activeId, activeCampus, campuses, selectCampus } = useCampusSelector()
-
-  if (!activeCampus) {
-    return (
-      <div className="min-h-svh bg-white">
-        <Header />
-        <main className="flex items-center justify-center px-4 pb-10 pt-2 md:px-6 md:pb-14 lg:px-10">
-          <p className="text-slate-600">Loading campus information...</p>
-        </main>
-        <Footer />
-        <EnquiryFormModal />
-        <MobileAdmissionButton />
-      </div>
-    )
-  }
+  const { fields, errors, submitted, loading, submitError, handleChange, handleSubmit, resetForm } = useContactForm()
+  const { activeId, activeCampus, campuses, selectCampus, loading: campusLoading, error: campusError } = useCampusSelector()
 
   return (
     <div className="min-h-svh bg-white">
       <Header />
       <main ref={mainRef} className="px-4 pb-10 pt-2 md:px-6 md:pb-14 lg:px-10">
-        <section className="mx-auto w-full max-w-[1400px]">
+        {campusLoading ? (
+          <div className="flex items-center justify-center">
+            <p className="text-slate-600">Loading campus information...</p>
+          </div>
+        ) : campusError ? (
+          <div className="flex items-center justify-center">
+            <p className="text-red-500">Failed to load campus information. Please try again later.</p>
+          </div>
+        ) : !activeCampus ? (
+          <div className="flex items-center justify-center">
+            <p className="text-slate-600">No campus information available.</p>
+          </div>
+        ) : (
+          <section className="mx-auto w-full max-w-[1400px]">
           <div className={`${revealClass('animate-load')} relative overflow-hidden rounded-2xl`}>
             <div
               className="absolute inset-0 bg-cover bg-center"
@@ -160,7 +159,7 @@ export default function ContactPage() {
                       Thank you for contacting us. Our representative will get back to you within 24 hours.
                     </p>
                     <button
-                      onClick={() => window.location.reload()}
+                      onClick={resetForm}
                       className="mt-8 rounded-xl bg-[#0D2B6B] px-8 py-3 text-sm font-bold text-white shadow-lg transition-all hover:opacity-90 active:scale-95"
                     >
                       Send Another Message
@@ -175,6 +174,12 @@ export default function ContactPage() {
                       </p>
                     </div>
 
+                    {submitError && (
+                      <div className="mb-6 rounded-lg bg-red-50 px-4 py-3 text-sm font-semibold text-red-600">
+                        {submitError}
+                      </div>
+                    )}
+
                     <form onSubmit={handleSubmit} className="grid gap-5 sm:grid-cols-2">
                       <div className="space-y-1.5">
                         <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -182,10 +187,14 @@ export default function ContactPage() {
                         </label>
                         <input
                           type="text"
-                          required
+                          value={fields.fullName}
+                          onChange={(e) => handleChange('fullName', e.target.value)}
                           placeholder="Your Name"
                           className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none transition-all focus:border-[#0D2B6B] focus:bg-white focus:ring-4 focus:ring-[#0D2B6B]/5"
                         />
+                        {errors.fullName && (
+                          <p className="text-xs text-red-500">{errors.fullName}</p>
+                        )}
                       </div>
                       <div className="space-y-1.5">
                         <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -193,10 +202,14 @@ export default function ContactPage() {
                         </label>
                         <input
                           type="email"
-                          required
+                          value={fields.email}
+                          onChange={(e) => handleChange('email', e.target.value)}
                           placeholder="name@example.com"
                           className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none transition-all focus:border-[#0D2B6B] focus:bg-white focus:ring-4 focus:ring-[#0D2B6B]/5"
                         />
+                        {errors.email && (
+                          <p className="text-xs text-red-500">{errors.email}</p>
+                        )}
                       </div>
                       <div className="space-y-1.5">
                         <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -204,16 +217,24 @@ export default function ContactPage() {
                         </label>
                         <input
                           type="tel"
-                          required
+                          value={fields.phone}
+                          onChange={(e) => handleChange('phone', e.target.value)}
                           placeholder="+91"
                           className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none transition-all focus:border-[#0D2B6B] focus:bg-white focus:ring-4 focus:ring-[#0D2B6B]/5"
                         />
+                        {errors.phone && (
+                          <p className="text-xs text-red-500">{errors.phone}</p>
+                        )}
                       </div>
                       <div className="space-y-1.5">
                         <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
                           Subject
                         </label>
-                        <select className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none transition-all focus:border-[#0D2B6B] focus:bg-white focus:ring-4 focus:ring-[#0D2B6B]/5">
+                        <select
+                          value={fields.subject}
+                          onChange={(e) => handleChange('subject', e.target.value)}
+                          className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none transition-all focus:border-[#0D2B6B] focus:bg-white focus:ring-4 focus:ring-[#0D2B6B]/5"
+                        >
                           <option>Admissions Inquiry</option>
                           <option>General Question</option>
                           <option>Career Guidance</option>
@@ -225,17 +246,22 @@ export default function ContactPage() {
                           Message
                         </label>
                         <textarea
-                          required
+                          value={fields.message}
+                          onChange={(e) => handleChange('message', e.target.value)}
                           placeholder="How can we help you?"
                           className="min-h-[150px] w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition-all focus:border-[#0D2B6B] focus:bg-white focus:ring-4 focus:ring-[#0D2B6B]/5"
                         />
+                        {errors.message && (
+                          <p className="text-xs text-red-500">{errors.message}</p>
+                        )}
                       </div>
                       <button
                         type="submit"
-                        className="group relative mt-2 flex h-14 items-center justify-center gap-3 overflow-hidden rounded-xl bg-[#0D2B6B] font-bold text-white shadow-lg transition-all hover:shadow-[#0D2B6B]/20 active:scale-[0.98] sm:col-span-2"
+                        disabled={loading}
+                        className="group relative mt-2 flex h-14 items-center justify-center gap-3 overflow-hidden rounded-xl bg-[#0D2B6B] font-bold text-white shadow-lg transition-all hover:shadow-[#0D2B6B]/20 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed sm:col-span-2"
                       >
-                        <span className="relative z-10">Send Message</span>
-                        <div className="flex h-1.5 w-1.5 rounded-full bg-white transition-all group-hover:scale-[3]" />
+                        <span className="relative z-10">{loading ? 'Sending...' : 'Send Message'}</span>
+                        {!loading && <div className="flex h-1.5 w-1.5 rounded-full bg-white transition-all group-hover:scale-[3]" />}
                       </button>
                     </form>
                   </>
@@ -244,6 +270,7 @@ export default function ContactPage() {
             </div>
           </div>
         </section>
+      )}
       </main>
       <Footer />
       <EnquiryFormModal />

@@ -6,6 +6,21 @@ export interface ContactFormData {
   message: string
 }
 
+export interface ContactFormFields {
+  fullName: string
+  email: string
+  phone: string
+  subject: string
+  message: string
+}
+
+export interface ContactFormErrors {
+  fullName?: string
+  email?: string
+  phone?: string
+  message?: string
+}
+
 export interface Campus {
   id: string
   name: string

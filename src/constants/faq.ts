@@ -27,7 +27,7 @@ export const faqs: FAQItem[] = [
   {
     question: 'Where are VTRUST campuses located in Kerala and Karnataka?',
     answer:
-      'VTRUST has presence in Thamarassery, Balussery, Koyilandy, and Vadakara to support students across key regions.',
+      'VTRUST has presence in Calicut and Mysore to support students across key regions.',
   },
   {
     question: 'How can I apply for admission to VTRUST courses?',

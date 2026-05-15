@@ -87,7 +87,7 @@ console.log("new build");
                 >
                   <span className="block">{content.title}</span>
                   <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-2 sm:mt-2">
-                    <span className="inline-block rounded-lg bg-hero-teal px-3 py-1.5 shadow-sm sm:px-4 sm:py-2">
+                    <span className="inline-block rounded-lg bg-[#1D3557] px-3 py-1.5 shadow-sm sm:px-4 sm:py-2">
                       {content.titleAccent}
                     </span>
                     <span className="text-white">{content.titleSuffix}</span>
@@ -107,7 +107,7 @@ console.log("new build");
                         href={content.descriptionLinks[0].href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="underline hover:text-hero-teal"
+                        className="underline hover:text-[#1D3557]"
                       >
                         {content.descriptionLinks[0].text}
                       </a>
@@ -116,7 +116,7 @@ console.log("new build");
                         href={content.descriptionLinks[1].href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="underline hover:text-hero-teal"
+                        className="underline hover:text-[#1D3557]"
                       >
                         {content.descriptionLinks[1].text}
                       </a>
@@ -132,7 +132,7 @@ console.log("new build");
                   }`}>
                   <a
                     href={content.primaryCta.href}
-                    className="animate-load inline-flex items-center justify-center gap-2 rounded-full bg-hero-teal px-6 py-3 text-sm font-semibold text-white shadow-md transition-opacity hover:opacity-95 sm:text-base"
+                    className="animate-load inline-flex items-center justify-center gap-2 rounded-full bg-[#1D3557] px-6 py-3 text-sm font-semibold text-white shadow-md transition-opacity hover:opacity-95 sm:text-base"
                     style={{ '--delay': '320ms' } as CSSProperties}
                   >
                     {content.primaryCta.text}
@@ -160,7 +160,7 @@ console.log("new build");
                   style={{ '--delay': `${430 + index * 80}ms` } as CSSProperties}
                 >
                   <Icon
-                    className="size-5 shrink-0 text-hero-teal sm:size-6"
+                    className="size-5 shrink-0 text-[#1D3557] sm:size-6"
                     strokeWidth={2}
                     aria-hidden
                   />
@@ -178,7 +178,7 @@ console.log("new build");
                 onClick={() => goToSlide(index)}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   index === currentSlide
-                    ? 'w-8 bg-hero-teal'
+                    ? 'w-8 bg-[#1D3557]'
                     : 'w-2 bg-white/50 hover:bg-white/80'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}

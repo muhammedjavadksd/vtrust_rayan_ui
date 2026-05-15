@@ -63,7 +63,7 @@ export function VisionMissionSection() {
           <div className="absolute inset-0 bg-gradient-to-t from-[#0D2B6B]/60 to-transparent" />
           <div className="absolute bottom-4 left-4 right-4">
             <p className="text-xl font-semibold text-white">Building Tomorrow's Leaders</p>
-            <p className="mt-1 text-sm text-white/80">Since 2021 from Balussery, Kerala</p>
+            <p className="mt-1 text-sm text-white/80">Since 2021 from Calicut and Mysore</p>
           </div>
         </div>
       </div>
