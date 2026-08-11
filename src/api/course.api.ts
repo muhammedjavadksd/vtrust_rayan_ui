@@ -47,8 +47,10 @@ export async function getCourses(signal?: AbortSignal): Promise<CourseRecord[]> 
           : '/course/course_thumbnail/default.png',
       brochurePdf: undefined,
       category: normalizeCategory(item.type),
-      college: item.college ?? 'Unknown college',
-      university: item.university ?? 'Unknown university',
+      type: item.type ?? '',
+      name: item.name ?? '',
+      college: item.college ?? '',
+      university: item.university ?? '',
       fees: '—',
       admissionFee: '—',
       registrationFee: undefined,
@@ -63,8 +65,8 @@ export async function getCourses(signal?: AbortSignal): Promise<CourseRecord[]> 
         item.syllabus && typeof item.syllabus === 'string'
           ? item.syllabus.split(',').map((s) => s.trim())
           : [],
-      eligibility: item.eligibility ?? 'N/A',
-      duration: item.duration ?? 'N/A',
+      eligibility: item.eligibility ?? '',
+      duration: item.duration ?? '',
       careerOutcomes:
         item.careerOutcomes && typeof item.careerOutcomes === 'string'
           ? item.careerOutcomes.split(',').map((s) => s.trim())

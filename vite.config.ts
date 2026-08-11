@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://vtrustinstitutions.com',
+        target: 'https://vtrustinstitutions.com/api',
         changeOrigin: true,
       },
     },

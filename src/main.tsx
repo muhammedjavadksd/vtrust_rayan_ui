@@ -13,9 +13,7 @@ import NewsSinglePage from './pages/NewsSinglePage.tsx'
 import AlumniPage from './pages/AlumniPage.tsx'
 import ContactPage from './pages/ContactPage.tsx'
 import GalleryPage from './pages/GalleryPage.tsx'
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage.tsx'
-import TermsConditionsPage from './pages/TermsConditionsPage.tsx'
-import RefundPolicyPage from './pages/RefundPolicyPage.tsx'
+
 import { PageShell } from './components/PageShell.tsx'
 
 createRoot(document.getElementById('root')!).render(
@@ -30,9 +28,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/alumni" element={<AlumniPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-          <Route path="/terms-and-conditions" element={<TermsConditionsPage />} />
-          <Route path="/refund-policy" element={<RefundPolicyPage />} />
+    
           <Route path="/news-events" element={<NewsEventsPage />} />
           <Route path="/news/:slug" element={<NewsSinglePage />} />
           <Route path="/courses" element={<CoursesPage />} />

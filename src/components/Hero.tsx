@@ -3,55 +3,84 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react'
-import { useEffect, useState, useCallback, type CSSProperties } from 'react'
+import { useEffect, useState, useCallback, useMemo, type CSSProperties } from 'react'
 import { badges, bannerContents, BANNER_IMAGES } from '../constants/hero'
+import type { BannerContent } from '../constants/hero'
+import { useBanners } from '../hooks/useBanners'
+
+type HeroSlide = BannerContent & { image: string }
 
 export function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const totalSlides = BANNER_IMAGES.length
+  const { banners } = useBanners()
+
+  const slides: HeroSlide[] = useMemo(() => {
+    if (banners.length > 0) {
+      return banners.map((banner) => ({
+        title: banner.heading,
+        titleAccent: banner.highlightedText,
+        titleSuffix: '',
+        description: banner.subtext,
+        primaryCta: { text: banner.primaryButtonText, href: '/courses' },
+        secondaryCta: { text: banner.secondaryButtonText },
+        image: banner.image,
+      }))
+    }
+    return bannerContents.map((content, index) => ({
+      ...content,
+      image: BANNER_IMAGES[index % BANNER_IMAGES.length],
+    }))
+  }, [banners])
+
+  const totalSlides = slides.length
 
   const openEnquiryModal = () => {
     window.dispatchEvent(new CustomEvent('vtrust:open-enquiry-modal'))
   }
 
-console.log("new build");
-
   const goToSlide = useCallback((index: number) => {
-    if (isTransitioning) return
+    if (isTransitioning || totalSlides === 0) return
     setIsTransitioning(true)
-    setCurrentSlide(index)
+    setCurrentSlide(((index % totalSlides) + totalSlides) % totalSlides)
     setTimeout(() => setIsTransitioning(false), 500)
-  }, [isTransitioning])
+  }, [isTransitioning, totalSlides])
 
   const nextSlide = useCallback(() => {
+    if (totalSlides === 0) return
     goToSlide((currentSlide + 1) % totalSlides)
   }, [currentSlide, goToSlide, totalSlides])
 
   const prevSlide = useCallback(() => {
+    if (totalSlides === 0) return
     goToSlide((currentSlide - 1 + totalSlides) % totalSlides)
   }, [currentSlide, goToSlide, totalSlides])
 
   useEffect(() => {
+    if (totalSlides === 0) return
     const interval = setInterval(() => {
       nextSlide()
     }, 6000)
     return () => clearInterval(interval)
-  }, [nextSlide])
+  }, [nextSlide, totalSlides])
 
-  const content = bannerContents[currentSlide]
+  const content = totalSlides > 0 ? slides[currentSlide % totalSlides] : undefined
+
+  if (!content) {
+    return null
+  }
 
   return (
     <section className="flex min-h-[calc(100svh-6.5rem-50px)] flex-col pt-0 pb-4 md:min-h-[calc(100svh-7rem-50px)] md:pb-6 lg:pt-0 lg:min-h-[calc(100svh-5.5rem-50px)]">
       <div className="mx-auto w-full max-w-[1400px] px-4 md:px-6 lg:px-8">
         <div className="relative flex h-full min-h-[calc(100svh-7.5rem-50px)] w-full flex-col overflow-hidden rounded-2xl shadow-lg shadow-black/10 md:min-h-[calc(100svh-8rem-50px)] lg:min-h-[calc(100svh-6.5rem-50px)]">
-          {BANNER_IMAGES.map((image, index) => (
+          {slides.map((slide, index) => (
             <div
-              key={image}
+              key={slide.image}
               className={`absolute inset-0 bg-cover bg-center transition-opacity duration-500 ease-in-out ${
                 index === currentSlide ? 'opacity-100' : 'opacity-0'
               }`}
-              style={{ backgroundImage: `url('${image}')` }}
+              style={{ backgroundImage: `url('${slide.image}')` }}
               role="img"
               aria-hidden={index !== currentSlide}
             />
@@ -103,23 +132,29 @@ console.log("new build");
                   {content.descriptionLinks && content.descriptionLinks.length > 0 ? (
                     <>
                       {'Join thousands of successful graduates who have built rewarding careers. Affiliated with top universities like '}
-                      <a
-                        href={content.descriptionLinks[0].href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline hover:text-[#1D3557]"
-                      >
-                        {content.descriptionLinks[0].text}
-                      </a>
-                      {' & '}
-                      <a
-                        href={content.descriptionLinks[1].href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline hover:text-[#1D3557]"
-                      >
-                        {content.descriptionLinks[1].text}
-                      </a>
+                      {content.descriptionLinks[0]?.href ? (
+                        <a
+                          href={content.descriptionLinks[0].href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline hover:text-[#1D3557]"
+                        >
+                          {content.descriptionLinks[0].text}
+                        </a>
+                      ) : null}
+                      {content.descriptionLinks[1]?.href ? (
+                        <>
+                          {' & '}
+                          <a
+                            href={content.descriptionLinks[1].href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline hover:text-[#1D3557]"
+                          >
+                            {content.descriptionLinks[1].text}
+                          </a>
+                        </>
+                      ) : null}
                       {' ensuring quality education and recognized certifications.'}
                     </>
                   ) : (
@@ -131,7 +166,7 @@ console.log("new build");
                     isTransitioning ? 'translate-x-4 opacity-0' : 'translate-x-0 opacity-100'
                   }`}>
                   <a
-                    href={content.primaryCta.href}
+                    href="/courses"
                     className="animate-load inline-flex items-center justify-center gap-2 rounded-full bg-[#1D3557] px-6 py-3 text-sm font-semibold text-white shadow-md transition-opacity hover:opacity-95 sm:text-base"
                     style={{ '--delay': '320ms' } as CSSProperties}
                   >
@@ -171,7 +206,7 @@ console.log("new build");
           </div>
 
           <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-2 lg:bottom-6">
-            {BANNER_IMAGES.map((_, index) => (
+            {slides.map((_, index) => (
               <button
                 key={index}
                 type="button"

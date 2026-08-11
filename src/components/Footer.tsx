@@ -1,15 +1,121 @@
-import { MapPin, Phone } from 'lucide-react'
+import { CheckCircle2, MapPin, Phone } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useBranches } from '../hooks/useBranches'
 import { addresses } from '../constants/footer'
+import { submitAdmissionEnquiry } from '../api/enquiry.api'
 import { FacebookIcon } from './icons/FacebookIcon'
 import { InstagramIcon } from './icons/InstagramIcon'
 import { LinkedinIcon } from './icons/LinkedinIcon'
 import { YoutubeIcon } from './icons/YoutubeIcon'
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const PLACE_REGEX = /^[a-zA-Z\s]+$/
+const PHONE_DIGITS_REGEX = /^\d{10}$/
+
+const INITIAL_FORM = { place: '', email: '', phone: '' }
+const INITIAL_TOUCHED = { place: false, email: false, phone: false }
+
+type FormField = keyof typeof INITIAL_FORM
+type FormErrors = Partial<Record<FormField, string>>
+
+function validatePlace(value: string): string {
+  const trimmed = value.trim()
+  if (!trimmed) return 'Place is required'
+  if (trimmed.length < 2) return 'Place must be at least 2 characters'
+  if (!PLACE_REGEX.test(trimmed)) {
+    return 'Place must contain only letters and spaces'
+  }
+  return ''
+}
+
+function validateEmail(value: string): string {
+  const trimmed = value.trim()
+  if (!trimmed) return 'Email is required'
+  if (!EMAIL_REGEX.test(trimmed)) return 'Please enter a valid email'
+  return ''
+}
+
+function validatePhone(value: string): string {
+  const stripped = value.trim().replace(/[\s-]/g, '')
+  if (!stripped) return 'Phone number is required'
+  const digits = stripped.replace(/^\+91/, '')
+  if (!PHONE_DIGITS_REGEX.test(digits)) {
+    return 'Phone number must be 10 digits'
+  }
+  return ''
+}
+
+function validateForm(form: typeof INITIAL_FORM): FormErrors {
+  return {
+    place: validatePlace(form.place),
+    email: validateEmail(form.email),
+    phone: validatePhone(form.phone),
+  }
+}
+
 export function Footer() {
-  const [email, setEmail] = useState('')
+  const [form, setForm] = useState(INITIAL_FORM)
+  const [touched, setTouched] = useState(INITIAL_TOUCHED)
+  const [submitAttempted, setSubmitAttempted] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const { branches } = useBranches()
+
+  const errors = useMemo(() => validateForm(form), [form])
+  const hasErrors = Object.values(errors).some(Boolean)
+
+  const showErrorFor = (field: FormField) =>
+    (touched[field] || submitAttempted) && errors[field]
+
+  const handleChange = (field: FormField, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const handleBlur = (field: FormField) => {
+    setTouched((prev) => ({ ...prev, [field]: true }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setSubmitAttempted(true)
+    setSubmitError(null)
+
+    if (hasErrors) return
+
+    setLoading(true)
+    try {
+      await submitAdmissionEnquiry({
+        fullName: `Enquiry from ${form.place.trim()}`,
+        email: form.email.trim(),
+        phone: form.phone.trim().replace(/[\s-]/g, ''),
+        message: 'Quick enquiry submitted from website footer.',
+        place: form.place.trim(),
+      })
+      setSubmitted(true)
+      setForm(INITIAL_FORM)
+      setTouched(INITIAL_TOUCHED)
+      setSubmitAttempted(false)
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : 'Failed to send enquiry'
+      setSubmitError(message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const inputClass = (field: FormField) => {
+    const errorShown = Boolean(showErrorFor(field))
+    const validShown =
+      (touched[field] || submitAttempted) && Boolean(errors[field] === '')
+    const borderClass = errorShown
+      ? 'border-red-500'
+      : validShown
+        ? 'border-green-500'
+        : 'border-white/20'
+    return `h-12 w-full rounded-xl border ${borderClass} bg-white px-6 pr-12 text-base text-slate-900 outline-none ring-0 placeholder:text-slate-400 focus:border-hero-teal`
+  }
 
   const quickLinks = useMemo(
     () => [
@@ -129,26 +235,115 @@ export function Footer() {
             <p className="text-sm text-white/75">
               Share your details for admissions and course-related questions.
             </p>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault()
-              }}
-              className="flex flex-col gap-4"
-            >
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter Email"
-                type="email"
-                className="h-12 w-full rounded-xl border border-white/20 bg-white px-6 text-base text-slate-900 outline-none ring-0 placeholder:text-slate-400 focus:border-hero-teal"
-              />
-              <button
-                type="submit"
-                className="h-14 w-full rounded-xl bg-hero-teal px-6 text-2xl font-semibold text-white shadow-sm transition-opacity hover:opacity-95"
+            {submitted ? (
+              <div className="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white">
+                Thanks! Your enquiry has been submitted. Our admissions team will
+                contact you shortly.
+              </div>
+            ) : (
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-4"
+                noValidate
               >
-                Submit
-              </button>
-            </form>
+                {submitError && (
+                  <p className="text-sm font-semibold text-red-300">
+                    {submitError}
+                  </p>
+                )}
+                <div className="space-y-1">
+                  <div className="relative">
+                    <input
+                      id="footer-place"
+                      value={form.place}
+                      onChange={(e) => handleChange('place', e.target.value)}
+                      onBlur={() => handleBlur('place')}
+                      placeholder="Enter your place/location"
+                      type="text"
+                      aria-invalid={Boolean(showErrorFor('place'))}
+                      aria-describedby={
+                        showErrorFor('place') ? 'footer-place-error' : undefined
+                      }
+                      className={inputClass('place')}
+                    />
+                    {touched.place && !errors.place && (
+                      <CheckCircle2
+                        className="absolute right-4 top-1/2 size-5 -translate-y-1/2 text-green-500"
+                        aria-hidden
+                      />
+                    )}
+                  </div>
+                  {showErrorFor('place') && (
+                    <p id="footer-place-error" className="text-xs text-red-300">
+                      {errors.place}
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-1">
+                  <div className="relative">
+                    <input
+                      id="footer-email"
+                      value={form.email}
+                      onChange={(e) => handleChange('email', e.target.value)}
+                      onBlur={() => handleBlur('email')}
+                      placeholder="Enter your email"
+                      type="email"
+                      aria-invalid={Boolean(showErrorFor('email'))}
+                      aria-describedby={
+                        showErrorFor('email') ? 'footer-email-error' : undefined
+                      }
+                      className={inputClass('email')}
+                    />
+                    {touched.email && !errors.email && (
+                      <CheckCircle2
+                        className="absolute right-4 top-1/2 size-5 -translate-y-1/2 text-green-500"
+                        aria-hidden
+                      />
+                    )}
+                  </div>
+                  {showErrorFor('email') && (
+                    <p id="footer-email-error" className="text-xs text-red-300">
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-1">
+                  <div className="relative">
+                    <input
+                      id="footer-phone"
+                      value={form.phone}
+                      onChange={(e) => handleChange('phone', e.target.value)}
+                      onBlur={() => handleBlur('phone')}
+                      placeholder="Enter your phone number"
+                      type="tel"
+                      aria-invalid={Boolean(showErrorFor('phone'))}
+                      aria-describedby={
+                        showErrorFor('phone') ? 'footer-phone-error' : undefined
+                      }
+                      className={inputClass('phone')}
+                    />
+                    {touched.phone && !errors.phone && (
+                      <CheckCircle2
+                        className="absolute right-4 top-1/2 size-5 -translate-y-1/2 text-green-500"
+                        aria-hidden
+                      />
+                    )}
+                  </div>
+                  {showErrorFor('phone') && (
+                    <p id="footer-phone-error" className="text-xs text-red-300">
+                      {errors.phone}
+                    </p>
+                  )}
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading || hasErrors}
+                  className="h-14 w-full rounded-xl bg-hero-teal px-6 text-2xl font-semibold text-white shadow-sm transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {loading ? 'Submitting...' : 'Submit'}
+                </button>
+              </form>
+            )}
           </div>
         </div>
 

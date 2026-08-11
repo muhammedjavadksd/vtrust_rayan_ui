@@ -100,15 +100,41 @@ export function useContactForm() {
   }
 }
 
+// Order in which campus tabs should be displayed.
+// Anything not listed here keeps its original relative order and is appended at the end.
+const CAMPUS_DISPLAY_ORDER = ['kozhikode', 'mysore']
+
+function sortCampuses(branches: BranchAddress[]): BranchAddress[] {
+  return [...branches].sort((a, b) => {
+    const aName = a.name?.toLowerCase() ?? ''
+    const bName = b.name?.toLowerCase() ?? ''
+
+    const aIndex = CAMPUS_DISPLAY_ORDER.findIndex((key) => aName.includes(key))
+    const bIndex = CAMPUS_DISPLAY_ORDER.findIndex((key) => bName.includes(key))
+
+    const aRank = aIndex === -1 ? CAMPUS_DISPLAY_ORDER.length : aIndex
+    const bRank = bIndex === -1 ? CAMPUS_DISPLAY_ORDER.length : bIndex
+
+    return aRank - bRank
+  })
+}
+
 export function useCampusSelector(initialCampusId?: string) {
   const { branches, loading, error } = useBranches()
   const [userSelectedId, setUserSelectedId] = useState<string | null>(null)
 
-  const activeId = userSelectedId ?? initialCampusId ?? branches[0]?.id ?? ''
+  const campuses = sortCampuses(branches)
+
+  const defaultCampus =
+    campuses.find((c: BranchAddress) =>
+      c.name?.toLowerCase().includes('kozhikode')
+    ) ?? campuses[0]
+
+  const activeId = userSelectedId ?? initialCampusId ?? defaultCampus?.id ?? ''
 
   const activeCampus: BranchAddress | null =
-    branches.find((c: BranchAddress) => c.id === activeId) ??
-    branches[0] ??
+    campuses.find((c: BranchAddress) => c.id === activeId) ??
+    campuses[0] ??
     null
 
   const selectCampus = (campusId: string) => {
@@ -118,7 +144,7 @@ export function useCampusSelector(initialCampusId?: string) {
   return {
     activeId,
     activeCampus,
-    campuses: branches,
+    campuses,
     selectCampus,
     loading,
     error,

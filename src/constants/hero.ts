@@ -1,11 +1,10 @@
 import {
-  CircleCheck,
   GraduationCap,
   Landmark,
 } from 'lucide-react'
 
 export const badges = [
-  { icon: CircleCheck, label: 'NCVRT Certified' },
+  // { icon: CircleCheck, label: 'NCVRT Certified' },
   { icon: GraduationCap, label: 'UGC Approved' },
   { icon: Landmark, label: 'University Affiliations' },
 ] as const
@@ -33,10 +32,11 @@ export interface BannerContent {
 
 export const bannerContents: BannerContent[] = [
   {
-    title: 'Shaping Future',
-    titleAccent: 'Career',
-    titleSuffix: 'Professionals',
-    description: 'VTRUST was founded in 2021 and expanded across Calicut and Mysore with practical professional education, strong affiliations, and internship-first learning.',
+    title: 'Discover Our',
+    titleAccent: 'Optometry',
+    titleSuffix: 'Programs',
+    description:
+      'VTRUST was founded in 2021 and expanded across Calicut and Mysore with practical professional education, strong affiliations, and internship-first learning.',
     primaryCta: {
       text: 'Explore Programs',
       href: '/courses',
@@ -46,29 +46,31 @@ export const bannerContents: BannerContent[] = [
     },
   },
   {
-    title: 'Excellence in',
-    titleAccent: 'Management',
-    titleSuffix: 'Education',
-    description: 'Our institution offers comprehensive professional programs designed to prepare students for real-world challenges with hands-on training and expert faculty guidance.',
+    title: 'Launch Your Career in',
+    titleAccent: 'M.Sc.',
+    titleSuffix: 'Optometry',
+    description:
+      'A postgraduate program designed for aspiring optometrists — offering advanced clinical training, research, and real-world patient care experience.',
     primaryCta: {
-      text: 'View Courses',
+      text: 'Explore M.Sc. Optometry',
       href: '/courses',
     },
     secondaryCta: {
-      text: 'Learn More',
+      text: 'Book Your Consultation',
     },
   },
   {
-    title: 'Your Journey to',
-    titleAccent: 'Management',
-    titleSuffix: 'Excellence',
-    description: 'Join thousands of successful graduates who have built rewarding careers. Affiliated with top universities ensuring quality education and recognized certifications.',
+    title: 'Begin Your Journey in',
+    titleAccent: 'B.Sc.',
+    titleSuffix: 'Optometry',
+    description:
+      'Join thousands of successful graduates who have built rewarding careers. Affiliated with top universities like Mysore University & BESTIU ensuring quality education and recognized certifications.',
     descriptionLinks: [
       { text: 'Mysore University', href: 'https://uni-mysore.ac.in' },
-      { text: 'BESTIU', href: 'https://www.bestiu.edu.in' },
+      // { text: 'BESTIU', href: 'https://www.bestiu.edu.in' },
     ],
     primaryCta: {
-      text: 'Start Application',
+      text: 'Explore B.Sc. Optometry',
       href: '/courses',
     },
     secondaryCta: {

@@ -13,7 +13,7 @@ export const institutionLinks = [
   { label: 'Alumni', href: '/alumni' },
   { label: 'Gallery', href: '/gallery' },
   { label: 'Mysore University', href: 'https://uni-mysore.ac.in', external: true },
-  { label: 'BESTIU', href: 'https://www.bestiu.edu.in', external: true },
+  // { label: 'BESTIU', href: 'https://www.bestiu.edu.in', external: true },
 ] as const
 
 export const LOGO_SRC = '/logo/logo.png'

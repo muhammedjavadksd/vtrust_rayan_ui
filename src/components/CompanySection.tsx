@@ -79,8 +79,8 @@ export function CompanySection() {
             <p>
 The education network formally expanded in 2021 and
 later grew across Calicut and Mysore with
-              recognized affiliations including University of Mysore, BESTIU,
-              Glocal University, and NCVRT.
+              recognized affiliations including University of Mysore,
+              and NCVRT.
             </p>
 
             <p>

@@ -13,6 +13,7 @@ export function EnquiryFormModal() {
 
   const {
     form,
+    errors,
     submitted,
     loading,
     error,
@@ -21,7 +22,8 @@ export function EnquiryFormModal() {
     resetForm,
   } = useEnquiryForm({
     fullName: '',
-    emailOrPhone: '',
+    email: '',
+    phone: '',
     course: courseTitles[0] ?? DEFAULT_COURSE,
     message: '',
   })
@@ -124,15 +126,36 @@ export function EnquiryFormModal() {
 
                   <label className="space-y-1">
                     <span className="text-sm font-semibold text-slate-800">
-                      Email or Phone
+                      Email
                     </span>
                     <input
-                      value={form.emailOrPhone}
-                      onChange={(e) => handleChange('emailOrPhone', e.target.value)}
-                      placeholder="+91 ... or email@..."
+                      type="email"
+                      value={form.email}
+                      onChange={(e) => handleChange('email', e.target.value)}
+                      placeholder="name@example.com"
                       className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-[#4DB6AC]"
                       required
                     />
+                    {errors.email && (
+                      <p className="text-xs text-red-500">{errors.email}</p>
+                    )}
+                  </label>
+
+                  <label className="space-y-1 sm:col-span-2">
+                    <span className="text-sm font-semibold text-slate-800">
+                      Phone
+                    </span>
+                    <input
+                      type="tel"
+                      value={form.phone}
+                      onChange={(e) => handleChange('phone', e.target.value)}
+                      placeholder="+91 ..."
+                      className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-[#4DB6AC]"
+                      required
+                    />
+                    {errors.phone && (
+                      <p className="text-xs text-red-500">{errors.phone}</p>
+                    )}
                   </label>
 
                   <label className="space-y-1 sm:col-span-2">

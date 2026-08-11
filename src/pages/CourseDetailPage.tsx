@@ -10,7 +10,7 @@ import { useCourse } from '../hooks/useCourse'
 export default function CourseDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const { course, loading, error } = useCourse(slug || '')
-  const { form, submitted, handleChange, handleSubmit } = useEnquiryForm()
+  const { form, errors, submitted, handleChange, handleSubmit } = useEnquiryForm()
 
   const onLocalSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -97,135 +97,174 @@ export default function CourseDetailPage() {
 
         <section className="mx-auto mt-10 grid w-full max-w-[1400px] gap-8 md:grid-cols-[0.58fr_0.42fr]">
           <div className="space-y-8">
-            <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-black/5 md:p-7">
-              <h2 className="text-2xl font-semibold text-[#0D2B6B]">
-                Course Overview
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-slate-600">
-                {course.CourseOverview}
-              </p>
-              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:col-span-2">
-                  <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
-                    College
+            {(course.overview ||
+              course.college ||
+              course.university ||
+              course.type ||
+              course.duration ||
+              course.eligibility) && (
+              <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-black/5 md:p-7">
+                <h2 className="text-2xl font-semibold text-[#0D2B6B]">
+                  Course Overview
+                </h2>
+                {course.overview && (
+                  <p className="mt-4 text-base leading-relaxed text-slate-600">
+                    {course.overview}
                   </p>
-                  <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
-                    {course.college}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:col-span-2">
-                  <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
-                    University / Affiliation
-                  </p>
-                  <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
-                    {course.university}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
-                    Category
-                  </p>
-                  <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
-                    {course.category}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
-                    Duration
-                  </p>
-                  <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
-                    {course.duration}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
-                    Eligibility
-                  </p>
-                  <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
-                    {course.eligibility}
-                  </p>
-                </div>
-              </div>
-            </article>
+                )}
+                {(course.college ||
+                  course.university ||
+                  course.type ||
+                  course.duration ||
+                  course.eligibility) && (
+                  <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    {course.college && (
+                      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:col-span-2">
+                        <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
+                          College
+                        </p>
+                        <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
+                          {course.college}
+                        </p>
+                      </div>
+                    )}
+                    {course.university && (
+                      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:col-span-2">
+                        <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
+                          University / Affiliation
+                        </p>
+                        <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
+                          {course.university}
+                        </p>
+                      </div>
+                    )}
+                    {course.type && (
+                      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
+                          Category
+                        </p>
+                        <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
+                          {course.type}
+                        </p>
+                      </div>
+                    )}
+                    {course.duration && (
+                      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
+                          Duration
+                        </p>
+                        <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
+                          {course.duration}
+                        </p>
+                      </div>
+                    )}
+                    {course.eligibility && (
+                      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
+                          Eligibility
+                        </p>
+                        <p className="mt-1 text-base font-semibold text-[#0D2B6B]">
+                          {course.eligibility}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </article>
+            )}
 
-            <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-black/5 md:p-7">
-              <h2 className="text-2xl font-semibold text-[#0D2B6B]">
-                Role of the Course
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-slate-600">
-                {course.courseRoll}
-              </p>
-            </article>
+            {course.roleOfCourse && (
+              <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-black/5 md:p-7">
+                <h2 className="text-2xl font-semibold text-[#0D2B6B]">
+                  Role of the Course
+                </h2>
+                <p className="mt-4 text-base leading-relaxed text-slate-600">
+                  {course.roleOfCourse}
+                </p>
+              </article>
+            )}
 
-            <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-black/5 md:p-7">
-              <h2 className="text-2xl font-semibold text-[#0D2B6B]">
-                Syllabus (Subject Breakdown)
-              </h2>
-              <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {course.syllabus.map((subject) => (
-                  <li
-                    key={subject}
-                    className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700"
-                  >
-                    {subject}
-                  </li>
-                ))}
-              </ul>
-            </article>
+            {course.syllabus.length > 0 && (
+              <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-black/5 md:p-7">
+                <h2 className="text-2xl font-semibold text-[#0D2B6B]">
+                  Syllabus (Subject Breakdown)
+                </h2>
+                <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {course.syllabus.map((subject) => (
+                    <li
+                      key={subject}
+                      className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700"
+                    >
+                      {subject}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            )}
 
-            <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-black/5 md:p-7">
-              <h2 className="text-2xl font-semibold text-[#0D2B6B]">
-                Course Highlights
-              </h2>
-              <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {course.courseHighlights?.map((item) => (
-                  <li
-                    key={item}
-                    className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700"
-                  >
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </article>
+            {course.highlights.length > 0 && (
+              <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-black/5 md:p-7">
+                <h2 className="text-2xl font-semibold text-[#0D2B6B]">
+                  Course Highlights
+                </h2>
+                <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {course.highlights.map((item) => (
+                    <li
+                      key={item}
+                      className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            )}
 
-            <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-black/5 md:p-7">
-              <h2 className="text-2xl font-semibold text-[#0D2B6B]">
-                Career Outcomes
-              </h2>
-              <ul className="mt-4 space-y-2">
-                {course.careerOutcomes.map((outcome) => (
-                  <li key={outcome} className="text-base text-slate-600">
-                    - {outcome}
-                  </li>
-                ))}
-              </ul>
-            </article>
+            {course.careerOutcomes.length > 0 && (
+              <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-black/5 md:p-7">
+                <h2 className="text-2xl font-semibold text-[#0D2B6B]">
+                  Career Outcomes
+                </h2>
+                <ul className="mt-4 space-y-2">
+                  {course.careerOutcomes.map((outcome) => (
+                    <li key={outcome} className="text-base text-slate-600">
+                      - {outcome}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            )}
           </div>
 
           <aside className="space-y-6">
             <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-black/5">
               <img
-                src={course.imageUrl}
-                alt={course.name}
+                src={course.image}
+                alt={course.title}
                 className="h-[260px] w-full object-cover"
                 loading="lazy"
               />
               <div className="p-5">
-                <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
-                  {course.type}
-                </p>
+                {course.type && (
+                  <p className="text-xs font-semibold tracking-wide text-[#2353b1]">
+                    {course.type}
+                  </p>
+                )}
                 {course.ugcApproved ? (
                   <p className="mt-1 text-xs font-bold tracking-[0.12em] text-emerald-700">
                     UGC APPROVED
                   </p>
                 ) : null}
-                <h3 className="mt-2 text-xl font-semibold text-[#0D2B6B]">
-                  {course.name}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  {course.CourseOverview}
-                </p>
+                {course.name && (
+                  <h3 className="mt-2 text-xl font-semibold text-[#0D2B6B]">
+                    {course.name}
+                  </h3>
+                )}
+                {course.overview && (
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                    {course.overview}
+                  </p>
+                )}
                 <a
                   href="#course-inquiry"
                   className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#0D2B6B] px-6 py-2.5 text-sm font-semibold text-white"
@@ -255,7 +294,9 @@ export default function CourseDetailPage() {
                 Specific Inquiry Form
               </h3>
               <p className="mt-2 text-sm text-slate-600">
-                Ask for detailed information about {course.name}.
+                {course.name
+                  ? `Ask for detailed information about ${course.name}.`
+                  : 'Ask for detailed information about this course.'}
               </p>
 
               {submitted ? (
@@ -275,12 +316,27 @@ export default function CourseDetailPage() {
                     className="h-11 w-full rounded-xl border border-slate-200 px-4 text-sm outline-none focus:border-[#2353b1]"
                   />
                   <input
-                    value={form.emailOrPhone}
-                    onChange={(e) => handleChange('emailOrPhone', e.target.value)}
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => handleChange('email', e.target.value)}
                     required
-                    placeholder="Email or Phone"
+                    placeholder="Email"
                     className="h-11 w-full rounded-xl border border-slate-200 px-4 text-sm outline-none focus:border-[#2353b1]"
                   />
+                  {errors.email && (
+                    <p className="text-xs text-red-500">{errors.email}</p>
+                  )}
+                  <input
+                    type="tel"
+                    value={form.phone}
+                    onChange={(e) => handleChange('phone', e.target.value)}
+                    required
+                    placeholder="Phone"
+                    className="h-11 w-full rounded-xl border border-slate-200 px-4 text-sm outline-none focus:border-[#2353b1]"
+                  />
+                  {errors.phone && (
+                    <p className="text-xs text-red-500">{errors.phone}</p>
+                  )}
                   <input
                     value={course.title}
                     disabled

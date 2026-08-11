@@ -1,4 +1,5 @@
 import apiClient from './axios'
+import { getApiErrorMessage } from './errors'
 
 export interface ContactPayload {
   fullName: string
@@ -9,6 +10,13 @@ export interface ContactPayload {
 }
 
 export async function submitContactEnquiry(data: ContactPayload) {
-  const res = await apiClient.post('/contact/send-enquiry', data)
-  return res.data
+  try {
+    const res = await apiClient.post('/enquiry', {
+      ...data,
+      type: 'general',
+    })
+    return res.data
+  } catch (err) {
+    throw new Error(getApiErrorMessage(err, 'Failed to send enquiry'))
+  }
 }
