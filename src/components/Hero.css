@@ -1,0 +1,460 @@
+/*
+  Homepage hero — "Our Courses" showcase.
+
+  Every rule is scoped behind the `.vt-courses-*` prefix so no other section,
+  component or global class on the site is affected.
+*/
+
+.vt-courses-hero {
+  position: relative;
+  overflow: hidden;
+  background-color: #eef3fd;
+  color: #0f1b3d;
+}
+
+/* ------------------------------------------------------------------ */
+/* Highlight strip                                                     */
+/* ------------------------------------------------------------------ */
+
+.vt-courses-hero__strip {
+  position: relative;
+  overflow: hidden;
+  background-color: #0d2a73;
+}
+
+.vt-courses-hero__marquee {
+  display: flex;
+  overflow: hidden;
+  padding: 10px 24px;
+}
+
+.vt-courses-hero__track {
+  display: flex;
+  flex: 0 0 auto;
+  width: max-content;
+  animation: vt-courses-marquee-scroll 40s linear infinite;
+}
+
+.vt-courses-hero__group {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+/*
+  The track holds three identical copies of the strip text, so a single copy
+  is always wider than the viewport and the loop never reveals a gap.
+*/
+@keyframes vt-courses-marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-33.3333%, 0, 0);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Layout                                                              */
+/* ------------------------------------------------------------------ */
+
+.vt-courses-hero__container {
+  position: relative;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 16px 20px 16px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Centred heading block                                               */
+/* ------------------------------------------------------------------ */
+
+.vt-courses-hero__intro {
+  max-width: 1180px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.vt-courses-hero__eyebrow {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #51607f;
+}
+
+.vt-courses-hero__title {
+  margin: 8px 0 0;
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: #0d2a73;
+}
+
+.vt-courses-hero__lead {
+  margin: 8px 0 0;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #51607f;
+}
+
+/* ------------------------------------------------------------------ */
+/* Course cards                                                        */
+/* ------------------------------------------------------------------ */
+
+/*
+  The cards block is its own positioning context so the 3D decorations stay
+  anchored to the card edges instead of drifting up into the heading block.
+*/
+.vt-courses-hero__cards {
+  position: relative;
+}
+
+.vt-courses-hero__grid {
+  display: grid;
+  gap: 44px;
+  margin-top: 24px;
+}
+
+.vt-courses-hero__item {
+  position: relative;
+}
+
+.vt-courses-hero__stage {
+  position: relative;
+  height: clamp(240px, 34vh, 300px);
+}
+
+.vt-courses-hero__card {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 10px;
+  /*
+    The card keeps its rounded shape and its tilt, but it no longer clips its
+    content: the artwork is allowed to rise above the top edge of the card.
+    The only child that relied on the clipping was the swoosh, and it sits
+    well inside the card already.
+  */
+  overflow: visible;
+  padding: 28px 60px 28px 20px;
+  border-radius: 40px 96px 40px 72px;
+  color: #ffffff;
+  box-shadow: 0 24px 60px rgb(13 42 115 / 18%);
+}
+
+.vt-courses-hero__item--navy .vt-courses-hero__card {
+  background-color: #0d2a73;
+  transform: rotate(-2deg);
+}
+
+.vt-courses-hero__item--blue .vt-courses-hero__card {
+  background-color: #2f6df0;
+  /* The stronger tilt is lifted so the card never touches the chip row. */
+  transform: translateY(-10px) rotate(-6deg);
+}
+
+.vt-courses-hero__swoosh {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 62%;
+  height: 62%;
+  pointer-events: none;
+}
+
+/*
+  The artwork of the card. It is absolutely positioned at the bottom-right of
+  the card, above the lighter curved shape and below the copy block, so the
+  title, the meta line and the pill always stay readable.
+
+  On desktop its height is larger than the card on purpose: the card no longer
+  clips its content, so the head of the person rises above the top edge of the
+  card. On mobile the card is much smaller and the copy fills most of it, so
+  the artwork is scaled down and stays inside the card.
+
+  The source photos ship on a flat white background. `mix-blend-mode: multiply`
+  removes it, but it also darkens the subject over the dark cards, so the
+  artwork is delivered as a transparent cut-out instead and no blend mode is
+  used here.
+
+  TODO: once the design team delivers the final transparent PNG/WebP, point
+  `src/constants/hero.ts` at it and delete the generated cut-outs.
+*/
+.vt-courses-hero__card-art {
+  position: absolute;
+  right: 2%;
+  bottom: 0;
+  z-index: 2;
+  height: 66%;
+  width: auto;
+  max-width: 58%;
+  object-fit: contain;
+  object-position: bottom right;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/*
+  The copy block keeps the title, the meta line and the pill inside the left
+  part of the card so the artwork on the right never covers them. Its
+  max-width is a share of the card content box, so the two columns never
+  overlap between 360px and 1920px.
+*/
+.vt-courses-hero__card-copy {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 54%;
+}
+
+.vt-courses-hero__card-title {
+  position: relative;
+  margin: 0;
+  font-size: clamp(30px, 3.6vw, 44px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  overflow-wrap: break-word;
+}
+
+.vt-courses-hero__card-meta {
+  position: relative;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 85%);
+}
+
+.vt-courses-hero__pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    transform 200ms ease,
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.vt-courses-hero__item--navy .vt-courses-hero__pill {
+  background-color: #ffffff;
+  color: #0d2a73;
+}
+
+.vt-courses-hero__item--blue .vt-courses-hero__pill {
+  background-color: #0d2a73;
+  color: #ffffff;
+}
+
+.vt-courses-hero__pill:hover {
+  transform: translateY(-2px);
+}
+
+.vt-courses-hero__pill:focus-visible {
+  outline: 3px solid #143a9c;
+  outline-offset: 3px;
+}
+
+.vt-courses-hero__pill-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Program chips                                                       */
+/* ------------------------------------------------------------------ */
+
+.vt-courses-hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 34px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vt-courses-hero__chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 7px 16px;
+  border: 1px solid #dbe4f5;
+  border-radius: 999px;
+  background-color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #0f1b3d;
+}
+
+.vt-courses-hero__chip-duration {
+  font-weight: 800;
+  color: #143a9c;
+}
+
+/* ------------------------------------------------------------------ */
+/* 3D decorations                                                      */
+/* ------------------------------------------------------------------ */
+
+.vt-courses-hero__decorations {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.vt-courses-hero__decor {
+  position: absolute;
+  display: block;
+  filter: drop-shadow(0 16px 24px rgb(20 58 156 / 18%));
+}
+
+.vt-courses-hero__decor--chain {
+  top: 2px;
+  left: -10px;
+  width: 72px;
+}
+
+.vt-courses-hero__decor--ring {
+  top: -14px;
+  left: 50%;
+  width: 80px;
+  transform: translateX(-50%);
+}
+
+.vt-courses-hero__decor--knot {
+  top: 8px;
+  right: -10px;
+  width: 80px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                          */
+/* ------------------------------------------------------------------ */
+
+/*
+  Tablet and desktop: the card height follows the viewport so the heading and
+  both cards fit in the first screen, and the artwork scales with the card.
+*/
+@media (min-width: 768px) {
+  .vt-courses-hero__container {
+    padding: 20px 24px 16px;
+  }
+
+  .vt-courses-hero__grid {
+    margin-top: 32px;
+  }
+
+  .vt-courses-hero__stage {
+    height: clamp(320px, 52vh, 460px);
+  }
+
+  .vt-courses-hero__card-art {
+    height: 110%;
+    max-width: 64%;
+  }
+}
+
+@media (min-width: 900px) {
+  .vt-courses-hero__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 56px;
+  }
+
+  .vt-courses-hero__card {
+    padding: 34px 36px;
+  }
+
+  .vt-courses-hero__card-copy {
+    max-width: 55%;
+  }
+
+  .vt-courses-hero__decor--chain {
+    top: 4px;
+    left: -16px;
+    width: 96px;
+  }
+
+  .vt-courses-hero__decor--ring {
+    top: -18px;
+    width: 88px;
+  }
+
+  .vt-courses-hero__decor--knot {
+    top: 10px;
+    right: -16px;
+    width: 110px;
+  }
+}
+
+@media (max-width: 899px) {
+  .vt-courses-hero__decor--ring {
+    display: none;
+  }
+
+  .vt-courses-hero__decor--chain {
+    width: 72px;
+  }
+
+  .vt-courses-hero__decor--knot {
+    width: 80px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion                                                      */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Static, centred strip instead of a scrolling marquee */
+  .vt-courses-hero__marquee {
+    display: block;
+    overflow: visible;
+    text-align: center;
+  }
+
+  .vt-courses-hero__track {
+    display: block;
+    width: auto;
+    animation: none;
+  }
+
+  .vt-courses-hero__group {
+    display: inline;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .vt-courses-hero__group--clone {
+    display: none;
+  }
+
+  .vt-courses-hero__pill {
+    transition: none;
+  }
+}
