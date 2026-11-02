@@ -183,13 +183,20 @@ p, span, li, label, input, textarea, button {
 }
 
 .main-heading,
-.hero-heading {
+.hero-heading,
+.hero-heading span {
   font-family: var(--font-heading);
 }
 
 .secondary-heading,
 .sub-heading {
   font-family: var(--font-secondary);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 #root {

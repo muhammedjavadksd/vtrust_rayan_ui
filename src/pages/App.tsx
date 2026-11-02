@@ -1,5 +1,6 @@
 import { Header } from '../components/Header'
 import { Hero } from '../components/Hero'
+import { StreamCardsSection } from '../components/StreamCardsSection'
 import { ErrorBoundary } from '../components/ErrorBoundary'
 import { CompanySection } from '../components/CompanySection'
 import { VisionMissionSection } from '../components/VisionMissionSection'
@@ -26,6 +27,7 @@ function App() {
           <ErrorBoundary>
             <Hero />
           </ErrorBoundary>
+          <StreamCardsSection />
           <CompanySection />
         <VisionMissionSection />
         <WhyVtrustSection />

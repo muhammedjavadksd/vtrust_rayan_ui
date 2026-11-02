@@ -1,48 +1,48 @@
-import { CheckCircle2, MapPin, Phone } from 'lucide-react'
-import { useMemo, useState } from 'react'
-import { useBranches } from '../hooks/useBranches'
-import { addresses } from '../constants/footer'
-import { submitAdmissionEnquiry } from '../api/enquiry.api'
-import { FacebookIcon } from './icons/FacebookIcon'
-import { InstagramIcon } from './icons/InstagramIcon'
-import { LinkedinIcon } from './icons/LinkedinIcon'
-import { YoutubeIcon } from './icons/YoutubeIcon'
+import { CheckCircle2, MapPin, Phone } from "lucide-react";
+import { useMemo, useState } from "react";
+import { useBranches } from "../hooks/useBranches";
+import { addresses } from "../constants/footer";
+import { submitAdmissionEnquiry } from "../api/enquiry.api";
+import { FacebookIcon } from "./icons/FacebookIcon";
+import { InstagramIcon } from "./icons/InstagramIcon";
+import { LinkedinIcon } from "./icons/LinkedinIcon";
+import { YoutubeIcon } from "./icons/YoutubeIcon";
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const PLACE_REGEX = /^[a-zA-Z\s]+$/
-const PHONE_DIGITS_REGEX = /^\d{10}$/
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PLACE_REGEX = /^[a-zA-Z\s]+$/;
+const PHONE_DIGITS_REGEX = /^\d{10}$/;
 
-const INITIAL_FORM = { place: '', email: '', phone: '' }
-const INITIAL_TOUCHED = { place: false, email: false, phone: false }
+const INITIAL_FORM = { place: "", email: "", phone: "" };
+const INITIAL_TOUCHED = { place: false, email: false, phone: false };
 
-type FormField = keyof typeof INITIAL_FORM
-type FormErrors = Partial<Record<FormField, string>>
+type FormField = keyof typeof INITIAL_FORM;
+type FormErrors = Partial<Record<FormField, string>>;
 
 function validatePlace(value: string): string {
-  const trimmed = value.trim()
-  if (!trimmed) return 'Place is required'
-  if (trimmed.length < 2) return 'Place must be at least 2 characters'
+  const trimmed = value.trim();
+  if (!trimmed) return "Place is required";
+  if (trimmed.length < 2) return "Place must be at least 2 characters";
   if (!PLACE_REGEX.test(trimmed)) {
-    return 'Place must contain only letters and spaces'
+    return "Place must contain only letters and spaces";
   }
-  return ''
+  return "";
 }
 
 function validateEmail(value: string): string {
-  const trimmed = value.trim()
-  if (!trimmed) return 'Email is required'
-  if (!EMAIL_REGEX.test(trimmed)) return 'Please enter a valid email'
-  return ''
+  const trimmed = value.trim();
+  if (!trimmed) return "Email is required";
+  if (!EMAIL_REGEX.test(trimmed)) return "Please enter a valid email";
+  return "";
 }
 
 function validatePhone(value: string): string {
-  const stripped = value.trim().replace(/[\s-]/g, '')
-  if (!stripped) return 'Phone number is required'
-  const digits = stripped.replace(/^\+91/, '')
+  const stripped = value.trim().replace(/[\s-]/g, "");
+  if (!stripped) return "Phone number is required";
+  const digits = stripped.replace(/^\+91/, "");
   if (!PHONE_DIGITS_REGEX.test(digits)) {
-    return 'Phone number must be 10 digits'
+    return "Phone number must be 10 digits";
   }
-  return ''
+  return "";
 }
 
 function validateForm(form: typeof INITIAL_FORM): FormErrors {
@@ -50,87 +50,87 @@ function validateForm(form: typeof INITIAL_FORM): FormErrors {
     place: validatePlace(form.place),
     email: validateEmail(form.email),
     phone: validatePhone(form.phone),
-  }
+  };
 }
 
 export function Footer() {
-  const [form, setForm] = useState(INITIAL_FORM)
-  const [touched, setTouched] = useState(INITIAL_TOUCHED)
-  const [submitAttempted, setSubmitAttempted] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [submitError, setSubmitError] = useState<string | null>(null)
-  const { branches } = useBranches()
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [touched, setTouched] = useState(INITIAL_TOUCHED);
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const { branches } = useBranches();
 
-  const errors = useMemo(() => validateForm(form), [form])
-  const hasErrors = Object.values(errors).some(Boolean)
+  const errors = useMemo(() => validateForm(form), [form]);
+  const hasErrors = Object.values(errors).some(Boolean);
 
   const showErrorFor = (field: FormField) =>
-    (touched[field] || submitAttempted) && errors[field]
+    (touched[field] || submitAttempted) && errors[field];
 
   const handleChange = (field: FormField, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }))
-  }
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleBlur = (field: FormField) => {
-    setTouched((prev) => ({ ...prev, [field]: true }))
-  }
+    setTouched((prev) => ({ ...prev, [field]: true }));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setSubmitAttempted(true)
-    setSubmitError(null)
+    e.preventDefault();
+    setSubmitAttempted(true);
+    setSubmitError(null);
 
-    if (hasErrors) return
+    if (hasErrors) return;
 
-    setLoading(true)
+    setLoading(true);
     try {
       await submitAdmissionEnquiry({
         fullName: `Enquiry from ${form.place.trim()}`,
         email: form.email.trim(),
-        phone: form.phone.trim().replace(/[\s-]/g, ''),
-        message: 'Quick enquiry submitted from website footer.',
+        phone: form.phone.trim().replace(/[\s-]/g, ""),
+        message: "Quick enquiry submitted from website footer.",
         place: form.place.trim(),
-      })
-      setSubmitted(true)
-      setForm(INITIAL_FORM)
-      setTouched(INITIAL_TOUCHED)
-      setSubmitAttempted(false)
+      });
+      setSubmitted(true);
+      setForm(INITIAL_FORM);
+      setTouched(INITIAL_TOUCHED);
+      setSubmitAttempted(false);
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : 'Failed to send enquiry'
-      setSubmitError(message)
+        err instanceof Error ? err.message : "Failed to send enquiry";
+      setSubmitError(message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const inputClass = (field: FormField) => {
-    const errorShown = Boolean(showErrorFor(field))
+    const errorShown = Boolean(showErrorFor(field));
     const validShown =
-      (touched[field] || submitAttempted) && Boolean(errors[field] === '')
+      (touched[field] || submitAttempted) && Boolean(errors[field] === "");
     const borderClass = errorShown
-      ? 'border-red-500'
+      ? "border-red-500"
       : validShown
-        ? 'border-green-500'
-        : 'border-white/20'
-    return `h-12 w-full rounded-xl border ${borderClass} bg-white px-6 pr-12 text-base text-slate-900 outline-none ring-0 placeholder:text-slate-400 focus:border-hero-teal`
-  }
+        ? "border-green-500"
+        : "border-white/20";
+    return `h-12 w-full rounded-xl border ${borderClass} bg-white px-6 pr-12 text-base text-slate-900 outline-none ring-0 placeholder:text-slate-400 focus:border-hero-teal`;
+  };
 
   const quickLinks = useMemo(
     () => [
-      { label: 'Home', href: '/' },
-      { label: 'Courses', href: '/courses' },
-      { label: 'About Us', href: '/about' },
-      { label: 'Student Life', href: '/student-life' },
-      { label: 'Campuses', href: '/campuses' },
-      { label: 'Alumni', href: '/alumni' },
-      { label: 'News & Events', href: '/news-events' },
-      { label: 'Contact', href: '/contact' },
-      { label: 'Admissions', href: '/#admissions' },
+      { label: "Home", href: "/" },
+      { label: "Courses", href: "/courses" },
+      { label: "About Us", href: "/about" },
+      { label: "Student Life", href: "/student-life" },
+      { label: "Campuses", href: "/campuses" },
+      { label: "Alumni", href: "/alumni" },
+      { label: "News & Events", href: "/news-events" },
+      { label: "Contact", href: "/contact" },
+      { label: "Admissions", href: "/#admissions" },
     ],
     [],
-  )
+  );
 
   return (
     <footer className="bg-[#0D2B6B] pt-10 pb-8 text-white">
@@ -140,14 +140,20 @@ export function Footer() {
           {(branches.length > 0 ? branches : addresses).map((a: any) => (
             <div key={a.name} className="space-y-1 text-white/85">
               <div className="flex items-start gap-2">
-                <MapPin className="mt-0.5 size-5 shrink-0 text-hero-teal" aria-hidden />
+                <MapPin
+                  className="mt-0.5 size-5 shrink-0 text-hero-teal"
+                  aria-hidden
+                />
                 <div>
                   <p className="text-sm font-semibold text-white">{a.name}</p>
                   <p className="text-[0.78rem] leading-snug text-white/80">
-                    {a.location.join(', ')}
+                    {a.location.join(", ")}
                   </p>
                   <p className="mt-1 flex items-center gap-1 text-[0.78rem] text-white/85">
-                    <Phone className="size-4 shrink-0 text-hero-teal" aria-hidden />
+                    <Phone
+                      className="size-4 shrink-0 text-hero-teal"
+                      aria-hidden
+                    />
                     <span className="font-medium">{a.phoneNumbers}</span>
                   </p>
                 </div>
@@ -159,14 +165,23 @@ export function Footer() {
         <div className="mt-12 grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8">
           {/* Left: Logo + Follow */}
           <div className="space-y-5">
-            <div className="inline-block rounded-xl bg-white/95 p-3 shadow-sm">
+            {/* <div className="inline-block rounded-xl bg-white/95 p-3 shadow-sm">
               <img
                 src="/logo/logo.png"
                 alt="VTRUST Group of Institutions"
                 className="h-12 w-auto object-contain"
                 loading="lazy"
               />
-            </div>
+            </div> */}
+
+<div className="inline-block">
+  <img
+    src="/logo/logo.png"
+    alt="VTRUST Group of Institutions"
+    className="h-12 w-auto object-contain brightness-0 invert"
+    loading="lazy"
+  />
+</div>
             <div className="space-y-2">
               <p className="text-sm font-semibold text-white">Follow Us:</p>
               <div className="flex gap-4">
@@ -237,8 +252,8 @@ export function Footer() {
             </p>
             {submitted ? (
               <div className="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white">
-                Thanks! Your enquiry has been submitted. Our admissions team will
-                contact you shortly.
+                Thanks! Your enquiry has been submitted. Our admissions team
+                will contact you shortly.
               </div>
             ) : (
               <form
@@ -256,15 +271,15 @@ export function Footer() {
                     <input
                       id="footer-place"
                       value={form.place}
-                      onChange={(e) => handleChange('place', e.target.value)}
-                      onBlur={() => handleBlur('place')}
+                      onChange={(e) => handleChange("place", e.target.value)}
+                      onBlur={() => handleBlur("place")}
                       placeholder="Enter your place/location"
                       type="text"
-                      aria-invalid={Boolean(showErrorFor('place'))}
+                      aria-invalid={Boolean(showErrorFor("place"))}
                       aria-describedby={
-                        showErrorFor('place') ? 'footer-place-error' : undefined
+                        showErrorFor("place") ? "footer-place-error" : undefined
                       }
-                      className={inputClass('place')}
+                      className={inputClass("place")}
                     />
                     {touched.place && !errors.place && (
                       <CheckCircle2
@@ -273,7 +288,7 @@ export function Footer() {
                       />
                     )}
                   </div>
-                  {showErrorFor('place') && (
+                  {showErrorFor("place") && (
                     <p id="footer-place-error" className="text-xs text-red-300">
                       {errors.place}
                     </p>
@@ -284,15 +299,15 @@ export function Footer() {
                     <input
                       id="footer-email"
                       value={form.email}
-                      onChange={(e) => handleChange('email', e.target.value)}
-                      onBlur={() => handleBlur('email')}
+                      onChange={(e) => handleChange("email", e.target.value)}
+                      onBlur={() => handleBlur("email")}
                       placeholder="Enter your email"
                       type="email"
-                      aria-invalid={Boolean(showErrorFor('email'))}
+                      aria-invalid={Boolean(showErrorFor("email"))}
                       aria-describedby={
-                        showErrorFor('email') ? 'footer-email-error' : undefined
+                        showErrorFor("email") ? "footer-email-error" : undefined
                       }
-                      className={inputClass('email')}
+                      className={inputClass("email")}
                     />
                     {touched.email && !errors.email && (
                       <CheckCircle2
@@ -301,7 +316,7 @@ export function Footer() {
                       />
                     )}
                   </div>
-                  {showErrorFor('email') && (
+                  {showErrorFor("email") && (
                     <p id="footer-email-error" className="text-xs text-red-300">
                       {errors.email}
                     </p>
@@ -312,15 +327,15 @@ export function Footer() {
                     <input
                       id="footer-phone"
                       value={form.phone}
-                      onChange={(e) => handleChange('phone', e.target.value)}
-                      onBlur={() => handleBlur('phone')}
+                      onChange={(e) => handleChange("phone", e.target.value)}
+                      onBlur={() => handleBlur("phone")}
                       placeholder="Enter your phone number"
                       type="tel"
-                      aria-invalid={Boolean(showErrorFor('phone'))}
+                      aria-invalid={Boolean(showErrorFor("phone"))}
                       aria-describedby={
-                        showErrorFor('phone') ? 'footer-phone-error' : undefined
+                        showErrorFor("phone") ? "footer-phone-error" : undefined
                       }
-                      className={inputClass('phone')}
+                      className={inputClass("phone")}
                     />
                     {touched.phone && !errors.phone && (
                       <CheckCircle2
@@ -329,7 +344,7 @@ export function Footer() {
                       />
                     )}
                   </div>
-                  {showErrorFor('phone') && (
+                  {showErrorFor("phone") && (
                     <p id="footer-phone-error" className="text-xs text-red-300">
                       {errors.phone}
                     </p>
@@ -340,7 +355,7 @@ export function Footer() {
                   disabled={loading || hasErrors}
                   className="h-14 w-full rounded-xl bg-hero-teal px-6 text-2xl font-semibold text-white shadow-sm transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {loading ? 'Submitting...' : 'Submit'}
+                  {loading ? "Submitting..." : "Submit"}
                 </button>
               </form>
             )}
@@ -381,5 +396,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
